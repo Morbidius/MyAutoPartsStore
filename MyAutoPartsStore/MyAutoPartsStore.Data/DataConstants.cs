@@ -1,6 +1,7 @@
 ﻿namespace MyAutoPartsStore.Data
 {
-    class DataConstants
+    public class DataConstants
     {
+        
     }
 }
