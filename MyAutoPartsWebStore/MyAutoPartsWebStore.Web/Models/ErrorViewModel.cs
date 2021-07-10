@@ -1,5 +1,3 @@
-using System;
-
 namespace MyAutoPartsWebStore.Web.Models
 {
     public class ErrorViewModel
