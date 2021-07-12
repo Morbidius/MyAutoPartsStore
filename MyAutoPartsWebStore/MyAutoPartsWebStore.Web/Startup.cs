@@ -8,6 +8,7 @@ namespace MyAutoPartsWebStore.Web
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Hosting;
     using MyAutoPartsStore.Data;
+    using MyAutoPartsWebStore.Web.Infrastructure;
 
     public class Startup
     {
@@ -38,6 +39,8 @@ namespace MyAutoPartsWebStore.Web
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            app.PrepareDatabase();
+            
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
