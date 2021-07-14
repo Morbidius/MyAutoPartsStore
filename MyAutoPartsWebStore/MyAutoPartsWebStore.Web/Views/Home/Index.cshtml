@@ -1,12 +1,32 @@
-﻿@{
+﻿@using MyAutoPartsWebStore.Web.Models.Products
+@model AddProductViewModel
+
+@{
 	ViewData["Title"] = "Home";
 }
 
-<div class="text-center">
-	<h1>Welcome</h1>
+<div class="list-group">
+	<div class="text-center">
+		<h1>Welcome</h1>
+	</div>
+	<div class="categoryNav font-weight-bolder">Categories</div>
+	<div class="flex flex-row">
+		<div class="left">
+			<div>
+				@foreach (var category in Model.Categories)
+				{
+
+					<a asp-controller="Category" asp-action="ViewCategory" asp-route-categoryId="@category.Id" class="list-group-item list-group-item-action">@Html.Raw(category.IconHtml) @category.Name</a>
+				}
+			</div>
+		</div>
+		<div class="right"></div>
+	</div>
+	@*<a href="#" class="list-group-item list-group-item-action col-sm-8 offset-lg-2 col-lg-4 offset-xl-3 col-xl-4">2</a>
+		<a href="#" class="list-group-item list-group-item-action col-sm-8 offset-lg-2 col-lg-4 offset-xl-3 col-xl-4">3</a>
+		<a href="#" class="list-group-item list-group-item-action col-sm-8 offset-lg-2 col-lg-4 offset-xl-3 col-xl-4">4</a>
+		<a href="#" class="list-group-item list-group-item-action col-sm-8 offset-lg-2 col-lg-4 offset-xl-3 col-xl-4">5</a>
+		<a href="#" class="list-group-item list-group-item-action col-sm-8 offset-lg-2 col-lg-4 offset-xl-3 col-xl-4">6</a>*@
 </div>
-<div class="flex flex-row">
-	<div class="left">top </div>
-	<div class="right">si </div>
-	<div class="right">bero </div>
-</div>
+@*public IActionResult ViewCategory(string categoryId)*@
+

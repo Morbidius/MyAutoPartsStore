@@ -18,7 +18,7 @@
 
         [Range(
             typeof(decimal),
-            "0.1",
+            "0.01",
             "79228162514264337593543950335",
             ErrorMessage = "The product must have a price.")]
         public decimal Price { get; set; }
