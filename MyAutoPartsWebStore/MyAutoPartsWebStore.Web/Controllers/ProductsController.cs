@@ -20,7 +20,7 @@
         {
             Categories = this.GetProductCategories()
         });
-
+        
         [HttpPost]
         public IActionResult Add(AddProductViewModel product)
         {
