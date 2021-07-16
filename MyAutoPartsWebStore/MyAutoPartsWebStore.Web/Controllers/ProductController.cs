@@ -1,17 +1,17 @@
 ﻿namespace MyAutoPartsWebStore.Web.Controllers
 {
+    using System.Collections.Generic;
+    using System.Linq;
     using Microsoft.AspNetCore.Mvc;
     using MyAutoPartsStore.Data;
     using MyAutoPartsStore.Data.Models;
     using MyAutoPartsWebStore.Web.Models.Products;
-    using System.Collections.Generic;
-    using System.Linq;
 
-    public class ProductsController : Controller
+    public class ProductController : Controller
     {
         private readonly MyAutoPartsStoreDbContext data;
 
-        public ProductsController(MyAutoPartsStoreDbContext data)
+        public ProductController(MyAutoPartsStoreDbContext data)
         {
             this.data = data;
         }
@@ -20,7 +20,7 @@
         {
             Categories = this.GetProductCategories()
         });
-        
+
         [HttpPost]
         public IActionResult Add(AddProductViewModel product)
         {
@@ -50,6 +50,56 @@
             this.data.SaveChanges();
 
             return RedirectToAction("Index", "Home");
+        }
+
+        //Implement
+        public IActionResult Delete(int? id = null)
+        {
+            if (id == null || id <= 0) return BadRequest();
+
+            var product = this.data
+                .Products
+                .Where(p => p.Id == id)
+                .Select(p => new DetailsViewModel
+                {
+                    Id = p.Id,
+                    Description = p.Description,
+                    Name = p.Name,
+                    Price = p.Price,
+                    Weight = p.Weight,
+                    ImageUrl = p.ImageUrl,
+
+                }).FirstOrDefault();
+
+            if (product == null) return NotFound();
+
+            this.data.Remove(product);
+            this.data.SaveChanges();
+
+            return RedirectToAction("Index", "Home");
+        }
+
+        public IActionResult Description(int? id = null)
+        {
+            if (id == null || id <= 0) return BadRequest();
+
+            var details = this.data
+                .Products
+                .Where(p => p.Id == id)
+                .Select(p => new DetailsViewModel
+                {
+                    Id = p.Id,
+                    Description = p.Description,
+                    Name = p.Name,
+                    Price = p.Price,
+                    Weight = p.Weight,
+                    ImageUrl = p.ImageUrl,
+                    
+                }).FirstOrDefault();
+
+            if (details == null) return NotFound();
+
+            return View(details);
         }
 
         private IEnumerable<ProductCategoryViewModel> GetProductCategories()
