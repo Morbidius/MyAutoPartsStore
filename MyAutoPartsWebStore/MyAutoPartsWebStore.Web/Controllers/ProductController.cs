@@ -102,6 +102,35 @@
             return View(details);
         }
 
+        public IActionResult Search(string searchTerm)
+        {
+            var productQuery = this.data.Products.AsQueryable();
+
+            if (!string.IsNullOrWhiteSpace(searchTerm))
+            {
+                productQuery = productQuery.Where(p =>
+                p.Name.ToLower().Contains(searchTerm.ToLower()));
+            }
+
+            var products = productQuery
+                .OrderByDescending(p => p.Name)
+                .Select(p => new ProductListingViewModel
+                {
+                    Id = p.Id,
+                    Name = p.Name,
+                    Price = p.Price,
+                    Weight = p.Weight,
+                    ImageUrl = p.ImageUrl,
+                    Category = p.Category.Name
+                }).ToList();
+
+            return View(new ProductsSearchViewModel
+            {
+                Products = products,
+                SearchTerm = searchTerm,
+            });
+        }
+
         private IEnumerable<ProductCategoryViewModel> GetProductCategories()
             => this.data
             .Categories

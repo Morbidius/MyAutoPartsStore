@@ -1,6 +1,7 @@
 ﻿namespace MyAutoPartsWebStore.Web.Models.Products
 {
     using MyAutoPartsStore.Data;
+    using MyAutoPartsWebStore.Web.Models.Products.Enums;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
 
@@ -39,5 +40,13 @@
         public int CategoryId { get; set; }
 
         public IEnumerable<ProductCategoryViewModel> Categories { get; set; }
+
+        public IEnumerable<string> Names { get; init; }
+
+        public IEnumerable<string> SearchTerm { get; init; }
+
+        public ProductSorting Sorting { get; init; }
+
+        public IEnumerable<ProductListingViewModel> Products { get; init; }
     }
 }

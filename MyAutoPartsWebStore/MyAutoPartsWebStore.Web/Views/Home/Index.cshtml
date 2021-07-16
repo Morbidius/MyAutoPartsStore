@@ -5,23 +5,31 @@
 	ViewData["Title"] = "Home";
 }
 
-<div class="list-group">
-	<div class="text-center">
-		<h1>Welcome</h1>
+<div class="text-center">
+	<h1>BANNER HERE</h1>
+</div>
+
+<form method="get">
+	<div class="input-group">
+		<input class="form-control" asp-for="SearchTerm" placeholder="Search by name..."/>
+		<div class="input-group-append">
+			<button type="submit" class="btn btn-primary">Search</button>
+		</div>
 	</div>
+</form>
+
+<div class="list-group">
 	<div class="categoryNav font-weight-bolder">Categories</div>
 	<div class="flex flex-row">
 		<div class="left">
 			<div>
 				@foreach (var category in Model.Categories)
 				{
-
-					<a  target="_blank" asp-controller="Category" asp-action="ViewCategory" asp-route-categoryId="@category.Id" class="list-group-item list-group-item-action">@Html.Raw(category.IconHtml) @category.Name</a>
+					<a target="_blank" asp-controller="Category" asp-action="ViewCategory" asp-route-categoryId="@category.Id" class="list-group-item list-group-item-action">@category.Name</a>
 				}
 			</div>
 		</div>
 		<div class="right"></div>
 	</div>
 </div>
-
 
