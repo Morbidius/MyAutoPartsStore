@@ -2,7 +2,6 @@
 {
     using System.Collections.Generic;
     using System.Linq;
-    using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
     using MyAutoPartsStore.Data;
     using MyAutoPartsStore.Data.Models;
@@ -53,21 +52,42 @@
             return RedirectToAction("Index", "Home");
         }
 
-        //Implement
         public IActionResult Delete(int? id = null)
         {
             if (id == null || id <= 0) return BadRequest();
 
+            var productToDel = data.Products.FirstOrDefault(x => x.Id == id);
+
+            if (productToDel == null) return NotFound();
+
+            var viewModel = new DeleteProductViewModel()
+            {
+                Id = productToDel.Id,
+                Name = productToDel.Name
+            };
+            return View(viewModel);
+        }
+
+        //ppc trqbva tova da ne kazva viewModel a FormModel shtoto ne e za view a za forma
+        //trqbva da stane DeleteProductFormModel
+        //tui to
+        [HttpPost]
+        public IActionResult Delete(DeleteProductViewModel viewProduct, int? id = null)
+        {
+            if (id == null || id <= 0) return BadRequest();
+
+            if (!ModelState.IsValid) return View(viewProduct);
+
             var product = this.data
                 .Products
-                .FirstOrDefault(p => p.Id == id);
+                .FirstOrDefault(p => p.Id == viewProduct.Id);
 
             if (product == null) return NotFound();
 
             this.data.Remove(product);
             this.data.SaveChanges();
 
-            return View();
+            return RedirectToAction("Index", "Home");
         }
 
         public IActionResult Description(int? id = null)
@@ -85,7 +105,7 @@
                     Price = p.Price,
                     Weight = p.Weight,
                     ImageUrl = p.ImageUrl,
-                    
+
                 }).FirstOrDefault();
 
             if (details == null) return NotFound();
@@ -131,5 +151,14 @@
                 Name = p.Name,
             })
             .ToList();
+
+        private DeleteProductViewModel GetProductName()
+            => this.data
+            .Products
+            .Select(p => new DeleteProductViewModel
+            {
+                Id = p.Id,
+                Name = p.Name,
+            }).FirstOrDefault();
     }
 }

@@ -1,9 +1,9 @@
-﻿using MyAutoPartsStore.Data.Models;
-
-namespace MyAutoPartsWebStore.Web.Models.Products
+﻿namespace MyAutoPartsWebStore.Web.Models.Products
 {
     public class DeleteProductViewModel
     {
-        public Product Product { get; init; }
+        public int Id { get; init; }
+
+        public string Name { get; init; }
     }
 }
