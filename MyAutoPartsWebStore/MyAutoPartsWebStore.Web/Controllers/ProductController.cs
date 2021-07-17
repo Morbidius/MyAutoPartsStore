@@ -2,6 +2,7 @@
 {
     using System.Collections.Generic;
     using System.Linq;
+    using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
     using MyAutoPartsStore.Data;
     using MyAutoPartsStore.Data.Models;
@@ -16,9 +17,9 @@
             this.data = data;
         }
 
-        public IActionResult Add() => View(new AddProductViewModel
+        public IActionResult Add() => View(new AddProductViewModel()
         {
-            Categories = this.GetProductCategories()
+            Categories = GetProductCategories()
         });
 
         [HttpPost]
@@ -59,24 +60,14 @@
 
             var product = this.data
                 .Products
-                .Where(p => p.Id == id)
-                .Select(p => new DetailsViewModel
-                {
-                    Id = p.Id,
-                    Description = p.Description,
-                    Name = p.Name,
-                    Price = p.Price,
-                    Weight = p.Weight,
-                    ImageUrl = p.ImageUrl,
-
-                }).FirstOrDefault();
+                .FirstOrDefault(p => p.Id == id);
 
             if (product == null) return NotFound();
 
             this.data.Remove(product);
             this.data.SaveChanges();
 
-            return RedirectToAction("Index", "Home");
+            return View();
         }
 
         public IActionResult Description(int? id = null)

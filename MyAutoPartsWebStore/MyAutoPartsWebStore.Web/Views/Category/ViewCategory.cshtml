@@ -9,11 +9,11 @@
 				<div class="card-body">
 					<h5 class="card-title text-center">@product.Name</h5>
 					<h5 class="card-title text-center">Price - @Math.Round(product.Price, 2) leva</h5>
-					<h5 class="card-title text-center">Weight - @product.Weight kg</h5>
+					<h5 class="card-title text-center">Weight - @product.Weight kg (@Math.Round(product.Weight * 2.20462,2) lbs)</h5>
 					<a asp-controller="Product" asp-action="Description" asp-route-id="@product.Id" class="btn btn-primary">Details</a>
 					@if (true) //Authorize!
 					{
-						<a asp-controller="Product" asp-action="Delete" asp-route-id="@product.Id" class="btn btn-secondary">Delete</a>
+						<a asp-controller="Product" asp-action="Delete" asp-route-id="@product.Id" class="btn btn-danger m-1">Delete</a>
 					}
 				</div>
 			</div>

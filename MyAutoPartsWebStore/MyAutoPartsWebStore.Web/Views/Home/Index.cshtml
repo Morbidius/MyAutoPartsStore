@@ -1,35 +1,64 @@
 ﻿@using MyAutoPartsWebStore.Web.Models.Products
-@model AddProductViewModel
+@model ProductsSearchViewModel
 
 @{
 	ViewData["Title"] = "Home";
 }
 
-<div class="text-center">
+@*<div class="text-center">
 	<h1>BANNER HERE</h1>
+</div>*@
+
+<div class="search-bar">
+	<form method="get">
+		<div class="input-group">
+			<input class="form-control" asp-for="SearchTerm" placeholder="Search by name..." autocomplete="off" maxlength="100"/>
+			<div class="input-group-append">
+				<button type="submit" class="btn btn-primary">Search</button>
+			</div>
+		</div>
+	</form>
 </div>
 
-<form method="get">
-	<div class="input-group">
-		<input class="form-control" asp-for="SearchTerm" placeholder="Search by name..."/>
-		<div class="input-group-append">
-			<button type="submit" class="btn btn-primary">Search</button>
-		</div>
-	</div>
-</form>
-
 <div class="list-group">
-	<div class="categoryNav font-weight-bolder">Categories</div>
-	<div class="flex flex-row">
+	<div class="category-nav font-weight-bolder">Categories</div>
+	<div class="flex category-list-holder">
 		<div class="left">
 			<div>
 				@foreach (var category in Model.Categories)
 				{
-					<a target="_blank" asp-controller="Category" asp-action="ViewCategory" asp-route-categoryId="@category.Id" class="list-group-item list-group-item-action">@category.Name</a>
+					<a asp-controller="Category" asp-action="ViewCategory" asp-route-categoryId="@category.Id" class="list-group-item list-group-item-action">@category.Name</a>
 				}
 			</div>
 		</div>
-		<div class="right"></div>
+		<div class="right">
+			@if (Model.Products.Any() && Model.SearchTerm != null)
+			{
+				<div class="row">
+					@foreach (var product in Model.Products)
+					{
+						<div class="col-md-3">
+							<div class="card mb-3">
+								<img class="card-img-top text-center" src="@product.ImageUrl" alt="@product.Name - @product.Price @product.Weight">
+								<div class="card-body">
+									<h5 class="card-title text-center">@product.Name</h5>
+									<h5 class="card-title text-center">Price - @Math.Round(product.Price, 2) leva</h5>
+									<h5 class="card-title text-center">Weight - @product.Weight kg</h5>
+									<a asp-controller="Product" asp-action="Description" asp-route-id="@product.Id" class="btn btn-primary">Details</a>
+									@if (true) //Authorize!
+									{
+										<a asp-controller="Product" asp-action="Delete" asp-route-id="@product.Id" class="btn btn-danger m-1">Delete</a>
+									}
+								</div>
+							</div>
+						</div>
+					}
+				</div>
+			}
+		</div>
 	</div>
 </div>
 
+@section Scripts {
+	<partial name="_ValidationScriptsPartial" />
+}

@@ -1,18 +1,17 @@
 ﻿namespace MyAutoPartsWebStore.Web.Models.Products
 {
-    using MyAutoPartsWebStore.Web.Models.Products.Enums;
     using System.Collections.Generic;
+    using System.ComponentModel.DataAnnotations;
 
     public class ProductsSearchViewModel
     {
-        public string Name { get; init; }
+        [Required]
+        [Display(Name ="Search word")]
+        [StringLength(50,ErrorMessage = "{0} should be between {2} and {1} symbols long",MinimumLength = 1)]
+        public string SearchTerm { get; set; }
 
-        public IEnumerable<string> Names { get; init; }
+        public IEnumerable<ProductListingViewModel> Products { get; set; }
 
-        public string SearchTerm { get; init; }
-
-        public ProductSorting Sorting { get; init; }
-
-        public IEnumerable<ProductListingViewModel> Products { get; init; }
+        public IEnumerable<ProductCategoryViewModel> Categories { get; set; }
     }
 }
