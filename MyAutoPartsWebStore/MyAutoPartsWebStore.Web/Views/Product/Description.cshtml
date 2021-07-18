@@ -9,10 +9,16 @@
 	</div>
 	<ul class="list-group list-group-flush">
 		<li class="list-group-item text-center">@Model.Name</li>
-		<li class="list-group-item text-center">Price - @Model.Price</li>
-		<li class="list-group-item text-center">Weight - @Model.Weight</li>
+		<li class="list-group-item text-center">Price - @Math.Round(@Model.Price, 2) leva</li>
+		<li class="list-group-item text-center">Size and Capacity - @Model.SizeCapacity</li>
+		<li class="list-group-item text-center">Weight - @Model.Weight  kg (@Math.Round(@Model.Weight * 2.20462, 2)) lbs</li>
 	</ul>
 	<div class="card-body" style="place-content:center">
-		<button class="btn btn-outline-dark btn-lg" type="submit">Buy</button>
+		<button type="submit" class="buy-btn btn-danger">Buy</button>
+		@if (true) //Authorize!
+		{
+			<a asp-controller="Product" asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-danger m-1">Delete</a>
+			<a asp-controller="Product" asp-action="Edit" asp-route-id="@Model.Id" class="btn alert-dark m-1">Edit</a>
+		}
 	</div>
 </div>

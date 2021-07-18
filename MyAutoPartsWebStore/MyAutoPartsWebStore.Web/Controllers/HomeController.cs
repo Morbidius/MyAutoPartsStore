@@ -32,6 +32,7 @@
                         Name = p.Name,
                         Price = p.Price,
                         Weight = p.Weight,
+                        SizeCapacity = p.SizeCapacity,
                         ImageUrl = p.ImageUrl,
                         Category = p.Category.Name
                     }).ToList();

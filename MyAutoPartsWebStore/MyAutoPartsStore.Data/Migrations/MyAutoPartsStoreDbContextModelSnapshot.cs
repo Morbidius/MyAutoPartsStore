@@ -262,6 +262,10 @@ namespace MyAutoPartsStore.Data.Migrations
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(20,4)");
 
+                    b.Property<string>("SizeCapacity")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<float>("Weight")
                         .HasColumnType("real");
 

@@ -1,5 +1,6 @@
 ﻿/* Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
 for details on configuring this project to bundle and minify static web assets. */
+@import url('https://fonts.googleapis.com/css?family=Amatic+SC');
 
 a.navbar-brand {
 	white-space: normal;
@@ -124,6 +125,63 @@ footer-logo {
 	place-content: center;
 	margin: 0 auto;
 }
+
+.alert {
+	margin: 1rem 0;
+	background-color: white;
+	border-color: red;
+	text-align: center;
+	color: black
+}
+
+
+.buy-btn {
+	border: none;
+	display: block;
+	text-align: center;
+	cursor: pointer;
+	text-transform: uppercase;
+	outline: none;
+	overflow: hidden;
+	position: relative;
+	color: #fff;
+	font-weight: 700;
+	font-size: 15px;
+	background-color: #222;
+	padding: 14px 30px;
+	margin: 0 auto;
+	box-shadow: 0 5px 15px rgba(0,0,0,0.20);
+}
+
+.buy-btn span {
+	position: relative;
+	z-index: 1;
+}
+
+.details-btn {
+	border: none;
+	display: block;
+	text-align: center;
+	cursor: pointer;
+	text-transform: uppercase;
+	outline: none;
+	overflow: hidden;
+	position: relative;
+	color: #fff;
+	font-weight: 700;
+	font-size: 15px;
+	background-color: #1b6ec2;
+	padding: 12px 20px;
+	margin: 0 auto;
+	box-shadow: 0 5px 15px rgba(0,0,0,0.20);
+}
+
+.details-btn span {
+	text-decoration: underline;
+	position: relative;
+	z-index: 1;
+}
+
 
 .navbar {
 	color: #2196f3;

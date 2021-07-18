@@ -8,8 +8,6 @@
 
         public string Name { get; set; }
 
-        public string IconHtml { get; set; }
-
         public IEnumerable<Product> Products { get; init; } = new HashSet<Product>();
     }
 }

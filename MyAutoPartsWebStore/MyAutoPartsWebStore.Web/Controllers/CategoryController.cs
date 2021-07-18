@@ -28,6 +28,7 @@
                     Name = p.Name,
                     Description = p.Description,
                     Price = p.Price,
+                    SizeCapacity = p.SizeCapacity,
                     Weight = p.Weight,
                     ImageUrl = p.ImageUrl,
                     Category = p.Category.Name,

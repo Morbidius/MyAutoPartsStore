@@ -3,18 +3,23 @@
 <div class="row">
 	@foreach (var product in Model)
 	{
-		<div class="col-md-3">
+		<div class="col-lg-3">
 			<div class="card mb-3">
 				<img class="card-img-top text-center" src="@product.ImageUrl" alt="@product.Name - @product.Price @product.Weight">
 				<div class="card-body">
 					<h5 class="card-title text-center">@product.Name</h5>
 					<h5 class="card-title text-center">Price - @Math.Round(product.Price, 2) leva</h5>
-					<h5 class="card-title text-center">Weight - @product.Weight kg (@Math.Round(product.Weight * 2.20462,2) lbs)</h5>
-					<a asp-controller="Product" asp-action="Description" asp-route-id="@product.Id" class="btn btn-primary">Details</a>
-					@if (true) //Authorize!
-					{
-						<a asp-controller="Product" asp-action="Delete" asp-route-id="@product.Id" class="btn btn-danger m-1">Delete</a>
-					}
+					<h5 class="card-title text-center">Size and Capacity - @product.SizeCapacity</h5>
+					<h5 class="card-title text-center">Weight - @product.Weight kg (@Math.Round(product.Weight * 2.20462, 2)) lbs)</h5>
+					<div class="card-body" style="place-content:center">
+						<button type="submit" class="buy-btn btn-danger">Buy</button>
+						<a asp-controller="Product" asp-action="Description" asp-route-id="@product.Id" class="details-btn btn-primary">Details</a>
+						@if (true) //Authorize!
+						{
+							<a asp-controller="Product" asp-action="Delete" asp-route-id="@product.Id" class="btn btn-danger m-1">Delete</a>
+							<a asp-controller="Product" asp-action="Edit" asp-route-id="@product.Id" class="btn alert-dark m-1">Edit</a>
+						}
+					</div>
 				</div>
 			</div>
 		</div>

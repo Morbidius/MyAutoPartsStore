@@ -10,6 +10,8 @@
 
         public decimal Price { get; init; }
 
+        public string SizeCapacity { get; init; }
+
         public float Weight { get; init; }
 
         public string ImageUrl { get; init; }

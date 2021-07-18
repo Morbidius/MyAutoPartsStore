@@ -44,11 +44,15 @@
 									<h5 class="card-title text-center">@product.Name</h5>
 									<h5 class="card-title text-center">Price - @Math.Round(product.Price, 2) leva</h5>
 									<h5 class="card-title text-center">Weight - @product.Weight kg</h5>
-									<a asp-controller="Product" asp-action="Description" asp-route-id="@product.Id" class="btn btn-primary">Details</a>
-									@if (true) //Authorize!
-									{
-										<a asp-controller="Product" asp-action="Delete" asp-route-id="@product.Id" class="btn btn-danger">Delete</a>
-									}
+									<div class="card-body" style="place-content:center">
+										<button type="submit" class="buy-btn btn-danger">Buy</button>
+										<a asp-controller="Product" asp-action="Description" asp-route-id="@product.Id" class="details-btn btn-primary">Details</a>
+										@if (true) //Authorize!
+										{
+											<a asp-controller="Product" asp-action="Delete" asp-route-id="@product.Id" class="btn btn-danger m-1">Delete</a>
+											<a asp-controller="Product" asp-action="Edit" asp-route-id="@product.Id" class="btn alert-dark m-1">Edit</a>
+										}
+									</div>
 								</div>
 							</div>
 						</div>

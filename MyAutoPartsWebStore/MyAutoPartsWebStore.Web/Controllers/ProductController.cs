@@ -41,6 +41,7 @@
                 Name = product.Name,
                 Description = product.Description,
                 Price = product.Price,
+                SizeCapacity = product.SizeCapacity,
                 Weight = product.Weight,
                 ImageUrl = product.ImageUrl,
                 CategoryId = product.CategoryId,
@@ -63,7 +64,8 @@
             var viewModel = new DeleteProductViewModel()
             {
                 Id = productToDel.Id,
-                Name = productToDel.Name
+                Name = productToDel.Name,
+                Image = productToDel.ImageUrl,
             };
             return View(viewModel);
         }
@@ -103,6 +105,7 @@
                     Description = p.Description,
                     Name = p.Name,
                     Price = p.Price,
+                    SizeCapacity = p.SizeCapacity,
                     Weight = p.Weight,
                     ImageUrl = p.ImageUrl,
 
@@ -130,6 +133,7 @@
                     Id = p.Id,
                     Name = p.Name,
                     Price = p.Price,
+                    SizeCapacity = p.SizeCapacity,
                     Weight = p.Weight,
                     ImageUrl = p.ImageUrl,
                     Category = p.Category.Name

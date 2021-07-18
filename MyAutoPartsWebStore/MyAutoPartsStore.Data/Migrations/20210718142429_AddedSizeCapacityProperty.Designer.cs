@@ -10,8 +10,8 @@ using MyAutoPartsStore.Data;
 namespace MyAutoPartsStore.Data.Migrations
 {
     [DbContext(typeof(MyAutoPartsStoreDbContext))]
-    [Migration("20210716154110_RevertImageSupport")]
-    partial class RevertImageSupport
+    [Migration("20210718142429_AddedSizeCapacityProperty")]
+    partial class AddedSizeCapacityProperty
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -263,6 +263,10 @@ namespace MyAutoPartsStore.Data.Migrations
 
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(20,4)");
+
+                    b.Property<string>("SizeCapacity")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<float>("Weight")
                         .HasColumnType("real");
