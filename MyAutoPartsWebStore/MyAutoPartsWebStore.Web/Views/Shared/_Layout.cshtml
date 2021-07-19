@@ -9,13 +9,12 @@
     <link rel="stylesheet" href="~/css/site.css" />
 </head>
 <body>
-    <header>
-        <nav style="background-color: #3f4f61" class="navbar navbar-expand-sm navbar-toggleable-sm border-bottom box-shadow mb-3">
+	<header>
+		<nav style="background-color: #3f4f61" class="navbar navbar-expand-sm navbar-toggleable-sm border-bottom box-shadow mb-3">
 			<div class="container">
 				<a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">
 					<img class="header-logo" src="~/media/logo.png" alt="logo" />
 				</a>
-				
 				<button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
 						aria-expanded="false" aria-label="Toggle navigation">
 					<span class="navbar-toggler-icon"></span>
@@ -32,23 +31,23 @@
 					<partial name="_LoginPartial" />
 				</div>
 			</div>
-        </nav>
-    </header>
-    <div class="container">
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
-    </div>
-
-    <footer style="background-color: #3f4f61" class="border-top footer text-muted">
+		</nav>
+	</header>
+	<div class="container">
+		<main role="main" class="pb-3">
+			@RenderBody()
+		</main>
+	</div>
+	<a href="#" class="scrollToTop"><i class="fas fa-arrow-alt-circle-up fa-4x"></i></a>
+	<footer style="background-color: #3f4f61" class="border-top footer text-muted">
 		<div class="container">
 			<img class="footer-logo" src="~/media/tecalliance.png" alt="footer image" />
 			&copy; @DateTime.UtcNow.Year - InterCars, All rights reserved
 		</div>
-    </footer>
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
-    @await RenderSectionAsync("Scripts", required: false)
+	</footer>
+	<script src="~/lib/jquery/dist/jquery.min.js"></script>
+	<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+	<script src="~/js/site.js" asp-append-version="true"></script>
+	@await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

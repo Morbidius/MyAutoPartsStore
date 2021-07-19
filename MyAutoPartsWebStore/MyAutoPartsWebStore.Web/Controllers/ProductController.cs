@@ -139,7 +139,13 @@
                     Category = p.Category.Name
                 }).ToList();
 
-            return View(new ProductsSearchViewModel
+            var productCategories = this.data
+                .Products
+                .Select(c => c.Category.Name)
+                .Distinct()
+                .ToList();
+
+            return View(new ProductsSearchQueryModel
             {
                 Products = products,
                 SearchTerm = searchTerm,

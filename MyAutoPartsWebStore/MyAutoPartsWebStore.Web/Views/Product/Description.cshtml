@@ -1,24 +1,26 @@
 ﻿@using MyAutoPartsWebStore.Web.Models.Products
 @model DetailsViewModel
 
-<div class="card" style="width: 18rem; place-content:center">
-	<img class="card-img-top" src="@Model.ImageUrl" alt="Card image cap">
-	<div class="card-body">
-		<h5 class="card-title">Description</h5>
-		<p class="card-text">@Model.Description</p>
-	</div>
-	<ul class="list-group list-group-flush">
-		<li class="list-group-item text-center">@Model.Name</li>
-		<li class="list-group-item text-center">Price - @Math.Round(@Model.Price, 2) leva</li>
-		<li class="list-group-item text-center">Size and Capacity - @Model.SizeCapacity</li>
-		<li class="list-group-item text-center">Weight - @Model.Weight  kg (@Math.Round(@Model.Weight * 2.20462, 2)) lbs</li>
-	</ul>
-	<div class="card-body" style="place-content:center">
-		<button type="submit" class="buy-btn btn-danger">Buy</button>
-		@if (true) //Authorize!
-		{
-			<a asp-controller="Product" asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-danger m-1">Delete</a>
-			<a asp-controller="Product" asp-action="Edit" asp-route-id="@Model.Id" class="btn alert-dark m-1">Edit</a>
-		}
+<div class="description-pane" style="place-content: center">
+	<div class="card" style="width: 18rem; place-content:center">
+		<img class="card-img-top" src="@Model.ImageUrl" alt="Card image cap">
+		<div class="card-body">
+			<h5 class="card-title">Description</h5>
+			<p class="card-text">@Model.Description</p>
+		</div>
+		<ul class="list-group list-group-flush">
+			<li class="list-group-item text-center">@Model.Name</li>
+			<li class="list-group-item text-center">Price - @Math.Round(@Model.Price, 2) leva</li>
+			<li class="list-group-item text-center">Size and Capacity - @Model.SizeCapacity</li>
+			<li class="list-group-item text-center">Weight - @Model.Weight  kg (@Math.Round(@Model.Weight * 2.20462, 2)) lbs</li>
+		</ul>
+		<div class="card-body" style="place-content:center">
+			<button type="submit" class="buy-btn btn-danger">Buy</button>
+			@if (true) //Authorize!
+			{
+				<a asp-controller="Product" asp-action="Edit" asp-route-id="@Model.Id" class="btn alert-dark m-1">Edit</a>
+				<a asp-controller="Product" asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-danger m-1">Delete</a>
+			}
+		</div>
 	</div>
 </div>

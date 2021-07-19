@@ -19,7 +19,7 @@
 
         public IActionResult Index(string SearchTerm = null)
         {
-            var viewModel = new ProductsSearchViewModel();
+            var viewModel = new ProductsSearchQueryModel();
 
             if (!string.IsNullOrEmpty(SearchTerm))
             {
@@ -36,6 +36,9 @@
                         ImageUrl = p.ImageUrl,
                         Category = p.Category.Name
                     }).ToList();
+
+                //if(orderby != null) products.OrderBy(x => x.Category == orderBy)
+
 
                 viewModel.SearchTerm = SearchTerm;
                 viewModel.Products = products;

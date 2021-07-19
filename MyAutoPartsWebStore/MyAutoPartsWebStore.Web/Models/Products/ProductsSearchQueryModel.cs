@@ -1,9 +1,10 @@
 ﻿namespace MyAutoPartsWebStore.Web.Models.Products
 {
+    using MyAutoPartsStore.Data.Models;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
 
-    public class ProductsSearchViewModel
+    public class ProductsSearchQueryModel
     {
         [Required]
         [Display(Name = "Search word")]
