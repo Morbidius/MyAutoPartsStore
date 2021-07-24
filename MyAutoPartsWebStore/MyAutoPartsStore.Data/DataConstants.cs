@@ -4,19 +4,33 @@
     {
         public class Product 
         {
-            public const int ProductNameMinLength = 1;
-            public const int ProductNameMaxLength = 30;
+            public const int NameMinLength = 1;
+            public const int NameMaxLength = 30;
 
-            public const int ProductDescriptionMinLength = 10;
+            public const int DescriptionMinLength = 10;
 
-            public const decimal ProductMinPrice = 0.1m;
-            public const decimal ProductMaxPrice = 1000000m;
+            public const decimal MinPrice = 0.1m;
+            public const decimal MaxPrice = 1000000m;
 
-            public const int ProductSizeCapacityMinLength = 1;
-            public const int ProductSizeCapacityMaxLength = 100;
+            public const int SizeCapacityMinLength = 1;
+            public const int SizeCapacityMaxLength = 100;
 
-            public const float ProductMinWeight = 0.01f;
-            public const float ProductMaxWeight = 1000f;
+            public const float MinWeight = 0.01f;
+            public const float MaxWeight = 1000f;
+        }
+
+        public class Category
+        {
+            public const int NameMaxLength = 35;
+        }
+
+        public class Dealer
+        {
+            public const int NameMaxLength = 30;
+
+            public const int PhoneNumberMaxLength = 20;
+
+            public const int CompanyNameMaxLength = 50;
         }
     }
 }

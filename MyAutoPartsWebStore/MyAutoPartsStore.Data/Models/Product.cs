@@ -8,7 +8,7 @@
         public int Id { get; init; }
 
         [Required]
-        [MaxLength(DataConstants.Product.ProductNameMaxLength)]
+        [MaxLength(DataConstants.Product.NameMaxLength)]
         public string Name { get; set; }
 
         [Required]
@@ -19,7 +19,7 @@
         public decimal Price { get; set; }
 
         [Required]
-        [MaxLength(DataConstants.Product.ProductSizeCapacityMaxLength)]
+        [MaxLength(DataConstants.Product.SizeCapacityMaxLength)]
         public string SizeCapacity { get; set; }
 
         [Required]
@@ -27,8 +27,12 @@
 
         public int CategoryId { get; set; }
 
-        public Category Category { get; set; }
+        public Category Category { get; init; }
 
         public string ImageUrl { get; set; }
+
+        public int DealerId { get; init; }
+
+        public Dealer Dealer { get; init; }
     }
 }

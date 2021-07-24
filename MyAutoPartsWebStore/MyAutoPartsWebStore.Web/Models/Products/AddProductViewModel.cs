@@ -8,12 +8,12 @@
     public class AddProductViewModel
     {
         [Required]
-        [StringLength(DataConstants.Product.ProductNameMaxLength, MinimumLength = DataConstants.Product.ProductNameMinLength)]
+        [StringLength(DataConstants.Product.NameMaxLength, MinimumLength = DataConstants.Product.NameMinLength)]
         public string Name { get; set; }
 
         [Required]
         [StringLength(int.MaxValue,
-            MinimumLength = DataConstants.Product.ProductDescriptionMinLength,
+            MinimumLength = DataConstants.Product.DescriptionMinLength,
             ErrorMessage = "The field Description must be with a minimum length of {2} characters.")]
         public string Description { get; set; }
 
@@ -26,7 +26,7 @@
 
         [Display(Name = "Size or Capacity")]
         [StringLength(int.MaxValue,
-            MinimumLength = DataConstants.Product.ProductSizeCapacityMinLength,
+            MinimumLength = DataConstants.Product.SizeCapacityMinLength,
             ErrorMessage = "The product must have a valid size or capacity.")]
         public string SizeCapacity { get; set; }
 

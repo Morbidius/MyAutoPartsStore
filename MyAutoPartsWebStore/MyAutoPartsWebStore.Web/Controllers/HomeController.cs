@@ -17,7 +17,7 @@
             this.data = data;
         }
 
-        public IActionResult Index(string SearchTerm = null)
+        public IActionResult Index(string category, string SearchTerm = null)
         {
             var viewModel = new ProductsSearchQueryModel();
 
@@ -37,10 +37,14 @@
                         Category = p.Category.Name
                     }).ToList();
 
-                //if(orderby != null) products.OrderBy(x => x.Category == orderBy)
+                if (!string.IsNullOrEmpty(category))
+                {
+                    products.OrderBy(x => x.Category == category);
+                }
 
 
                 viewModel.SearchTerm = SearchTerm;
+                viewModel.Category = category;
                 viewModel.Products = products;
             }
             else
