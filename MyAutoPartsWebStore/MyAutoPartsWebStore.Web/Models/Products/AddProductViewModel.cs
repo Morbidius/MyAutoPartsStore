@@ -1,7 +1,6 @@
 ﻿namespace MyAutoPartsWebStore.Web.Models.Products
 {
     using MyAutoPartsStore.Data;
-    using MyAutoPartsWebStore.Web.Models.Products.Enums;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
 

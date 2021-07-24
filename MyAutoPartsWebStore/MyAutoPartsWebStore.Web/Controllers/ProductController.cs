@@ -2,9 +2,11 @@
 {
     using System.Collections.Generic;
     using System.Linq;
+    using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
     using MyAutoPartsStore.Data;
     using MyAutoPartsStore.Data.Models;
+    using MyAutoPartsWebStore.Web.Infrastructure;
     using MyAutoPartsWebStore.Web.Models.Products;
 
     public class ProductController : Controller
@@ -16,14 +18,35 @@
             this.data = data;
         }
 
-        public IActionResult Add() => View(new AddProductViewModel()
+        [Authorize]
+        public IActionResult Add()
         {
-            Categories = GetProductCategories()
-        });
+            if (!this.UserIsDealer())
+            {
+                return RedirectToAction(nameof(DealerController.BecomeDealer), "Dealer");
+            }
+
+            return View(new AddProductViewModel()
+            {
+                Categories = GetProductCategories()
+            });
+        }
 
         [HttpPost]
+        [Authorize]
         public IActionResult Add(AddProductViewModel product)
         {
+            var dealerId = this.data
+                .Dealers
+                .Where(d => d.UserId == this.User.GetId())
+                .Select(d => d.Id)
+                .FirstOrDefault();
+
+            if (dealerId == 0)
+            {
+                return RedirectToAction(nameof(DealerController.BecomeDealer), "Dealer");
+            }
+
             if (!this.data.Categories.Any(c => c.Id == product.CategoryId))
             {
                 this.ModelState.AddModelError(nameof(product.CategoryId), "Category does not exist.");
@@ -45,6 +68,7 @@
                 Weight = product.Weight,
                 ImageUrl = product.ImageUrl,
                 CategoryId = product.CategoryId,
+                DealerId = dealerId,
             };
 
             this.data.Products.Add(newProduct);
@@ -70,9 +94,6 @@
             return View(viewModel);
         }
 
-        //ppc trqbva tova da ne kazva viewModel a FormModel shtoto ne e za view a za forma
-        //trqbva da stane DeleteProductFormModel
-        //tui to
         [HttpPost]
         public IActionResult Delete(DeleteProductViewModel viewProduct, int? id = null)
         {
@@ -150,6 +171,17 @@
                 Products = products,
                 SearchTerm = searchTerm,
             });
+        }
+
+        private bool UserIsDealer()
+        {
+            var userId = this.User.GetId();
+
+            var userIsDealer = this.data
+                .Dealers
+                .Any(d => d.UserId == userId);
+
+            return userIsDealer;
         }
 
         private IEnumerable<ProductCategoryViewModel> GetProductCategories()
