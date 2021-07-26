@@ -17,7 +17,7 @@
             this.data = data;
         }
 
-        public IActionResult Index(string category, string SearchTerm = null)
+        public IActionResult Index(string category, string SearchTerm = null, string sortingType = null)
         {
             var viewModel = new ProductsSearchQueryModel();
 
@@ -37,9 +37,9 @@
                         Category = p.Category.Name
                     }).ToList();
 
-                if (!string.IsNullOrEmpty(category))
+                if (!string.IsNullOrEmpty(sortingType))
                 {
-                    products.OrderBy(x => x.Category == category);
+                    products = products.Where(x => x.Category == sortingType).ToList();
                 }
 
 

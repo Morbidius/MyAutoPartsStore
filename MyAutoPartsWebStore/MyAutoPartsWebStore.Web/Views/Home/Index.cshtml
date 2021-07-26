@@ -27,7 +27,7 @@
 				<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
 					@foreach (var productCategory in Model.Categories)
 					{
-						<a class="dropdown-item" href="#">@productCategory.Name</a>
+						<a class="dropdown-item" asp-controller="Home" asp-action="Index" asp-route-SearchTerm="@Model.SearchTerm" asp-route-sortingType="@productCategory.Name">@productCategory.Name</a>
 					}
 				</div>
 			</div>
@@ -63,7 +63,7 @@
 									<div class="card-body" style="place-content:center">
 										<button type="submit" class="buy-btn btn-danger">Buy</button>
 										<a asp-controller="Product" asp-action="Description" asp-route-id="@product.Id" class="details-btn btn-primary">Details</a>
-										@if (true) //Authorize!
+										@if (User.Identity.IsAuthenticated) //Authorize!
 										{
 											<a asp-controller="Product" asp-action="Edit" asp-route-id="@product.Id" class="btn alert-dark m-1">Edit</a>
 											<a asp-controller="Product" asp-action="Delete" asp-route-id="@product.Id" class="btn btn-danger m-1">Delete</a>

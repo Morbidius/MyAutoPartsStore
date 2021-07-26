@@ -1,6 +1,7 @@
 ﻿namespace MyAutoPartsWebStore.Web.Models.Products
 {
-    public class ProductListingViewModel
+    using MyAutoPartsWebStore.Web.Base;
+    public class ProductListingViewModel : BaseCategoryModel
     {
         public int Id { get; set; }
 
@@ -13,8 +14,6 @@
         public string SizeCapacity { get; init; }
 
         public float Weight { get; init; }
-
-        public string Category { get; init; }
 
         public string ImageUrl { get; set; }
     }
