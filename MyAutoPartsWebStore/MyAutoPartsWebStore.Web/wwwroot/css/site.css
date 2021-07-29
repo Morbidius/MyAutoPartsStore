@@ -179,10 +179,10 @@ footer-logo {
 	box-shadow: 0 5px 15px rgba(0,0,0,0.20);
 }
 
-.buy-btn span {
-	position: relative;
-	z-index: 1;
-}
+	.buy-btn span {
+		position: relative;
+		z-index: 1;
+	}
 
 .details-btn {
 	border: none;
@@ -202,17 +202,22 @@ footer-logo {
 	box-shadow: 0 5px 15px rgba(0,0,0,0.20);
 }
 
-.details-btn span {
-	text-decoration: underline;
-	position: relative;
-	z-index: 1;
-}
+	.details-btn span {
+		text-decoration: underline;
+		position: relative;
+		z-index: 1;
+	}
 
-.description-pane {
+.description-pane.container {
 	text-align: center;
 	font-size: 20px;
 	justify-content: center;
 	align-items: center;
+}
+
+.card-description-title {
+	text-align: center;
+	font-size: 30px;
 }
 
 
@@ -257,6 +262,7 @@ footer-logo {
 	outline: none !important;
 	box-shadow: none !important;
 }
+
 .btn-secondary.focus, .btn-secondary:focus {
 	outline: none !important;
 	box-shadow: none !important;

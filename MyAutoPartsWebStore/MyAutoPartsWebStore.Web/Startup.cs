@@ -3,11 +3,14 @@ namespace MyAutoPartsWebStore.Web
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Identity;
+    using Microsoft.AspNetCore.Mvc;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Hosting;
     using MyAutoPartsStore.Data;
+    using MyAutoPartsStore.Services.DealersServices;
+    using MyAutoPartsStore.Services.ProductServices;
     using MyAutoPartsWebStore.Web.Infrastructure;
 
     public class Startup
@@ -34,7 +37,13 @@ namespace MyAutoPartsWebStore.Web
             })
             .AddEntityFrameworkStores<MyAutoPartsStoreDbContext>();
 
-            services.AddControllersWithViews();
+            services.AddControllersWithViews(options =>
+            {
+                options.Filters.Add<AutoValidateAntiforgeryTokenAttribute>();
+            });
+
+            services.AddTransient<IDealerService, DealerService>();
+            services.AddTransient<IProductService, ProductService>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

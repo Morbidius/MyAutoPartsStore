@@ -1,6 +1,14 @@
-﻿@model IEnumerable<ProductListingViewModel>
+﻿@using MyAutoPartsStore.Services.ProductServices
+@model IEnumerable<ProductServiceModel>
 
-@inject IDealerService Dealers
+@{
+	ViewBag.Title = "My Products";
+}
+
+@if (!Model.Any())
+{
+	<h2 class="text-center">No products found!</h2>
+}
 
 <div class="row">
 	@foreach (var product in Model)
@@ -14,24 +22,9 @@
 					<h5 class="card-title text-center">Size and Capacity - @product.SizeCapacity</h5>
 					<h5 class="card-title text-center">Weight - @product.Weight kg (@Math.Round(product.Weight * 2.20462, 2)) lbs)</h5>
 					<div class="card-body" style="place-content:center">
-
-						@if (User.Identity.IsAuthenticated)
-						{
-							var userId = User.GetId();
-							var userIsDealer = Dealers.IsDealer(userId);
-
-							<a asp-controller="Product" asp-action="Description" asp-route-id="@product.Id" class="details-btn btn-primary">Details</a>
-
-							@if (!userIsDealer)
-							{
-								<button type="submit" class="buy-btn btn-danger">Buy</button>
-							}
-						}
-						else
-						{
-							<a asp-controller="Product" asp-action="Description" asp-route-id="@product.Id" class="details-btn btn-primary">Details</a>
-							<a class="buy-btn btn-danger" asp-area="Identity" asp-page="/Account/Login">Buy</a>
-						}
+						<a asp-controller="Product" asp-action="Description" asp-route-id="@product.Id" class="details-btn btn-primary">Details</a>
+						<a asp-controller="Product" asp-action="Edit" asp-route-id="@product.Id" class="btn alert-dark m-1">Edit</a>
+						<a asp-controller="Product" asp-action="Delete" asp-route-id="@product.Id" class="btn btn-danger m-1">Delete</a>
 					</div>
 				</div>
 			</div>

@@ -20,6 +20,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\MyAutoPartsStore.Application\MyAutoPartsStore.Services.csproj" />
     <ProjectReference Include="..\MyAutoPartsStore.Data\MyAutoPartsStore.Data.csproj" />
   </ItemGroup>
 

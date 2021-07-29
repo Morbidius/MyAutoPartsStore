@@ -1,13 +1,14 @@
 ﻿@using MyAutoPartsWebStore.Web.Models.Products
+@using MyAutoPartsStore.Services.DealersServices
+@using MyAutoPartsWebStore.Web.Infrastructure
+
 @model ProductsSearchQueryModel
+@inject IDealerService Dealers
 
 @{
 	ViewBag.Title = "Home";
+	ViewBag.User = true;
 }
-
-@*<div class="text-center">
-		<h1>BANNER HERE</h1>
-	</div>*@
 
 <form method="get">
 	<div class="row justify-content-center">
@@ -61,12 +62,22 @@
 									<h5 class="card-title text-center">Size and Capacity - @product.SizeCapacity</h5>
 									<h5 class="card-title text-center">Weight - @product.Weight kg</h5>
 									<div class="card-body" style="place-content:center">
-										<button type="submit" class="buy-btn btn-danger">Buy</button>
-										<a asp-controller="Product" asp-action="Description" asp-route-id="@product.Id" class="details-btn btn-primary">Details</a>
-										@if (User.Identity.IsAuthenticated) //Authorize!
+										@if (User.Identity.IsAuthenticated)
 										{
-											<a asp-controller="Product" asp-action="Edit" asp-route-id="@product.Id" class="btn alert-dark m-1">Edit</a>
-											<a asp-controller="Product" asp-action="Delete" asp-route-id="@product.Id" class="btn btn-danger m-1">Delete</a>
+											var userId = User.GetId();
+											var userIsDealer = Dealers.IsDealer(userId);
+
+											<a asp-controller="Product" asp-action="Description" asp-route-id="@product.Id" class="details-btn btn-primary">Details</a>
+
+											@if (!userIsDealer)
+											{
+												<button type="submit" class="buy-btn btn-danger">Buy</button>
+											}
+										}
+										else
+										{
+											<a asp-controller="Product" asp-action="Description" asp-route-id="@product.Id" class="details-btn btn-primary">Details</a>
+											<a class="buy-btn btn-danger" asp-area="Identity" asp-page="/Account/Login">Buy</a>
 										}
 									</div>
 								</div>

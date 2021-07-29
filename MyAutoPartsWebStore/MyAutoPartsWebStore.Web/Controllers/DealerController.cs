@@ -8,7 +8,6 @@
     using MyAutoPartsWebStore.Web.Models.Dealers;
     using System.Linq;
 
-    [Authorize(Roles = "Dealer")]
     public class DealerController : Controller
     {
         private readonly MyAutoPartsStoreDbContext data;
@@ -18,10 +17,11 @@
             this.data = data;
         }
 
-        [AllowAnonymous]
+
         public IActionResult BecomeDealer() => View();
 
         [HttpPost]
+        [Authorize]
         public IActionResult BecomeDealer(BecomeDealerViewModel dealer)
         {
             //if (UserIsDealerAlready())

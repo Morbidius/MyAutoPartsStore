@@ -6,16 +6,23 @@
     using Microsoft.AspNetCore.Mvc;
     using MyAutoPartsStore.Data;
     using MyAutoPartsStore.Data.Models;
+    using MyAutoPartsStore.Services.DealersServices;
+    using MyAutoPartsStore.Services.ProductServices;
     using MyAutoPartsWebStore.Web.Infrastructure;
     using MyAutoPartsWebStore.Web.Models.Products;
 
+    [AutoValidateAntiforgeryToken]
     public class ProductController : Controller
     {
+        private readonly IProductService products;
+        private readonly IDealerService dealers;
         private readonly MyAutoPartsStoreDbContext data;
 
-        public ProductController(MyAutoPartsStoreDbContext data)
+        public ProductController(MyAutoPartsStoreDbContext data, IProductService products, IDealerService dealers)
         {
             this.data = data;
+            this.products = products;
+            this.dealers = dealers;
         }
 
         [Authorize]
@@ -171,6 +178,14 @@
                 Products = products,
                 SearchTerm = searchTerm,
             });
+        }
+
+        [Authorize]
+        public IActionResult MyProducts()
+        {
+            var products = this.products.ProductByUser(this.User.GetId());
+
+            return View(products);
         }
 
         private bool UserIsDealer()

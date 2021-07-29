@@ -3,11 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.31402.337
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyAutoPartsWebStore.Web", "MyAutoPartsWebStore.Web\MyAutoPartsWebStore.Web.csproj", "{91B41F87-7377-44A1-B744-B6B63D3EBB29}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyAutoPartsWebStore.Web", "MyAutoPartsWebStore.Web\MyAutoPartsWebStore.Web.csproj", "{91B41F87-7377-44A1-B744-B6B63D3EBB29}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyAutoPartsStore.Application", "MyAutoPartsStore.Application\MyAutoPartsStore.Application.csproj", "{548432E6-FA6D-4261-A671-3D80A46D0684}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyAutoPartsStore.Services", "MyAutoPartsStore.Application\MyAutoPartsStore.Services.csproj", "{548432E6-FA6D-4261-A671-3D80A46D0684}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyAutoPartsStore.Data", "MyAutoPartsStore.Data\MyAutoPartsStore.Data.csproj", "{FEAB764C-527D-4F57-ACA3-DAF6D58EFA92}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyAutoPartsStore.Data", "MyAutoPartsStore.Data\MyAutoPartsStore.Data.csproj", "{FEAB764C-527D-4F57-ACA3-DAF6D58EFA92}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

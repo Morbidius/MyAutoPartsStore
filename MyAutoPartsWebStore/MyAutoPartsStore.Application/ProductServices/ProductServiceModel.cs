@@ -1,8 +1,8 @@
-﻿namespace MyAutoPartsWebStore.Web.Models.Products
+﻿namespace MyAutoPartsStore.Services.ProductServices
 {
     using MyAutoPartsWebStore.Web.Base;
 
-    public class ProductListingViewModel : BaseCategoryModel
+    public class ProductServiceModel : BaseCategoryModel
     {
         public int Id { get; set; }
 
