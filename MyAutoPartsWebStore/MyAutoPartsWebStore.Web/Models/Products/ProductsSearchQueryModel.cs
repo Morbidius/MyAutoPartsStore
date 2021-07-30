@@ -1,8 +1,8 @@
 ﻿namespace MyAutoPartsWebStore.Web.Models.Products
 {
-    using MyAutoPartsStore.Data.Models;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
+    using MyAutoPartsStore.Services.ProductServices;
 
     public class ProductsSearchQueryModel
     {
@@ -15,6 +15,6 @@
 
         public IEnumerable<ProductListingViewModel> Products { get; set; }
 
-        public IEnumerable<ProductCategoryViewModel> Categories { get; set; }
+        public IEnumerable<ProductServiceCategoryModel> Categories { get; set; }
     }
 }

@@ -1,6 +1,7 @@
 ﻿namespace MyAutoPartsStore.Services.ProductServices
 {
     using MyAutoPartsWebStore.Web.Base;
+    using System.Collections.Generic;
 
     public class ProductServiceModel : BaseCategoryModel
     {
@@ -17,5 +18,7 @@
         public float Weight { get; init; }
 
         public string ImageUrl { get; set; }
+
+        public int DealerId { get; set; }
     }
 }

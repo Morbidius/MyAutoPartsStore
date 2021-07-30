@@ -31,7 +31,7 @@
 
         public string ImageUrl { get; set; }
 
-        public int DealerId { get; init; }
+        public int DealerId { get; set; }
 
         public Dealer Dealer { get; init; }
     }

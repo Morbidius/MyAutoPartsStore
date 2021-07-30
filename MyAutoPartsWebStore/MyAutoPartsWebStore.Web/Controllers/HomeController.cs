@@ -2,6 +2,8 @@
 {
     using Microsoft.AspNetCore.Mvc;
     using MyAutoPartsStore.Data;
+    using MyAutoPartsStore.Services.DealersServices;
+    using MyAutoPartsStore.Services.ProductServices;
     using MyAutoPartsWebStore.Web.Models;
     using MyAutoPartsWebStore.Web.Models.Products;
     using System.Collections.Generic;
@@ -11,10 +13,14 @@
     public class HomeController : Controller
     {
         private readonly MyAutoPartsStoreDbContext data;
+        private readonly IProductService products;
+        private readonly IDealerService dealers;
 
-        public HomeController(MyAutoPartsStoreDbContext data)
+        public HomeController(MyAutoPartsStoreDbContext data, IProductService products, IDealerService dealers)
         {
             this.data = data;
+            this.products = products;
+            this.dealers = dealers;
         }
 
         public IActionResult Index(string category, string SearchTerm = null, string sortingType = null)
@@ -51,19 +57,9 @@
             {
                 viewModel.Products = new List<ProductListingViewModel>();
             }
-            viewModel.Categories = GetProductCategories();
+            viewModel.Categories = this.products.AllCategories();
             return View(viewModel);
         }
-
-        private IEnumerable<ProductCategoryViewModel> GetProductCategories()
-            => this.data
-            .Categories
-            .Select(p => new ProductCategoryViewModel
-            {
-                Id = p.Id,
-                Name = p.Name,
-            })
-            .ToList();
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()

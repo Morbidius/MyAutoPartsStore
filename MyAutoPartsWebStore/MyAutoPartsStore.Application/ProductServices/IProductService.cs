@@ -4,16 +4,34 @@
 
     public interface IProductService
     {
-        ProductQueryServiceModel Add(
+        int Create(
             string name,
             string description,
             decimal price,
             string sizeCapacity,
             float weight,
             string imageUrl,
-            string categoryId,
+            int categoryId,
             int dealerId);
 
+        bool Edit(
+            int productId,
+            string name,
+            string description,
+            decimal price,
+            string sizeCapacity,
+            float weight,
+            string imageUrl,
+            int categoryId);
+
+        ProductServiceDetailsModel Details(int? id = null);
+
         IEnumerable<ProductServiceModel> ProductByUser(string userId);
+
+        bool isByDealer(int productId, int dealerId);
+
+        bool CategoryЕxists(int categoryId);
+
+        IEnumerable<ProductServiceCategoryModel> AllCategories();
     }
 }

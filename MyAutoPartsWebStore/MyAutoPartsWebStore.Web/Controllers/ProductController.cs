@@ -28,58 +28,51 @@
         [Authorize]
         public IActionResult Add()
         {
-            if (!this.UserIsDealer())
+            if (!this.dealers.IsDealer(this.User.GetId()))
             {
                 return RedirectToAction(nameof(DealerController.BecomeDealer), "Dealer");
             }
 
-            return View(new AddProductViewModel()
+            return View(new ProductFormModel()
             {
-                Categories = GetProductCategories()
+                Categories = this.products.AllCategories()
             });
         }
 
         [HttpPost]
         [Authorize]
-        public IActionResult Add(AddProductViewModel product)
+        public IActionResult Add(ProductFormModel product)
         {
-            var dealerId = this.data
-                .Dealers
-                .Where(d => d.UserId == this.User.GetId())
-                .Select(d => d.Id)
-                .FirstOrDefault();
+            var dealerId = this.dealers.GetDealerById(this.User.GetId());
 
-            if (dealerId == 0)
+            var userId = this.User.GetId();
+
+            if (!this.dealers.IsDealer(userId))
             {
                 return RedirectToAction(nameof(DealerController.BecomeDealer), "Dealer");
             }
 
-            if (!this.data.Categories.Any(c => c.Id == product.CategoryId))
+            if (!this.products.CategoryЕxists(product.CategoryId))
             {
                 this.ModelState.AddModelError(nameof(product.CategoryId), "Category does not exist.");
             }
 
             if (!ModelState.IsValid)
             {
-                product.Categories = this.GetProductCategories();
+                product.Categories = this.products.AllCategories();
 
                 return View(product);
             };
 
-            var newProduct = new Product
-            {
-                Name = product.Name,
-                Description = product.Description,
-                Price = product.Price,
-                SizeCapacity = product.SizeCapacity,
-                Weight = product.Weight,
-                ImageUrl = product.ImageUrl,
-                CategoryId = product.CategoryId,
-                DealerId = dealerId,
-            };
-
-            this.data.Products.Add(newProduct);
-            this.data.SaveChanges();
+            this.products.Create(
+                product.Name,
+                product.Description,
+                product.Price,
+                product.SizeCapacity,
+                product.Weight,
+                product.ImageUrl,
+                product.CategoryId,
+                dealerId);
 
             return RedirectToAction("Index", "Home");
         }
@@ -124,20 +117,7 @@
         {
             if (id == null || id <= 0) return BadRequest();
 
-            var details = this.data
-                .Products
-                .Where(p => p.Id == id)
-                .Select(p => new DetailsViewModel
-                {
-                    Id = p.Id,
-                    Description = p.Description,
-                    Name = p.Name,
-                    Price = p.Price,
-                    SizeCapacity = p.SizeCapacity,
-                    Weight = p.Weight,
-                    ImageUrl = p.ImageUrl,
-
-                }).FirstOrDefault();
+            var details = this.products.Details(id);
 
             if (details == null) return NotFound();
 
@@ -181,33 +161,85 @@
         }
 
         [Authorize]
+        public IActionResult Edit(int id)
+        {
+            var userId = this.User.GetId();
+
+            if (!this.dealers.IsDealer(userId))
+            {
+                return RedirectToAction(nameof(DealerController.BecomeDealer), "Dealer");
+            }
+
+            var product = this.products.Details(id);
+
+            if (product.UserId != this.User.GetId())
+            {
+                return Unauthorized();
+            }
+
+            return View(new ProductFormModel()
+            {
+                Name = product.Name,
+                Description = product.Description,
+                Price = product.Price,
+                SizeCapacity = product.SizeCapacity,
+                Weight = product.Weight,
+                ImageUrl = product.ImageUrl,
+                CategoryId = product.CategoryId,
+                Categories = this.products.AllCategories()
+            });
+        }
+
+        [HttpPost]
+        [Authorize]
+        public IActionResult Edit(int id, ProductFormModel product)
+        {
+            var dealerId = this.dealers.GetDealerById(this.User.GetId());
+
+            var userId = this.User.GetId();
+
+            if (!this.dealers.IsDealer(userId))
+            {
+                return RedirectToAction(nameof(DealerController.BecomeDealer), "Dealer");
+            }
+
+            if (!this.products.CategoryЕxists(product.CategoryId))
+            {
+                this.ModelState.AddModelError(nameof(product.CategoryId), "Category does not exist.");
+            }
+
+            if (!ModelState.IsValid)
+            {
+                product.Categories = this.products.AllCategories();
+
+                return View(product);
+            };
+
+            if (!this.products.isByDealer(id, dealerId))
+            {
+                return Unauthorized();
+            }
+
+            var productIsEdited = this.products.Edit(
+                id,
+                product.Name,
+                product.Description,
+                product.Price,
+                product.SizeCapacity,
+                product.Weight,
+                product.ImageUrl,
+                product.CategoryId);
+
+            return RedirectToAction("MyProducts");
+        }
+
+        [Authorize]
         public IActionResult MyProducts()
         {
             var products = this.products.ProductByUser(this.User.GetId());
 
             return View(products);
         }
-
-        private bool UserIsDealer()
-        {
-            var userId = this.User.GetId();
-
-            var userIsDealer = this.data
-                .Dealers
-                .Any(d => d.UserId == userId);
-
-            return userIsDealer;
-        }
-
-        private IEnumerable<ProductCategoryViewModel> GetProductCategories()
-            => this.data
-            .Categories
-            .Select(p => new ProductCategoryViewModel
-            {
-                Id = p.Id,
-                Name = p.Name,
-            })
-            .ToList();
 
         private DeleteProductViewModel GetProductName()
             => this.data

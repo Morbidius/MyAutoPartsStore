@@ -1,10 +1,11 @@
 ﻿namespace MyAutoPartsWebStore.Web.Models.Products
 {
     using MyAutoPartsStore.Data;
+    using MyAutoPartsStore.Services.ProductServices;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
 
-    public class AddProductViewModel
+    public class ProductFormModel
     {
         [Required]
         [StringLength(DataConstants.Product.NameMaxLength, MinimumLength = DataConstants.Product.NameMinLength)]
@@ -40,6 +41,7 @@
 
         [Display(Name = "Category")]
         public int CategoryId { get; set; }
-        public IEnumerable<ProductCategoryViewModel> Categories { get; set; }
+
+        public IEnumerable<ProductServiceCategoryModel> Categories { get; set; }
     }
 }
