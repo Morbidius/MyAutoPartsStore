@@ -37,5 +37,14 @@
 
             public const string PhoneNumberRegex = @"^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s\./0-9]*$";
         }
+
+        public class User
+        {
+            public const int FullNameMinLength = 5;
+            public const int FullNameMaxLength = 50;
+
+            public const int PasswordMinLength = 6;
+            public const int PasswordMaxLength = 100;
+        }
     }
 }

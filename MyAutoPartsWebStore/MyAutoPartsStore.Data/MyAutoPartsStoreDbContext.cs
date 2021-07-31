@@ -1,11 +1,10 @@
 ﻿namespace MyAutoPartsStore.Data
 {
-    using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
     using Microsoft.EntityFrameworkCore;
     using MyAutoPartsStore.Data.Models;
 
-    public class MyAutoPartsStoreDbContext : IdentityDbContext
+    public class MyAutoPartsStoreDbContext : IdentityDbContext<User>
     {
         public MyAutoPartsStoreDbContext(DbContextOptions<MyAutoPartsStoreDbContext> options)
             : base(options)
@@ -36,7 +35,7 @@
 
             builder
                 .Entity<Dealer>()
-                .HasOne<IdentityUser>()
+                .HasOne<User>()
                 .WithOne()
                 .HasForeignKey<Dealer>(d => d.UserId)
                 .OnDelete(DeleteBehavior.Restrict);

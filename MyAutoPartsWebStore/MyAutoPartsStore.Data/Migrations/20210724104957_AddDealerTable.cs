@@ -1,7 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
-
-namespace MyAutoPartsStore.Data.Migrations
+﻿namespace MyAutoPartsStore.Data.Migrations
 {
+    using Microsoft.EntityFrameworkCore.Migrations;
+
     public partial class AddDealerTable : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)

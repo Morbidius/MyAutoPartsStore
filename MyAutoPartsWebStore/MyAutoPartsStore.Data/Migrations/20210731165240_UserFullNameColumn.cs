@@ -2,23 +2,23 @@
 {
     using Microsoft.EntityFrameworkCore.Migrations;
 
-    public partial class AddedSizeCapacityProperty : Migration
+    public partial class UserFullNameColumn : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.AddColumn<string>(
-                name: "SizeCapacity",
-                table: "Products",
-                type: "nvarchar(max)",
-                nullable: false,
-                defaultValue: "");
+                name: "FullName",
+                table: "AspNetUsers",
+                type: "nvarchar(50)",
+                maxLength: 50,
+                nullable: true);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropColumn(
-                name: "SizeCapacity",
-                table: "Products");
+                name: "FullName",
+                table: "AspNetUsers");
         }
     }
 }

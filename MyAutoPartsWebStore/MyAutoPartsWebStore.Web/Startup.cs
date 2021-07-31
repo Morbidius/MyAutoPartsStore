@@ -9,6 +9,7 @@ namespace MyAutoPartsWebStore.Web
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Hosting;
     using MyAutoPartsStore.Data;
+    using MyAutoPartsStore.Data.Models;
     using MyAutoPartsStore.Services.DealersServices;
     using MyAutoPartsStore.Services.ProductServices;
     using MyAutoPartsWebStore.Web.Infrastructure;
@@ -21,20 +22,22 @@ namespace MyAutoPartsWebStore.Web
         }
 
         public IConfiguration Configuration { get; }
-       
+
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<MyAutoPartsStoreDbContext>(options =>
-                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+            services.AddDbContext<MyAutoPartsStoreDbContext>(options => options
+            .UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+
             services.AddDatabaseDeveloperPageExceptionFilter();
 
-            services.AddDefaultIdentity<IdentityUser>(options =>
+            services.AddDefaultIdentity<User>(options =>
             {
                 options.Password.RequireDigit = false;
                 options.Password.RequireLowercase = false;
                 options.Password.RequireUppercase = false;
                 options.Password.RequireNonAlphanumeric = false;
             })
+            .AddRoles<IdentityRole>()
             .AddEntityFrameworkStores<MyAutoPartsStoreDbContext>();
 
             services.AddControllersWithViews(options =>
@@ -49,7 +52,7 @@ namespace MyAutoPartsWebStore.Web
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             app.PrepareDatabase();
-            
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();

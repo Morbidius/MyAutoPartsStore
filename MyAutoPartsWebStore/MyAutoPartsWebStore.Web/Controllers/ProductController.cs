@@ -165,14 +165,14 @@
         {
             var userId = this.User.GetId();
 
-            if (!this.dealers.IsDealer(userId))
+            if (!this.dealers.IsDealer(userId) && !User.IsAdmin())
             {
                 return RedirectToAction(nameof(DealerController.BecomeDealer), "Dealer");
             }
 
             var product = this.products.Details(id);
 
-            if (product.UserId != this.User.GetId())
+            if (product.UserId != this.User.GetId() && !User.IsAdmin())
             {
                 return Unauthorized();
             }
@@ -198,7 +198,7 @@
 
             var userId = this.User.GetId();
 
-            if (!this.dealers.IsDealer(userId))
+            if (!this.dealers.IsDealer(userId) && !User.IsAdmin())
             {
                 return RedirectToAction(nameof(DealerController.BecomeDealer), "Dealer");
             }
@@ -215,7 +215,7 @@
                 return View(product);
             };
 
-            if (!this.products.isByDealer(id, dealerId))
+            if (!this.products.isByDealer(id, dealerId) && !User.IsAdmin())
             {
                 return Unauthorized();
             }
@@ -229,6 +229,11 @@
                 product.Weight,
                 product.ImageUrl,
                 product.CategoryId);
+
+            if (User.IsAdmin())
+            {
+                return RedirectToAction("Index", "Home");
+            }
 
             return RedirectToAction("MyProducts");
         }

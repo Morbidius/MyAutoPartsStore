@@ -24,10 +24,10 @@
         [Authorize]
         public IActionResult BecomeDealer(BecomeDealerViewModel dealer)
         {
-            //if (UserIsDealerAlready())
-            //{
-            //    return BadRequest();
-            //}
+            if (UserIsDealerAlready())
+            {
+                return BadRequest();
+            }
 
             if (!ModelState.IsValid)
             {
