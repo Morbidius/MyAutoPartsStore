@@ -10,7 +10,7 @@
     using Microsoft.AspNetCore.Identity;
     using System.Threading.Tasks;
 
-    using static WebConstants;
+    using static MyAutoPartsWebStore.Web.Areas.Admin.AdminConstants;
 
     public static class ApplicationBuilderExtentions
     {

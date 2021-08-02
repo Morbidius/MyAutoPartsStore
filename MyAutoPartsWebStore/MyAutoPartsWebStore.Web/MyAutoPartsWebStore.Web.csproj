@@ -24,4 +24,8 @@
     <ProjectReference Include="..\MyAutoPartsStore.Data\MyAutoPartsStore.Data.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Areas\Admin\Models\" />
+  </ItemGroup>
+
 </Project>

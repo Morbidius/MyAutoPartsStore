@@ -2,6 +2,7 @@
 @using MyAutoPartsStore.Services.DealersServices
 @using MyAutoPartsWebStore.Web.Infrastructure
 @using MyAutoPartsStore.Data.Models
+@using static MyAutoPartsWebStore.Web.Areas.Admin.AdminConstants;
 
 @inject SignInManager<User> SignInManager
 @inject UserManager<User> UserManager
@@ -13,7 +14,7 @@
 
 		var userId = User.GetId();
 		var userIsDealer = Dealers.IsDealer(userId);
-		var userIsAdmin = User.IsInRole(WebConstants.AdministratorRoleName);
+		var userIsAdmin = User.IsInRole(AdministratorRoleName);
 
 
 		@if (userIsDealer)
