@@ -2,6 +2,7 @@
 {
     using MyAutoPartsStore.Data;
     using MyAutoPartsStore.Data.Models;
+    using MyAutoPartsStore.Models.ServiceModels.Products;
     using System.Collections.Generic;
     using System.Linq;
 
@@ -73,6 +74,7 @@
                      SizeCapacity = p.SizeCapacity,
                      Weight = p.Weight,
                      ImageUrl = p.ImageUrl,
+                     CategoryId = p.CategoryId,
                      Category = p.Category.Name,
                      DealerId = p.DealerId,
                      DealerName = p.Dealer.Name,

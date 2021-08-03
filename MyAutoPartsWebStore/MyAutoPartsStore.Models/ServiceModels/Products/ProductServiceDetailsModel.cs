@@ -1,4 +1,4 @@
-﻿namespace MyAutoPartsStore.Services.ProductServices
+﻿namespace MyAutoPartsStore.Models.ServiceModels.Products
 {
     public class ProductServiceDetailsModel : ProductServiceModel
     {

@@ -5,12 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="8.1.1" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\MyAutoPartsStore.Data\MyAutoPartsStore.Data.csproj" />
-    <ProjectReference Include="..\MyAutoPartsStore.Models\MyAutoPartsStore.Models.csproj" />
   </ItemGroup>
 
 </Project>

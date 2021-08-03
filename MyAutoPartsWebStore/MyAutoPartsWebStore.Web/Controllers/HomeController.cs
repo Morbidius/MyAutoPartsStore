@@ -1,5 +1,7 @@
 ﻿namespace MyAutoPartsWebStore.Web.Controllers
 {
+    using AutoMapper;
+    using AutoMapper.QueryableExtensions;
     using Microsoft.AspNetCore.Mvc;
     using MyAutoPartsStore.Data;
     using MyAutoPartsStore.Services.DealersServices;
@@ -15,12 +17,14 @@
         private readonly MyAutoPartsStoreDbContext data;
         private readonly IProductService products;
         private readonly IDealerService dealers;
+        private readonly IMapper mapper;
 
-        public HomeController(MyAutoPartsStoreDbContext data, IProductService products, IDealerService dealers)
+        public HomeController(MyAutoPartsStoreDbContext data, IProductService products, IDealerService dealers, IMapper mapper)
         {
             this.data = data;
             this.products = products;
             this.dealers = dealers;
+            this.mapper = mapper;
         }
 
         public IActionResult Index(string category, string SearchTerm = null, string sortingType = null)
@@ -32,16 +36,8 @@
                 var products = data.Products.Where(p =>
                     p.Name.ToLower().Contains(SearchTerm.Trim().ToLower()))
                     .OrderByDescending(p => p.Name)
-                    .Select(p => new ProductListingViewModel
-                    {
-                        Id = p.Id,
-                        Name = p.Name,
-                        Price = p.Price,
-                        Weight = p.Weight,
-                        SizeCapacity = p.SizeCapacity,
-                        ImageUrl = p.ImageUrl,
-                        Category = p.Category.Name
-                    }).ToList();
+                    .ProjectTo<ProductListingViewModel>(this.mapper.ConfigurationProvider)
+                    .ToList();
 
                 if (!string.IsNullOrEmpty(sortingType))
                 {

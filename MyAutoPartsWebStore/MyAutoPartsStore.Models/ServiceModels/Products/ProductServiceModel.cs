@@ -1,7 +1,6 @@
-﻿namespace MyAutoPartsStore.Services.ProductServices
+﻿namespace MyAutoPartsStore.Models.ServiceModels.Products
 {
     using MyAutoPartsWebStore.Web.Base;
-    using System.Collections.Generic;
 
     public class ProductServiceModel : BaseCategoryModel
     {

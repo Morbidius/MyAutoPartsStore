@@ -1,6 +1,7 @@
 ﻿namespace MyAutoPartsStore.Services.ProductServices
 {
     using System.Collections.Generic;
+    using MyAutoPartsStore.Models.ServiceModels.Products;
 
     public interface IProductService
     {

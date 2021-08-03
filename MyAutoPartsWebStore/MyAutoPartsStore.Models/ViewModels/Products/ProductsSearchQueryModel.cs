@@ -2,7 +2,7 @@
 {
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
-    using MyAutoPartsStore.Services.ProductServices;
+    using MyAutoPartsStore.Models.ServiceModels.Products;
 
     public class ProductsSearchQueryModel
     {

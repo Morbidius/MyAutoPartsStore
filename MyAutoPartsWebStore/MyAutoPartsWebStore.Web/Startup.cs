@@ -32,13 +32,18 @@ namespace MyAutoPartsWebStore.Web
 
             services.AddDefaultIdentity<User>(options =>
             {
+                options.SignIn.RequireConfirmedAccount = false;
                 options.Password.RequireDigit = false;
                 options.Password.RequireLowercase = false;
-                options.Password.RequireUppercase = false;
                 options.Password.RequireNonAlphanumeric = false;
+                options.Password.RequireUppercase = false;
+                options.Password.RequiredLength = 6;
+                options.User.RequireUniqueEmail = true;
             })
             .AddRoles<IdentityRole>()
             .AddEntityFrameworkStores<MyAutoPartsStoreDbContext>();
+
+            services.AddAutoMapper();
 
             services.AddControllersWithViews(options =>
             {
@@ -72,10 +77,7 @@ namespace MyAutoPartsWebStore.Web
                 .UseAuthorization()
                 .UseEndpoints(endpoints =>
                 {
-                    endpoints.MapControllerRoute(
-                        name: "Areas",
-                        pattern: "/{area:exists}/{controller=Home}/{action=Index}/{id?}");
-
+                    endpoints.MapDefaultAreaRoute();
                     endpoints.MapDefaultControllerRoute();
                     endpoints.MapRazorPages();
                 });

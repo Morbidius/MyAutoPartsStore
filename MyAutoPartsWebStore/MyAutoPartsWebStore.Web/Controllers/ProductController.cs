@@ -2,10 +2,10 @@
 {
     using System.Collections.Generic;
     using System.Linq;
+    using AutoMapper;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
     using MyAutoPartsStore.Data;
-    using MyAutoPartsStore.Data.Models;
     using MyAutoPartsStore.Services.DealersServices;
     using MyAutoPartsStore.Services.ProductServices;
     using MyAutoPartsWebStore.Web.Infrastructure;
@@ -17,12 +17,15 @@
         private readonly IProductService products;
         private readonly IDealerService dealers;
         private readonly MyAutoPartsStoreDbContext data;
+        private readonly IMapper mapper;
 
-        public ProductController(MyAutoPartsStoreDbContext data, IProductService products, IDealerService dealers)
+        public ProductController(MyAutoPartsStoreDbContext data,
+            IProductService products, IDealerService dealers, IMapper mapper)
         {
             this.data = data;
             this.products = products;
             this.dealers = dealers;
+            this.mapper = mapper;
         }
 
         [Authorize]
@@ -177,17 +180,10 @@
                 return Unauthorized();
             }
 
-            return View(new ProductFormModel()
-            {
-                Name = product.Name,
-                Description = product.Description,
-                Price = product.Price,
-                SizeCapacity = product.SizeCapacity,
-                Weight = product.Weight,
-                ImageUrl = product.ImageUrl,
-                CategoryId = product.CategoryId,
-                Categories = this.products.AllCategories()
-            });
+            var productForm = this.mapper.Map<ProductFormModel>(product);
+            productForm.Categories = this.products.AllCategories();
+
+            return View(productForm);
         }
 
         [HttpPost]

@@ -1,7 +1,7 @@
 ﻿namespace MyAutoPartsWebStore.Web.Models.Products
 {
     using MyAutoPartsStore.Data;
-    using MyAutoPartsStore.Services.ProductServices;
+    using MyAutoPartsStore.Models.ServiceModels.Products;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
 
