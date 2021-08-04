@@ -113,7 +113,16 @@
             this.data.Remove(product);
             this.data.SaveChanges();
 
-            return RedirectToAction("Index", "Home");
+            var userId = this.User.GetId();
+
+            if (!this.dealers.IsDealer(userId))
+            {
+                return RedirectToAction("Index", "Home");
+            }
+            else
+            {
+                return RedirectToAction("MyProducts", "Product");
+            }
         }
 
         public IActionResult Description(int? id = null)

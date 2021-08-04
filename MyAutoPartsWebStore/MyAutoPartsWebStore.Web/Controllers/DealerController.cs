@@ -4,17 +4,19 @@
     using Microsoft.AspNetCore.Mvc;
     using MyAutoPartsStore.Data;
     using MyAutoPartsStore.Data.Models;
+    using MyAutoPartsStore.Services.DealersServices;
     using MyAutoPartsWebStore.Web.Infrastructure;
     using MyAutoPartsWebStore.Web.Models.Dealers;
-    using System.Linq;
 
     public class DealerController : Controller
     {
         private readonly MyAutoPartsStoreDbContext data;
+        private readonly IDealerService dealerService;
 
-        public DealerController(MyAutoPartsStoreDbContext data)
+        public DealerController(MyAutoPartsStoreDbContext data, IDealerService dealerService)
         {
             this.data = data;
+            this.dealerService = dealerService;
         }
 
 
@@ -24,17 +26,17 @@
         [Authorize]
         public IActionResult BecomeDealer(BecomeDealerViewModel dealer)
         {
-            if (UserIsDealerAlready())
+            var userId = this.User.GetId();
+
+            if (this.dealerService.IsDealer(userId))
             {
-                return BadRequest();
+                return RedirectToAction("MyProducts");
             }
 
             if (!ModelState.IsValid)
             {
                 return View(dealer);
             }
-
-            var userId = this.User.GetId();
 
             var dealerData = new Dealer
             {
@@ -48,17 +50,6 @@
             this.data.SaveChanges();
 
             return RedirectToAction("Index", "Home");
-        }
-
-        private bool UserIsDealerAlready()
-        {
-            var userId = this.User.GetId();
-
-            var userIsDealer = !this.data
-                .Dealers
-                .Any(d => d.UserId == userId);
-
-            return userIsDealer;
         }
     }
 }

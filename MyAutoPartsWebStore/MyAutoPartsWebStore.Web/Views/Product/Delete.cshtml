@@ -1,6 +1,8 @@
 ﻿@using MyAutoPartsWebStore.Web.Models.Products
 @model DeleteProductViewModel
 
+@inject IDealerService Dealers
+
 @{
 	ViewBag.Title = "Delete";
 }
@@ -13,7 +15,20 @@
 		<img class="delete-img" src="@Model.Image">
 		<form method="post" style="margin-top: 2em;">
 			<button type="submit" class="btn btn-danger">Yes</button>
-			<a class="btn btn-primary" asp-controller="Home" asp-action="Index">No</a>
+			@if (User.Identity.IsAuthenticated)
+			{
+				var userId = User.GetId();
+				var userIsDealer = Dealers.IsDealer(userId);
+
+				@if (userIsDealer)
+				{
+					<a class="btn btn-primary" asp-controller="Product" asp-action="MyProducts">No</a>
+				}
+			}
+			else
+			{
+				<a class="btn btn-primary" asp-area="" asp-controller="Home" asp-action="Index">No</a>
+			}
 		</form>
 	</div>
 </div>

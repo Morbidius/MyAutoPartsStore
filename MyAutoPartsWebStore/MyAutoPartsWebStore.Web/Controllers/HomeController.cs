@@ -4,7 +4,6 @@
     using AutoMapper.QueryableExtensions;
     using Microsoft.AspNetCore.Mvc;
     using MyAutoPartsStore.Data;
-    using MyAutoPartsStore.Services.DealersServices;
     using MyAutoPartsStore.Services.ProductServices;
     using MyAutoPartsWebStore.Web.Models;
     using MyAutoPartsWebStore.Web.Models.Products;
@@ -16,14 +15,14 @@
     {
         private readonly MyAutoPartsStoreDbContext data;
         private readonly IProductService products;
-        private readonly IDealerService dealers;
         private readonly IMapper mapper;
 
-        public HomeController(MyAutoPartsStoreDbContext data, IProductService products, IDealerService dealers, IMapper mapper)
+        public HomeController(
+            MyAutoPartsStoreDbContext data,
+            IProductService products,IMapper mapper)
         {
             this.data = data;
             this.products = products;
-            this.dealers = dealers;
             this.mapper = mapper;
         }
 
@@ -43,7 +42,6 @@
                 {
                     products = products.Where(x => x.Category == sortingType).ToList();
                 }
-
 
                 viewModel.SearchTerm = SearchTerm;
                 viewModel.Category = category;

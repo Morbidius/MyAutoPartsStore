@@ -24,5 +24,6 @@
             => this.data
                 .Dealers
                 .Any(d => d.UserId == userId);
+
     }
 }

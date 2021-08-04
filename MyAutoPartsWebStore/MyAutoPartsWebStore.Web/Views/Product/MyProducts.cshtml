@@ -20,7 +20,7 @@
 					<h5 class="card-title text-center">@product.Name</h5>
 					<h5 class="card-title text-center">Price - @Math.Round(product.Price, 2) leva</h5>
 					<h5 class="card-title text-center">Size and Capacity - @product.SizeCapacity</h5>
-					<h5 class="card-title text-center">Weight - @product.Weight kg (@Math.Round(product.Weight * 2.20462, 2)) lbs)</h5>
+					<h5 class="card-title text-center">Weight - @product.Weight kg (@Math.Round(product.Weight * 2.20462, 2) lbs)</h5>
 					<div class="card-body" style="place-content:center">
 						<a asp-controller="Product" asp-action="Description" asp-route-id="@product.Id" class="details-btn btn-primary">Details</a>
 						<a asp-controller="Product" asp-action="Edit" asp-route-id="@product.Id" class="btn alert-dark m-1">Edit</a>
