@@ -120,5 +120,14 @@
             => this.data
             .Categories
             .Any(c => c.Id == categoryId);
+
+        public ProductServiceDeleteModel GetProductName() 
+            => this.data
+            .Products
+            .Select(p => new ProductServiceDeleteModel
+            {
+                Id = p.Id,
+                Name = p.Name,
+            }).FirstOrDefault();
     }
 }

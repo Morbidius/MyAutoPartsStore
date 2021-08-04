@@ -27,6 +27,8 @@
 
         ProductServiceDetailsModel Details(int? id = null);
 
+        ProductServiceDeleteModel GetProductName();
+
         IEnumerable<ProductServiceModel> ProductByUser(string userId);
 
         bool isByDealer(int productId, int dealerId);

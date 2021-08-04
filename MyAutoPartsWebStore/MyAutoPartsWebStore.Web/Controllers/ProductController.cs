@@ -1,6 +1,5 @@
 ﻿namespace MyAutoPartsWebStore.Web.Controllers
 {
-    using System.Collections.Generic;
     using System.Linq;
     using AutoMapper;
     using Microsoft.AspNetCore.Authorization;
@@ -14,9 +13,9 @@
     [AutoValidateAntiforgeryToken]
     public class ProductController : Controller
     {
+        private readonly MyAutoPartsStoreDbContext data;
         private readonly IProductService products;
         private readonly IDealerService dealers;
-        private readonly MyAutoPartsStoreDbContext data;
         private readonly IMapper mapper;
 
         public ProductController(MyAutoPartsStoreDbContext data,
@@ -94,6 +93,7 @@
                 Name = productToDel.Name,
                 Image = productToDel.ImageUrl,
             };
+
             return View(viewModel);
         }
 
@@ -126,43 +126,7 @@
 
             return View(details);
         }
-
-        public IActionResult Search(string searchTerm)
-        {
-            var productQuery = this.data.Products.AsQueryable();
-
-            if (!string.IsNullOrWhiteSpace(searchTerm))
-            {
-                productQuery = productQuery.Where(p =>
-                p.Name.ToLower().Contains(searchTerm.ToLower()));
-            }
-
-            var products = productQuery
-                .OrderByDescending(p => p.Name)
-                .Select(p => new ProductListingViewModel
-                {
-                    Id = p.Id,
-                    Name = p.Name,
-                    Price = p.Price,
-                    SizeCapacity = p.SizeCapacity,
-                    Weight = p.Weight,
-                    ImageUrl = p.ImageUrl,
-                    Category = p.Category.Name
-                }).ToList();
-
-            var productCategories = this.data
-                .Products
-                .Select(c => c.Category.Name)
-                .Distinct()
-                .ToList();
-
-            return View(new ProductsSearchQueryModel
-            {
-                Products = products,
-                SearchTerm = searchTerm,
-            });
-        }
-
+        
         [Authorize]
         public IActionResult Edit(int id)
         {
@@ -241,14 +205,5 @@
 
             return View(products);
         }
-
-        private DeleteProductViewModel GetProductName()
-            => this.data
-            .Products
-            .Select(p => new DeleteProductViewModel
-            {
-                Id = p.Id,
-                Name = p.Name,
-            }).FirstOrDefault();
     }
 }

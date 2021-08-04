@@ -12,6 +12,7 @@
             {
                 mc.AddProfile(new ProductProfile());
                 mc.AddProfile(new HomeProfile());
+                mc.AddProfile(new CategoryProfile());
             });
 
             IMapper mapper = mapperConfig.CreateMapper();

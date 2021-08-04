@@ -1,6 +1,7 @@
 ﻿namespace MyAutoPartsStore.Services.AutoMapperProfiles
 {
     using AutoMapper;
+    using MyAutoPartsStore.Data.Models;
     using MyAutoPartsStore.Models.ServiceModels.Products;
     using MyAutoPartsWebStore.Web.Models.Products;
 
