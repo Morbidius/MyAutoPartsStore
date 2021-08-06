@@ -5,10 +5,8 @@
     using Microsoft.AspNetCore.Mvc;
     using MyAutoPartsStore.Data;
     using MyAutoPartsStore.Services.ProductServices;
-    using MyAutoPartsWebStore.Web.Models;
     using MyAutoPartsWebStore.Web.Models.Products;
     using System.Collections.Generic;
-    using System.Diagnostics;
     using System.Linq;
 
     public class HomeController : Controller
@@ -19,7 +17,7 @@
 
         public HomeController(
             MyAutoPartsStoreDbContext data,
-            IProductService products,IMapper mapper)
+            IProductService products, IMapper mapper)
         {
             this.data = data;
             this.products = products;
@@ -55,11 +53,13 @@
             return View(viewModel);
         }
 
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
-        {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
-        }
+        public IActionResult Error() => View();
+
+        //[ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
+        //public IActionResult Error()
+        //{
+        //    return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        //}
     }
 }
 
