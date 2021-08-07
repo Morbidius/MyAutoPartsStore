@@ -50,6 +50,7 @@
                 viewModel.Products = new List<ProductListingViewModel>();
             }
             viewModel.Categories = this.products.AllCategories();
+
             return View(viewModel);
         }
 

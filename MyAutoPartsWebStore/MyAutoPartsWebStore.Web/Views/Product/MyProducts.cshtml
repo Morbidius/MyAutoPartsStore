@@ -8,6 +8,7 @@
 @if (!Model.Any())
 {
 	<h2 class="text-center">No products found!</h2>
+	<a class="buy-btn btn-outline-dark" asp-area="" asp-controller="Product" asp-action="Add">Add Product</a>
 }
 
 <div class="row">
@@ -15,7 +16,7 @@
 	{
 		<div class="col-lg-3">
 			<div class="card mb-3">
-				<img class="product-img text-center" text-center" src="@product.ImageUrl" alt="@product.Name - @product.Price @product.Weight">
+				<img class="product-img text-center" src="@product.ImageUrl" alt="@product.Name - @product.Price @product.Weight">
 				<div class="card-body">
 					<h5 class="card-title text-center">@product.Name</h5>
 					<h5 class="card-title text-center">Price - @Math.Round(product.Price, 2) leva</h5>

@@ -35,7 +35,6 @@
             {
                 categories = this.data
                    .Products
-                   .Where(p => p.CategoryId == categoryId)
                    .OrderByDescending(p => p.Name)
                    .ProjectTo<ProductListingViewModel>(this.mapper)
                    .ToList();
@@ -45,6 +44,8 @@
 
                 this.cache.Set(CategoriesCacheKey, categories, cacheOptions);
             }
+
+            categories = categories.Where(c => c.CategoryId == categoryId).ToList();
 
             return View(categories);
         }
