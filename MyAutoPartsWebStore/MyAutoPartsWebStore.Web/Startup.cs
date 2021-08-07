@@ -45,6 +45,8 @@ namespace MyAutoPartsWebStore.Web
 
             services.AddAutoMapper();
 
+            services.AddMemoryCache();
+
             services.AddControllersWithViews(options =>
             {
                 options.Filters.Add<AutoValidateAntiforgeryTokenAttribute>();
