@@ -1,7 +1,6 @@
 ﻿namespace MyAutoPartsStore.Services.DealersServices
 {
     using MyAutoPartsStore.Data;
-    using System;
     using System.Linq;
 
     public class DealerService : IDealerService
@@ -24,6 +23,5 @@
             => this.data
                 .Dealers
                 .Any(d => d.UserId == userId);
-
     }
 }

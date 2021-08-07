@@ -10,6 +10,8 @@
     using System.Collections.Generic;
     using System.Linq;
 
+    using static WebConstants.Cache;
+
     public class CategoryController : Controller
     {
         private readonly MyAutoPartsStoreDbContext data;
@@ -27,8 +29,7 @@
         {
             if (categoryId == null || categoryId <= 0) return BadRequest();
 
-            const string categoriesCacheKey = "CategoriesCacheKey";
-            var categories = this.cache.Get<List<ProductListingViewModel>>(categoriesCacheKey);
+            var categories = this.cache.Get<List<ProductListingViewModel>>(CategoriesCacheKey);
 
             if (categories == null)
             {
@@ -42,7 +43,7 @@
                 var cacheOptions = new MemoryCacheEntryOptions()
                      .SetAbsoluteExpiration(TimeSpan.FromMinutes(360));
 
-                this.cache.Set(categoriesCacheKey, categories, cacheOptions);
+                this.cache.Set(CategoriesCacheKey, categories, cacheOptions);
             }
 
             return View(categories);

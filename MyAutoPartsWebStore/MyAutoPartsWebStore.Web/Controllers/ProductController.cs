@@ -10,6 +10,8 @@
     using MyAutoPartsWebStore.Web.Infrastructure;
     using MyAutoPartsWebStore.Web.Models.Products;
 
+    using static WebConstants;
+
     [AutoValidateAntiforgeryToken]
     public class ProductController : Controller
     {
@@ -76,6 +78,8 @@
                 product.CategoryId,
                 dealerId);
 
+            TempData[GlobalMessageKey] = "Product added successfully.";
+
             return RedirectToAction("Index", "Home");
         }
 
@@ -121,6 +125,8 @@
             }
             else
             {
+                TempData[GlobalMessageKey] = "Product deleted successfully.";
+
                 return RedirectToAction("MyProducts", "Product");
             }
         }
@@ -203,6 +209,8 @@
             {
                 return RedirectToAction("Index", "Home");
             }
+
+            TempData[GlobalMessageKey] = "Product edited successfully.";
 
             return RedirectToAction("MyProducts");
         }
