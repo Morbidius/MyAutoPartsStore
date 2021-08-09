@@ -5,6 +5,11 @@
 
     public interface IProductService
     {
+        ProductQueryServiceModel All(
+            string name = null,
+            string searchTerm = null,
+            bool isAllowed = true);
+
         int Create(
             string name,
             string description,

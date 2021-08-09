@@ -25,6 +25,8 @@
         [Required]
         public float Weight { get; set; }
 
+        public bool IsAllowed{ get; set; }
+
         public int CategoryId { get; set; }
 
         public Category Category { get; init; }

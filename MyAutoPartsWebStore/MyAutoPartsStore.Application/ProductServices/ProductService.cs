@@ -15,6 +15,33 @@
             this.data = data;
         }
 
+        public ProductQueryServiceModel All(string name = null, string searchTerm = null, bool isAllowed = true)
+        {
+            var productsQuery = this.data.Products
+                .Where(p => !isAllowed || p.IsAllowed);
+
+            if (!string.IsNullOrWhiteSpace(name))
+            {
+                productsQuery = productsQuery.Where(p => p.Name == name);
+            }
+
+            if (!string.IsNullOrWhiteSpace(searchTerm))
+            {
+                productsQuery = productsQuery
+                    .Where(p => p.Name.ToLower().Contains(searchTerm.Trim().ToLower()));
+            }
+
+            var totalProducts = productsQuery.Count();
+
+            var products = GetProducts(productsQuery);
+
+            return new ProductQueryServiceModel
+            {
+                TotalProducts = totalProducts,
+                Products = products,
+            };
+        }
+
         public int Create(
             string name, string description, decimal price, string sizeCapacity,
             float weight, string imageUrl, int categoryId, int dealerId)
@@ -29,6 +56,7 @@
                 ImageUrl = imageUrl,
                 CategoryId = categoryId,
                 DealerId = dealerId,
+                IsAllowed = false,
             };
 
             this.data.Products.Add(newProduct);
@@ -55,6 +83,7 @@
             productData.Weight = weight;
             productData.ImageUrl = imageUrl;
             productData.CategoryId = categoryId;
+            productData.IsAllowed = false;
 
             this.data.SaveChanges();
 

@@ -80,6 +80,12 @@ namespace MyAutoPartsWebStore.Web
                 .UseEndpoints(endpoints =>
                 {
                     endpoints.MapDefaultAreaRoute();
+
+                    //endpoints.MapControllerRoute(
+                    //    name: "Details",
+                    //    pattern: "/Product/Description/{id}/{information}",
+                    //    defaults: new { controller = "Product", acttion = "Description" });
+
                     endpoints.MapDefaultControllerRoute();
                     endpoints.MapRazorPages();
                 });
