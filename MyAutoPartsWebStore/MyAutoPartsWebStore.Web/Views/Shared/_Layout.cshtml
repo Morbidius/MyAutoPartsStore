@@ -1,5 +1,4 @@
 ﻿@using MyAutoPartsStore.Services.DealersServices
-@using MyAutoPartsWebStore.Web.Infrastructure
 
 @inject IDealerService Dealers
 
@@ -38,7 +37,7 @@
 									<a class="nav-link text-light" asp-area="" asp-controller="Product" asp-action="Add">Add Product</a>
 								}
 							}
-							else
+							else if(User.IsAdmin())
 							{
 								<a class="nav-link text-light" asp-area="Admin" asp-controller="Product" asp-action="All">Admin Panel</a>
 							}

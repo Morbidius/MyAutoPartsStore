@@ -10,7 +10,7 @@
         public ProductProfile()
         {
             this.CreateMap<ProductServiceDetailsModel, ProductFormModel>();
-            this.CreateMap<Category, ProductServiceCategoryModel>();
+            this.CreateMap<Product, ProductServiceQueryModel>();
 
             this.CreateMap<Product, ProductServiceModel>()
                 .ForMember(p => p.Category, cfg => cfg.MapFrom(p => p.Category.Name));

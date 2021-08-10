@@ -1,40 +1,31 @@
 ﻿namespace MyAutoPartsWebStore.Web.Controllers
 {
-    using AutoMapper;
-    using AutoMapper.QueryableExtensions;
     using Microsoft.AspNetCore.Mvc;
-    using MyAutoPartsStore.Data;
+    using MyAutoPartsStore.Models.ServiceModels.Products;
     using MyAutoPartsStore.Services.ProductServices;
+    using MyAutoPartsStore.Services.CategoryServices;
     using MyAutoPartsWebStore.Web.Models.Products;
     using System.Collections.Generic;
     using System.Linq;
 
     public class HomeController : Controller
     {
-        private readonly MyAutoPartsStoreDbContext data;
         private readonly IProductService products;
-        private readonly IMapper mapper;
+        private readonly ICategoryService category;
 
-        public HomeController(
-            MyAutoPartsStoreDbContext data,
-            IProductService products, IMapper mapper)
+        public HomeController(IProductService products, ICategoryService category)
         {
-            this.data = data;
             this.products = products;
-            this.mapper = mapper;
+            this.category = category;
         }
 
-        public IActionResult Index(string category, string SearchTerm = null, string sortingType = null)
+        public IActionResult Index(string categoryInput, string SearchTerm = null, string sortingType = null)
         {
             var viewModel = new ProductsSearchQueryModel();
 
             if (!string.IsNullOrEmpty(SearchTerm))
             {
-                var products = data.Products.Where(p =>
-                    p.Name.ToLower().Contains(SearchTerm.Trim().ToLower()))
-                    .OrderByDescending(p => p.Name)
-                    .ProjectTo<ProductListingViewModel>(this.mapper.ConfigurationProvider)
-                    .ToList();
+                var products = this.products.ProductSearch<ProductServiceModel>(SearchTerm);
 
                 if (!string.IsNullOrEmpty(sortingType))
                 {
@@ -42,15 +33,15 @@
                 }
 
                 viewModel.SearchTerm = SearchTerm;
-                viewModel.Category = category;
-                viewModel.Products = products.Where(p => p.IsAllowed == true);
+                viewModel.Category = categoryInput;
+                viewModel.Products = products.Where(p => p.IsAllowed);
             }
             else
             {
-                viewModel.Products = new List<ProductListingViewModel>();
+                viewModel.Products = new List<ProductServiceModel>();
             }
 
-            viewModel.Categories = this.products.AllCategories();
+            viewModel.Categories = this.category.AllCategories();
 
             return View(viewModel);
         }

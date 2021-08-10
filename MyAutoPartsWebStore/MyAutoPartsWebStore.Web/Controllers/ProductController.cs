@@ -5,6 +5,7 @@
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
     using MyAutoPartsStore.Data;
+    using MyAutoPartsStore.Services.CategoryServices;
     using MyAutoPartsStore.Services.DealersServices;
     using MyAutoPartsStore.Services.ProductServices;
     using MyAutoPartsWebStore.Web.Infrastructure.Extentions;
@@ -17,14 +18,16 @@
     {
         private readonly MyAutoPartsStoreDbContext data;
         private readonly IProductService products;
+        private readonly ICategoryService category;
         private readonly IDealerService dealers;
         private readonly IMapper mapper;
 
         public ProductController(MyAutoPartsStoreDbContext data,
-            IProductService products, IDealerService dealers, IMapper mapper)
+            IProductService products, ICategoryService category, IDealerService dealers, IMapper mapper)
         {
             this.data = data;
             this.products = products;
+            this.category = category;
             this.dealers = dealers;
             this.mapper = mapper;
         }
@@ -39,7 +42,7 @@
 
             return View(new ProductFormModel()
             {
-                Categories = this.products.AllCategories()
+                Categories = this.category.AllCategories()
             });
         }
 
@@ -56,14 +59,14 @@
                 return RedirectToAction(nameof(DealerController.BecomeDealer), "Dealer");
             }
 
-            if (!this.products.CategoryЕxists(product.CategoryId))
+            if (!this.category.CategoryЕxists(product.CategoryId))
             {
                 this.ModelState.AddModelError(nameof(product.CategoryId), "Category does not exist.");
             }
 
             if (!ModelState.IsValid)
             {
-                product.Categories = this.products.AllCategories();
+                product.Categories = this.category.AllCategories();
 
                 return View(product);
             };
@@ -160,7 +163,7 @@
             }
 
             var productForm = this.mapper.Map<ProductFormModel>(product);
-            productForm.Categories = this.products.AllCategories();
+            productForm.Categories = this.category.AllCategories();
 
             return View(productForm);
         }
@@ -178,14 +181,14 @@
                 return RedirectToAction(nameof(DealerController.BecomeDealer), "Dealer");
             }
 
-            if (!this.products.CategoryЕxists(product.CategoryId))
+            if (!this.category.CategoryЕxists(product.CategoryId))
             {
                 this.ModelState.AddModelError(nameof(product.CategoryId), "Category does not exist.");
             }
 
             if (!ModelState.IsValid)
             {
-                product.Categories = this.products.AllCategories();
+                product.Categories = this.category.AllCategories();
 
                 return View(product);
             };

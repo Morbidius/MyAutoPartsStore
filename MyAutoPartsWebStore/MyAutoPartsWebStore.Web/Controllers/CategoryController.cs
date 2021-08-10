@@ -1,9 +1,9 @@
 ﻿namespace MyAutoPartsWebStore.Web.Controllers
 {
-    using AutoMapper;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.Extensions.Caching.Memory;
     using MyAutoPartsStore.Models.ServiceModels.Products;
+    using MyAutoPartsStore.Services.CategoryServices;
     using MyAutoPartsStore.Services.ProductServices;
     using System;
     using System.Collections.Generic;
@@ -13,14 +13,14 @@
 
     public class CategoryController : Controller
     {
-        private readonly IProductService product;
-        private readonly IConfigurationProvider mapper;
         private readonly IMemoryCache cache;
+        private readonly ICategoryService category;
+        private readonly IProductService product;
 
-        public CategoryController(IProductService product, IMapper mapper, IMemoryCache cache)
+        public CategoryController(IMemoryCache cache, ICategoryService category, IProductService product)
         {
+            this.category = category;
             this.product = product;
-            this.mapper = mapper.ConfigurationProvider;
             this.cache = cache;
         }
 
@@ -32,16 +32,16 @@
 
             if (categories == null)
             {
-                categories = this.product.GetCategory();
+                categories = this.category.GetCategory();
 
                 var cacheOptions = new MemoryCacheEntryOptions()
                      .SetAbsoluteExpiration(TimeSpan.FromMinutes(360));
 
                 this.cache.Set(CategoriesCacheKey, categories, cacheOptions);
             }
-            else if (categories.Count != categories.Where(x => x.IsAllowed).Count())
+            else if (this.product.GetAprovedProductsCount() != categories.Where(x => x.IsAllowed == true).Count())
             {
-                categories = this.product.GetCategory();
+                categories = this.category.GetCategory();
 
                 var cacheOptions = new MemoryCacheEntryOptions()
                      .SetAbsoluteExpiration(TimeSpan.FromMinutes(360));

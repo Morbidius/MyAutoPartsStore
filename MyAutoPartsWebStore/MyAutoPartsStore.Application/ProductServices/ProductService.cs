@@ -4,6 +4,7 @@
     using AutoMapper.QueryableExtensions;
     using MyAutoPartsStore.Data;
     using MyAutoPartsStore.Data.Models;
+    using MyAutoPartsStore.Models.BaseModels;
     using MyAutoPartsStore.Models.ServiceModels.Products;
     using System.Collections.Generic;
     using System.Linq;
@@ -11,15 +12,15 @@
     public class ProductService : IProductService
     {
         private readonly MyAutoPartsStoreDbContext data;
-        private readonly IConfigurationProvider mapper;
+        private readonly IMapper mapper;
 
         public ProductService(MyAutoPartsStoreDbContext data, IMapper mapper)
         {
             this.data = data;
-            this.mapper = mapper.ConfigurationProvider;
+            this.mapper = mapper;
         }
 
-        public ProductQueryServiceModel All(string name = null, string searchTerm = null, bool isAllowed = true)
+        public ProductServiceQueryModel All(string name = null, string searchTerm = null, bool isAllowed = true)
         {
             var productsQuery = this.data.Products
                 .Where(p => !isAllowed || p.IsAllowed);
@@ -39,7 +40,7 @@
 
             var products = GetProducts(productsQuery);
 
-            return new ProductQueryServiceModel
+            return new ProductServiceQueryModel
             {
                 TotalProducts = totalProducts,
                 Products = products,
@@ -116,7 +117,15 @@
 
         private IEnumerable<ProductServiceModel> GetProducts(IQueryable<Product> productQuery)
            => productQuery
-            .ProjectTo<ProductServiceModel>(this.mapper)
+            .ProjectTo<ProductServiceModel>(this.mapper.ConfigurationProvider)
+            .ToList();
+
+        public IEnumerable<TModel> ProductSearch<TModel>(string SearchTerm)
+            where TModel : INameModel
+            => this.data.Products
+            .Where(p => p.Name.ToLower().Contains(SearchTerm.Trim().ToLower()))
+            .OrderByDescending(p => p.Name)
+            .ProjectTo<TModel>(this.mapper.ConfigurationProvider)
             .ToList();
 
         public bool isByDealer(int productId, int dealerId)
@@ -129,25 +138,6 @@
             .Products
             .Where(p => p.Dealer.UserId == userId));
 
-        public IEnumerable<ProductServiceCategoryModel> AllCategories()
-            => this.data
-            .Categories
-            .ProjectTo<ProductServiceCategoryModel>(this.mapper)
-            .ToList();
-
-        public IList<ProductServiceModel> GetCategory()
-            => this.data
-                   .Products
-                   .Where(p => p.IsAllowed == true)
-                   .OrderByDescending(p => p.Name)
-                   .ProjectTo<ProductServiceModel>(this.mapper)
-                   .ToList();
-
-        public bool CategoryЕxists(int categoryId)
-            => this.data
-            .Categories
-            .Any(c => c.Id == categoryId);
-
         public ProductServiceDeleteModel GetProductName()
             => this.data
             .Products
@@ -156,6 +146,8 @@
                 Id = p.Id,
                 Name = p.Name,
             }).FirstOrDefault();
+        public int GetAprovedProductsCount()
+            => this.data.Products.Count(x => x.IsAllowed);
 
         public void Approve(int id)
         {

@@ -4,6 +4,7 @@
     using Microsoft.Extensions.DependencyInjection;
     using MyAutoPartsStore.Services;
     using MyAutoPartsStore.Services.AutoMapperProfiles;
+    using MyAutoPartsStore.Services.CategoryServices;
     using MyAutoPartsStore.Services.ProductServices;
 
     public static class ServiceBuilderExtentions
@@ -26,6 +27,8 @@
             services.AddSingleton<Guard>();
 
             services.AddTransient<IProductService, ProductService>();
+
+            services.AddTransient<ICategoryService, CategoryService>();
         }
     }
 }

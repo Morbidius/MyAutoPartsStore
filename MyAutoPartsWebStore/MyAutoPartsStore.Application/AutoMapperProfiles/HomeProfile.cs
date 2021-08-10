@@ -2,13 +2,13 @@
 {
     using AutoMapper;
     using MyAutoPartsStore.Data.Models;
-    using MyAutoPartsWebStore.Web.Models.Products;
+    using MyAutoPartsStore.Models.ServiceModels.Products;
 
     public class HomeProfile : Profile
     {
         public HomeProfile()
         {
-            this.CreateMap<Product, ProductListingViewModel>()
+            this.CreateMap<Product, ProductServiceModel>()
                 .ForMember(p => p.Category, cfg => cfg.MapFrom(p => p.Category.Name));
         }
     }

@@ -13,7 +13,7 @@
 
         public string Category { get; set; }
 
-        public IEnumerable<ProductListingViewModel> Products { get; set; }
+        public IEnumerable<ProductServiceModel> Products { get; set; }
 
         public IEnumerable<ProductServiceCategoryModel> Categories { get; set; }
     }

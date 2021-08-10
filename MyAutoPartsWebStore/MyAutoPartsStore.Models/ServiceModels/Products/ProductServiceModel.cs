@@ -1,12 +1,13 @@
 ﻿namespace MyAutoPartsStore.Models.ServiceModels.Products
 {
+    using MyAutoPartsStore.Models.BaseModels;
     using MyAutoPartsWebStore.Web.Base;
 
-    public class ProductServiceModel : BaseCategoryModel
+    public class ProductServiceModel : BaseCategoryModel, INameModel
     {
         public int Id { get; init; }
 
-        public string Name { get; init; }
+        public string Name { get; set; }
 
         public string Description { get; init; }
 

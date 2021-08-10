@@ -1,11 +1,12 @@
 ﻿namespace MyAutoPartsStore.Services.ProductServices
 {
     using System.Collections.Generic;
+    using MyAutoPartsStore.Models.BaseModels;
     using MyAutoPartsStore.Models.ServiceModels.Products;
 
     public interface IProductService
     {
-        ProductQueryServiceModel All(
+        ProductServiceQueryModel All(
             string name = null,
             string searchTerm = null,
             bool isAllowed = true);
@@ -36,13 +37,12 @@
 
         IEnumerable<ProductServiceModel> ProductByUser(string userId);
 
-        IEnumerable<ProductServiceCategoryModel> AllCategories();
-
-        IList<ProductServiceModel> GetCategory();
+        IEnumerable<TModel> ProductSearch<TModel>(string SearchTerm)
+            where TModel : INameModel;
 
         bool isByDealer(int productId, int dealerId);
 
-        bool CategoryЕxists(int categoryId);
+        int GetAprovedProductsCount();
 
         void Approve(int id);
     }
