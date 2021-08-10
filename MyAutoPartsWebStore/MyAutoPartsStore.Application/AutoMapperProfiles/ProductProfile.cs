@@ -10,6 +10,10 @@
         public ProductProfile()
         {
             this.CreateMap<ProductServiceDetailsModel, ProductFormModel>();
+            this.CreateMap<Category, ProductServiceCategoryModel>();
+
+            this.CreateMap<Product, ProductServiceModel>()
+                .ForMember(p => p.Category, cfg => cfg.MapFrom(p => p.Category.Name));
         }
 
         //context.Products.Include(x => x.Category).Where(x => x.Id == givenidhere)

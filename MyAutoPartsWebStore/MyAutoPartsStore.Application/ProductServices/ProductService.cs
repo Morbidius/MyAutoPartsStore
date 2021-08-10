@@ -1,5 +1,7 @@
 ﻿namespace MyAutoPartsStore.Services.ProductServices
 {
+    using AutoMapper;
+    using AutoMapper.QueryableExtensions;
     using MyAutoPartsStore.Data;
     using MyAutoPartsStore.Data.Models;
     using MyAutoPartsStore.Models.ServiceModels.Products;
@@ -9,10 +11,12 @@
     public class ProductService : IProductService
     {
         private readonly MyAutoPartsStoreDbContext data;
+        private readonly IConfigurationProvider mapper;
 
-        public ProductService(MyAutoPartsStoreDbContext data)
+        public ProductService(MyAutoPartsStoreDbContext data, IMapper mapper)
         {
             this.data = data;
+            this.mapper = mapper.ConfigurationProvider;
         }
 
         public ProductQueryServiceModel All(string name = null, string searchTerm = null, bool isAllowed = true)
@@ -110,20 +114,10 @@
                      UserId = p.Dealer.UserId,
                  }).FirstOrDefault();
 
-        private static IEnumerable<ProductServiceModel> GetProducts(IQueryable<Product> productQuery)
+        private IEnumerable<ProductServiceModel> GetProducts(IQueryable<Product> productQuery)
            => productQuery
-           .Select(p => new ProductServiceModel
-           {
-               Id = p.Id,
-               Name = p.Name,
-               Description = p.Description,
-               Price = p.Price,
-               SizeCapacity = p.SizeCapacity,
-               Weight = p.Weight,
-               ImageUrl = p.ImageUrl,
-               Category = p.Category.Name,
-               DealerId = p.DealerId,
-           });
+            .ProjectTo<ProductServiceModel>(this.mapper)
+            .ToList();
 
         public bool isByDealer(int productId, int dealerId)
             => this.data
@@ -138,11 +132,7 @@
         public IEnumerable<ProductServiceCategoryModel> AllCategories()
             => this.data
             .Categories
-            .Select(p => new ProductServiceCategoryModel
-            {
-                Id = p.Id,
-                Name = p.Name,
-            })
+            .ProjectTo<ProductServiceCategoryModel>(this.mapper)
             .ToList();
 
         public bool CategoryЕxists(int categoryId)
@@ -150,7 +140,7 @@
             .Categories
             .Any(c => c.Id == categoryId);
 
-        public ProductServiceDeleteModel GetProductName() 
+        public ProductServiceDeleteModel GetProductName()
             => this.data
             .Products
             .Select(p => new ProductServiceDeleteModel
@@ -158,5 +148,14 @@
                 Id = p.Id,
                 Name = p.Name,
             }).FirstOrDefault();
+
+        public void Approve(int id)
+        {
+            var product = this.data.Products.Find(id);
+
+            product.IsAllowed = !product.IsAllowed;
+
+            this.data.SaveChanges();
+        }
     }
 }

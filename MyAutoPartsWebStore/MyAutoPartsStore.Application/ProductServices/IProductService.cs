@@ -36,10 +36,12 @@
 
         IEnumerable<ProductServiceModel> ProductByUser(string userId);
 
+        IEnumerable<ProductServiceCategoryModel> AllCategories();
+
         bool isByDealer(int productId, int dealerId);
 
         bool CategoryЕxists(int categoryId);
 
-        IEnumerable<ProductServiceCategoryModel> AllCategories();
+        void Approve(int id);
     }
 }

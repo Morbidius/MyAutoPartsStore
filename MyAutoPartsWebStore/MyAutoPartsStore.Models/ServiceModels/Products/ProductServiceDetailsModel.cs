@@ -2,7 +2,7 @@
 {
     public class ProductServiceDetailsModel : ProductServiceModel
     {
-        public int CategoryId { get; init; }
+        public new int CategoryId { get; init; }
 
         public string DealerName { get; init; }
 

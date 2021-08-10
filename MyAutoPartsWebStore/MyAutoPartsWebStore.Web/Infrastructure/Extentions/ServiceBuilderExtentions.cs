@@ -1,8 +1,10 @@
-﻿namespace MyAutoPartsWebStore.Web.Infrastructure
+﻿namespace MyAutoPartsWebStore.Web.Infrastructure.Extentions
 {
     using AutoMapper;
     using Microsoft.Extensions.DependencyInjection;
+    using MyAutoPartsStore.Services;
     using MyAutoPartsStore.Services.AutoMapperProfiles;
+    using MyAutoPartsStore.Services.ProductServices;
 
     public static class ServiceBuilderExtentions
     {
@@ -17,6 +19,13 @@
 
             IMapper mapper = mapperConfig.CreateMapper();
             services.AddSingleton(mapper);
+        }
+
+        public static void AddCustomServices(this IServiceCollection services)
+        {
+            services.AddSingleton<Guard>();
+
+            services.AddTransient<IProductService, ProductService>();
         }
     }
 }

@@ -7,7 +7,7 @@
     using MyAutoPartsStore.Data;
     using MyAutoPartsStore.Services.DealersServices;
     using MyAutoPartsStore.Services.ProductServices;
-    using MyAutoPartsWebStore.Web.Infrastructure;
+    using MyAutoPartsWebStore.Web.Infrastructure.Extentions;
     using MyAutoPartsWebStore.Web.Models.Products;
 
     using static WebConstants;
@@ -207,6 +207,8 @@
 
             if (User.IsAdmin())
             {
+                TempData[GlobalMessageKey] = "Product edited successfully.";
+
                 return RedirectToAction("Index", "Home");
             }
 

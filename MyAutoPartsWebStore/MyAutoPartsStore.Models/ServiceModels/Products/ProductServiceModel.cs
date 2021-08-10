@@ -4,7 +4,7 @@
 
     public class ProductServiceModel : BaseCategoryModel
     {
-        public int Id { get; set; }
+        public int Id { get; init; }
 
         public string Name { get; init; }
 
@@ -16,10 +16,10 @@
 
         public float Weight { get; init; }
 
-        public string ImageUrl { get; set; }
+        public string ImageUrl { get; init; }
 
-        public int DealerId { get; set; }
+        public int DealerId { get; init; }
 
-        public bool IsAllowed { get; set; }
+        public bool IsAllowed { get; init; }
     }
 }

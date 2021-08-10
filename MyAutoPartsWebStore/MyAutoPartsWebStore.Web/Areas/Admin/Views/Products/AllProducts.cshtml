@@ -29,7 +29,7 @@
 				<td scope="col">
 					<a asp-area="" asp-controller="Product" asp-action="Delete" asp-route-id="@product.Id" class="btn btn-danger float-right ml-3">Delete</a>
 					<a asp-area="" asp-controller="Product" asp-action="Edit" asp-route-id="@product.Id" class="btn btn-warning float-right ml-3">Edit</a>
-					<a asp-area="Admin" asp-controller="Product" asp-action="ChangeVisibility" asp-route-id="@product.Id" class="btn btn-info float-right ml-3">@(product.IsAllowed ? "Hide" : "Show")</a>
+					<a asp-area="Admin" asp-controller="Products" asp-action="Approve" asp-route-id="@product.Id" class="btn btn-info float-right ml-3">@(product.IsAllowed ? "Disapprove" : "Approve")</a>
 					<a asp-area="" asp-controller="Product" asp-action="Description" asp-route-id="@product.Id" asp-route-information="@product.Description" class="btn btn-primary float-right ml-3">Details</a>
 				</td>
 			</tr>

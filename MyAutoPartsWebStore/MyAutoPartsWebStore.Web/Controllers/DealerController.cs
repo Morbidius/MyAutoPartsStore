@@ -5,7 +5,7 @@
     using MyAutoPartsStore.Data;
     using MyAutoPartsStore.Data.Models;
     using MyAutoPartsStore.Services.DealersServices;
-    using MyAutoPartsWebStore.Web.Infrastructure;
+    using MyAutoPartsWebStore.Web.Infrastructure.Extentions;
     using MyAutoPartsWebStore.Web.Models.Dealers;
 
     public class DealerController : Controller

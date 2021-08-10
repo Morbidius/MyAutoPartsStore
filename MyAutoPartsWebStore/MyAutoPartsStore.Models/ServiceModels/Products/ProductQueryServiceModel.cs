@@ -4,7 +4,7 @@
 
     public class ProductQueryServiceModel
     {
-        public int TotalProducts { get; set; }
+        public int TotalProducts { get; init; }
 
         public IEnumerable<ProductServiceModel> Products { get; init; }
     }

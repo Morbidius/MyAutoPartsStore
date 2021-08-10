@@ -18,5 +18,12 @@
 
             return View(products);
         }
+
+        public IActionResult Approve(int id)
+        {
+            this.products.Approve(id);
+
+            return RedirectToAction(nameof(AllProducts));
+        }
     }
 }

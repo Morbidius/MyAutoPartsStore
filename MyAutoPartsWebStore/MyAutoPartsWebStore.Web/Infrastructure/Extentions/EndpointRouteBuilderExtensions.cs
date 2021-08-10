@@ -1,4 +1,4 @@
-﻿namespace MyAutoPartsWebStore.Web.Infrastructure
+﻿namespace MyAutoPartsWebStore.Web.Infrastructure.Extentions
 {
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Routing;

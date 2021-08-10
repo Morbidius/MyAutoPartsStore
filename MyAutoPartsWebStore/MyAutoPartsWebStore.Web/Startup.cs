@@ -12,7 +12,7 @@ namespace MyAutoPartsWebStore.Web
     using MyAutoPartsStore.Data.Models;
     using MyAutoPartsStore.Services.DealersServices;
     using MyAutoPartsStore.Services.ProductServices;
-    using MyAutoPartsWebStore.Web.Infrastructure;
+    using MyAutoPartsWebStore.Web.Infrastructure.Extentions;
 
     public class Startup
     {
@@ -44,6 +44,7 @@ namespace MyAutoPartsWebStore.Web
             .AddEntityFrameworkStores<MyAutoPartsStoreDbContext>();
 
             services.AddAutoMapper();
+            services.AddCustomServices();
 
             services.AddMemoryCache();
 
