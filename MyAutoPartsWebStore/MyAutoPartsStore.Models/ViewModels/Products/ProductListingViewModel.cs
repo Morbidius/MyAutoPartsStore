@@ -17,5 +17,7 @@
         public float Weight { get; init; }
 
         public string ImageUrl { get; set; }
+
+        public bool IsAllowed { get; init; }
     }
 }

@@ -43,12 +43,13 @@
 
                 viewModel.SearchTerm = SearchTerm;
                 viewModel.Category = category;
-                viewModel.Products = products;
+                viewModel.Products = products.Where(p => p.IsAllowed == true);
             }
             else
             {
                 viewModel.Products = new List<ProductListingViewModel>();
             }
+
             viewModel.Categories = this.products.AllCategories();
 
             return View(viewModel);

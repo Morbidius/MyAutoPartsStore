@@ -38,6 +38,8 @@
 
         IEnumerable<ProductServiceCategoryModel> AllCategories();
 
+        IList<ProductServiceModel> GetCategory();
+
         bool isByDealer(int productId, int dealerId);
 
         bool CategoryЕxists(int categoryId);

@@ -135,6 +135,14 @@
             .ProjectTo<ProductServiceCategoryModel>(this.mapper)
             .ToList();
 
+        public IList<ProductServiceModel> GetCategory()
+            => this.data
+                   .Products
+                   .Where(p => p.IsAllowed == true)
+                   .OrderByDescending(p => p.Name)
+                   .ProjectTo<ProductServiceModel>(this.mapper)
+                   .ToList();
+
         public bool CategoryЕxists(int categoryId)
             => this.data
             .Categories

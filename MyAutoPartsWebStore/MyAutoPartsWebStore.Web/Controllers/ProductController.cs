@@ -78,7 +78,7 @@
                 product.CategoryId,
                 dealerId);
 
-            TempData[GlobalMessageKey] = "Product added successfully.";
+            TempData[GlobalMessageKey] = "Product added successfully and is awaiting admin approval.";
 
             return RedirectToAction("Index", "Home");
         }
@@ -141,7 +141,7 @@
 
             return View(details);
         }
-        
+
         [Authorize]
         public IActionResult Edit(int id)
         {
@@ -220,7 +220,9 @@
         [Authorize]
         public IActionResult MyProducts()
         {
-            var products = this.products.ProductByUser(this.User.GetId());
+            var products = this.products
+                .ProductByUser(this.User.GetId())
+                .Where(p => p.IsAllowed == true);
 
             return View(products);
         }

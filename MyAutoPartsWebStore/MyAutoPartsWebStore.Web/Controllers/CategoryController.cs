@@ -1,11 +1,10 @@
 ﻿namespace MyAutoPartsWebStore.Web.Controllers
 {
     using AutoMapper;
-    using AutoMapper.QueryableExtensions;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.Extensions.Caching.Memory;
-    using MyAutoPartsStore.Data;
-    using MyAutoPartsWebStore.Web.Models.Products;
+    using MyAutoPartsStore.Models.ServiceModels.Products;
+    using MyAutoPartsStore.Services.ProductServices;
     using System;
     using System.Collections.Generic;
     using System.Linq;
@@ -14,13 +13,13 @@
 
     public class CategoryController : Controller
     {
-        private readonly MyAutoPartsStoreDbContext data;
+        private readonly IProductService product;
         private readonly IConfigurationProvider mapper;
         private readonly IMemoryCache cache;
 
-        public CategoryController(MyAutoPartsStoreDbContext data, IMapper mapper, IMemoryCache cache)
+        public CategoryController(IProductService product, IMapper mapper, IMemoryCache cache)
         {
-            this.data = data;
+            this.product = product;
             this.mapper = mapper.ConfigurationProvider;
             this.cache = cache;
         }
@@ -29,15 +28,20 @@
         {
             if (categoryId == null || categoryId <= 0) return BadRequest();
 
-            var categories = this.cache.Get<List<ProductListingViewModel>>(CategoriesCacheKey);
+            var categories = this.cache.Get<IList<ProductServiceModel>>(CategoriesCacheKey);
 
             if (categories == null)
             {
-                categories = this.data
-                   .Products
-                   .OrderByDescending(p => p.Name)
-                   .ProjectTo<ProductListingViewModel>(this.mapper)
-                   .ToList();
+                categories = this.product.GetCategory();
+
+                var cacheOptions = new MemoryCacheEntryOptions()
+                     .SetAbsoluteExpiration(TimeSpan.FromMinutes(360));
+
+                this.cache.Set(CategoriesCacheKey, categories, cacheOptions);
+            }
+            else if (categories.Count != categories.Where(x => x.IsAllowed).Count())
+            {
+                categories = this.product.GetCategory();
 
                 var cacheOptions = new MemoryCacheEntryOptions()
                      .SetAbsoluteExpiration(TimeSpan.FromMinutes(360));
