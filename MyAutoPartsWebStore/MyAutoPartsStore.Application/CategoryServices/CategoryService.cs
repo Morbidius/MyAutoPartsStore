@@ -20,14 +20,14 @@
 
         public bool CategoryЕxists(int categoryId)
             => this.data
-            .Categories
-            .Any(c => c.Id == categoryId);
+                   .Categories
+                   .Any(c => c.Id == categoryId);
 
         public IEnumerable<ProductServiceCategoryModel> AllCategories()
            => this.data
-           .Categories
-           .ProjectTo<ProductServiceCategoryModel>(this.mapper.ConfigurationProvider)
-           .ToList();
+                  .Categories
+                  .ProjectTo<ProductServiceCategoryModel>(this.mapper.ConfigurationProvider)
+                  .ToList();
 
         public IList<ProductServiceModel> GetCategory()
             => this.data

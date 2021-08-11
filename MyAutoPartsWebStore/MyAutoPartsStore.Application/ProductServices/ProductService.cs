@@ -97,23 +97,24 @@
 
         public ProductServiceDetailsModel Details(int? id = null)
             => this.data
-                 .Products
-                 .Where(p => p.Id == id)
-                 .Select(p => new ProductServiceDetailsModel
-                 {
-                     Id = p.Id,
-                     Name = p.Name,
-                     Description = p.Description,
-                     Price = p.Price,
-                     SizeCapacity = p.SizeCapacity,
-                     Weight = p.Weight,
-                     ImageUrl = p.ImageUrl,
-                     CategoryId = p.CategoryId,
-                     Category = p.Category.Name,
-                     DealerId = p.DealerId,
-                     DealerName = p.Dealer.Name,
-                     UserId = p.Dealer.UserId,
-                 }).FirstOrDefault();
+                   .Products
+                   .Where(p => p.Id == id)
+                   .Select(p => new ProductServiceDetailsModel
+                   {
+                       Id = p.Id,
+                       Name = p.Name,
+                       Description = p.Description,
+                       Price = p.Price,
+                       SizeCapacity = p.SizeCapacity,
+                       Weight = p.Weight,
+                       ImageUrl = p.ImageUrl,
+                       CategoryId = p.CategoryId,
+                       Category = p.Category.Name,
+                       DealerId = p.DealerId,
+                       DealerName = p.Dealer.Name,
+                       UserId = p.Dealer.UserId,
+                   })
+                   .FirstOrDefault();
 
         private IEnumerable<ProductServiceModel> GetProducts(IQueryable<Product> productQuery)
            => productQuery
@@ -123,10 +124,10 @@
         public IEnumerable<TModel> ProductSearch<TModel>(string SearchTerm)
             where TModel : INameModel
             => this.data.Products
-            .Where(p => p.Name.ToLower().Contains(SearchTerm.Trim().ToLower()))
-            .OrderByDescending(p => p.Name)
-            .ProjectTo<TModel>(this.mapper.ConfigurationProvider)
-            .ToList();
+                   .Where(p => p.Name.ToLower().Contains(SearchTerm.Trim().ToLower()))
+                   .OrderByDescending(p => p.Name)
+                   .ProjectTo<TModel>(this.mapper.ConfigurationProvider)
+                   .ToList();
 
         public bool isByDealer(int productId, int dealerId)
             => this.data
@@ -140,12 +141,10 @@
 
         public ProductServiceDeleteModel GetProductName()
             => this.data
-            .Products
-            .Select(p => new ProductServiceDeleteModel
-            {
-                Id = p.Id,
-                Name = p.Name,
-            }).FirstOrDefault();
+                   .Products
+                   .ProjectTo<ProductServiceDeleteModel>(this.mapper.ConfigurationProvider)
+                   .FirstOrDefault();
+
         public int GetAprovedProductsCount()
             => this.data.Products.Count(x => x.IsAllowed);
 

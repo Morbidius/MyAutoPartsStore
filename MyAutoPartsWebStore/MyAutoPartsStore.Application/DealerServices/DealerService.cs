@@ -14,14 +14,14 @@
 
         public int GetDealerById(string userId)
             => this.data
-                .Dealers
-                .Where(d => d.UserId == userId)
-                .Select(d => d.Id)
-                .FirstOrDefault();
+                   .Dealers
+                   .Where(d => d.UserId == userId)
+                   .Select(d => d.Id)
+                   .FirstOrDefault();
 
         public bool IsDealer(string userId)
             => this.data
-                .Dealers
-                .Any(d => d.UserId == userId);
+                   .Dealers
+                   .Any(d => d.UserId == userId);
     }
 }
