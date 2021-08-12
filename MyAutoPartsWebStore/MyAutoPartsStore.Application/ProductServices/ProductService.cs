@@ -95,31 +95,32 @@
             return true;
         }
 
+        public bool Delete(int? productId)
+        {
+            var product = this.data.Products.Find(productId);
+
+            if (product == null)
+            {
+                return false;
+            }
+
+            this.data.Remove(product);
+            this.data.SaveChanges();
+
+            return true;
+        }
+
         public ProductServiceDetailsModel Details(int? id = null)
             => this.data
                    .Products
                    .Where(p => p.Id == id)
-                   .Select(p => new ProductServiceDetailsModel
-                   {
-                       Id = p.Id,
-                       Name = p.Name,
-                       Description = p.Description,
-                       Price = p.Price,
-                       SizeCapacity = p.SizeCapacity,
-                       Weight = p.Weight,
-                       ImageUrl = p.ImageUrl,
-                       CategoryId = p.CategoryId,
-                       Category = p.Category.Name,
-                       DealerId = p.DealerId,
-                       DealerName = p.Dealer.Name,
-                       UserId = p.Dealer.UserId,
-                   })
+                   .ProjectTo<ProductServiceDetailsModel>(this.mapper.ConfigurationProvider)
                    .FirstOrDefault();
 
         private IEnumerable<ProductServiceModel> GetProducts(IQueryable<Product> productQuery)
            => productQuery
-            .ProjectTo<ProductServiceModel>(this.mapper.ConfigurationProvider)
-            .ToList();
+                   .ProjectTo<ProductServiceModel>(this.mapper.ConfigurationProvider)
+                   .ToList();
 
         public IEnumerable<TModel> ProductSearch<TModel>(string SearchTerm)
             where TModel : INameModel
@@ -131,13 +132,13 @@
 
         public bool isByDealer(int productId, int dealerId)
             => this.data
-            .Products
-            .Any(p => p.Id == productId && p.DealerId == dealerId);
+                   .Products
+                   .Any(p => p.Id == productId && p.DealerId == dealerId);
 
         public IEnumerable<ProductServiceModel> ProductByUser(string userId)
             => GetProducts(this.data
-            .Products
-            .Where(p => p.Dealer.UserId == userId));
+                   .Products
+                   .Where(p => p.Dealer.UserId == userId));
 
         public ProductServiceDeleteModel GetProductName()
             => this.data
@@ -145,8 +146,16 @@
                    .ProjectTo<ProductServiceDeleteModel>(this.mapper.ConfigurationProvider)
                    .FirstOrDefault();
 
+        public ProductServiceDeleteModel GetProductById(int? productId)
+            => this.data
+                .Products
+                .ProjectTo<ProductServiceDeleteModel>(this.mapper.ConfigurationProvider)
+                .FirstOrDefault(p => p.Id == productId);
+
         public int GetAprovedProductsCount()
-            => this.data.Products.Count(x => x.IsAllowed);
+            => this.data
+                   .Products
+                   .Count(x => x.IsAllowed);
 
         public void Approve(int id)
         {

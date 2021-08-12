@@ -4,7 +4,7 @@
     using AutoMapper;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
-    using MyAutoPartsStore.Data;
+    using MyAutoPartsStore.Models.ServiceModels.Products;
     using MyAutoPartsStore.Services.CategoryServices;
     using MyAutoPartsStore.Services.DealersServices;
     using MyAutoPartsStore.Services.ProductServices;
@@ -16,16 +16,13 @@
     [AutoValidateAntiforgeryToken]
     public class ProductController : Controller
     {
-        private readonly MyAutoPartsStoreDbContext data;
         private readonly IProductService products;
         private readonly ICategoryService category;
         private readonly IDealerService dealers;
         private readonly IMapper mapper;
 
-        public ProductController(MyAutoPartsStoreDbContext data,
-            IProductService products, ICategoryService category, IDealerService dealers, IMapper mapper)
+        public ProductController(IProductService products, ICategoryService category, IDealerService dealers, IMapper mapper)
         {
-            this.data = data;
             this.products = products;
             this.category = category;
             this.dealers = dealers;
@@ -90,11 +87,11 @@
         {
             if (id == null || id <= 0) return BadRequest();
 
-            var productToDel = data.Products.FirstOrDefault(x => x.Id == id);
+            var productToDel = this.products.GetProductById(id);
 
             if (productToDel == null) return NotFound();
 
-            var viewModel = new DeleteProductViewModel()
+            var viewModel = new ProductServiceDeleteModel()
             {
                 Id = productToDel.Id,
                 Name = productToDel.Name,
@@ -105,20 +102,17 @@
         }
 
         [HttpPost]
-        public IActionResult Delete(DeleteProductViewModel viewProduct, int? id = null)
+        public IActionResult Delete(ProductServiceDeleteModel viewProduct, int? id = null)
         {
             if (id == null || id <= 0) return BadRequest();
 
             if (!ModelState.IsValid) return View(viewProduct);
 
-            var product = this.data
-                .Products
-                .FirstOrDefault(p => p.Id == viewProduct.Id);
+            var product = this.products.GetProductById(id);
 
             if (product == null) return NotFound();
 
-            this.data.Remove(product);
-            this.data.SaveChanges();
+            this.products.Delete(id);
 
             var userId = this.User.GetId();
 
@@ -157,7 +151,7 @@
 
             var product = this.products.Details(id);
 
-            if (product.UserId != this.User.GetId() && !User.IsAdmin())
+            if (product.DealerUserId != this.User.GetId() && !User.IsAdmin())
             {
                 return Unauthorized();
             }

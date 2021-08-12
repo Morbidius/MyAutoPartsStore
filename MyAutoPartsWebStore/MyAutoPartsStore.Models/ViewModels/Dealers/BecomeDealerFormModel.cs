@@ -3,7 +3,7 @@
     using MyAutoPartsStore.Data;
     using System.ComponentModel.DataAnnotations;
 
-    public class BecomeDealerViewModel
+    public class BecomeDealerFormModel
     {
         [Required]
         [StringLength(

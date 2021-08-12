@@ -7,5 +7,7 @@
         public string Name { get; init; }
 
         public string Image { get; init; }
+
+        public string ImageUrl { get; init; }
     }
 }

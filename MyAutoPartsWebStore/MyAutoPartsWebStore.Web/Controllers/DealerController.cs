@@ -2,52 +2,42 @@
 {
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
-    using MyAutoPartsStore.Data;
-    using MyAutoPartsStore.Data.Models;
     using MyAutoPartsStore.Services.DealersServices;
     using MyAutoPartsWebStore.Web.Infrastructure.Extentions;
     using MyAutoPartsWebStore.Web.Models.Dealers;
 
     public class DealerController : Controller
     {
-        private readonly MyAutoPartsStoreDbContext data;
-        private readonly IDealerService dealerService;
+        private readonly IDealerService dealer;
 
-        public DealerController(MyAutoPartsStoreDbContext data, IDealerService dealerService)
+        public DealerController(IDealerService dealer)
         {
-            this.data = data;
-            this.dealerService = dealerService;
+            this.dealer = dealer;
         }
-
 
         public IActionResult BecomeDealer() => View();
 
         [HttpPost]
         [Authorize]
-        public IActionResult BecomeDealer(BecomeDealerViewModel dealer)
+        public IActionResult BecomeDealer(BecomeDealerFormModel newDealer)
         {
             var userId = this.User.GetId();
 
-            if (this.dealerService.IsDealer(userId))
+            if (this.dealer.IsDealer(userId))
             {
                 return RedirectToAction("MyProducts");
             }
 
             if (!ModelState.IsValid)
             {
-                return View(dealer);
+                return View(newDealer);
             }
 
-            var dealerData = new Dealer
-            {
-                Name = dealer.Name,
-                CompanyName = dealer.CompanyName,
-                PhoneNumber = dealer.PhoneNumber,
-                UserId = userId,
-            };
-
-            this.data.Dealers.Add(dealerData);
-            this.data.SaveChanges();
+            this.dealer.Become(
+                newDealer.Name,
+                newDealer.CompanyName,
+                newDealer.PhoneNumber,
+                userId);
 
             return RedirectToAction("Index", "Home");
         }

@@ -31,9 +31,13 @@
             string imageUrl,
             int categoryId);
 
+        bool Delete(int? productId);
+
         ProductServiceDetailsModel Details(int? id = null);
 
         ProductServiceDeleteModel GetProductName();
+
+        ProductServiceDeleteModel GetProductById(int? productId);
 
         IEnumerable<ProductServiceModel> ProductByUser(string userId);
 
