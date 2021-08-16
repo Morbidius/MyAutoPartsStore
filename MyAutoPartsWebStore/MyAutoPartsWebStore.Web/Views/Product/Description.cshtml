@@ -2,6 +2,7 @@
 @model ProductServiceDetailsModel
 
 @inject IDealerService Dealers
+@inject IProductService Products
 
 @{
 	ViewBag.Title = "Details";
@@ -24,9 +25,12 @@
 			@if (User.Identity.IsAuthenticated)
 			{
 				var userId = User.GetId();
+				var productId = Model.Id;
+				var dealerId = Model.DealerId;
 				var userIsDealer = Dealers.IsDealer(userId);
+				var productIsDealers = Products.isByDealer(productId, dealerId);
 
-				@if (!userIsDealer && !User.IsAdmin())
+				@if ((!userIsDealer && !User.IsAdmin()) || !productIsDealers)
 				{
 					<button type="submit" class="buy-btn btn-danger">Buy</button>
 				}

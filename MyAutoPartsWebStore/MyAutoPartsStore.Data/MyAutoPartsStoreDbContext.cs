@@ -17,6 +17,12 @@
 
         public DbSet<Dealer> Dealers { get; set; }
 
+        public DbSet<ShoppingCart> ShoppingCarts { get; set; }
+
+        public DbSet<Order> Orders { get; set; }
+
+        public DbSet<OrderProducts> OrderProducts { get; set; }
+
         protected override void OnModelCreating(ModelBuilder builder)
         {
             builder
@@ -39,6 +45,9 @@
                 .WithOne()
                 .HasForeignKey<Dealer>(d => d.UserId)
                 .OnDelete(DeleteBehavior.Restrict);
+
+            builder.Entity<OrderProducts>()
+                .HasKey(x => new { x.ProductId, x.OrderId });
 
             base.OnModelCreating(builder);
         }

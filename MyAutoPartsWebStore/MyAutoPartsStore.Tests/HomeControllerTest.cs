@@ -3,7 +3,7 @@ namespace MyAutoPartsStore.Tests
     using AutoMapper;
     using Microsoft.AspNetCore.Mvc;
     using Moq;
-    using MyAutoPartsStore.Tests.Mocks;
+    using MyAutoPartsStore.Services.ProductServices;
     using MyAutoPartsWebStore.Web.Controllers;
     using Xunit;
 
@@ -13,7 +13,7 @@ namespace MyAutoPartsStore.Tests
         public void ErrorShouldReturnView()
         {
             //Arrange
-            var homeController = new HomeController(null, null, Mock.Of<IMapper>());
+            var homeController = new HomeController(Mock.Of<IProductService>(), null);
 
             //Act
             var result = homeController.Error();

@@ -4,6 +4,7 @@
     using AutoMapper.QueryableExtensions;
     using MyAutoPartsStore.Data;
     using MyAutoPartsStore.Data.Models;
+    using MyAutoPartsStore.Models;
     using MyAutoPartsStore.Models.BaseModels;
     using MyAutoPartsStore.Models.ServiceModels.Products;
     using System.Collections.Generic;
@@ -20,7 +21,13 @@
             this.mapper = mapper;
         }
 
-        public ProductServiceQueryModel All(string name = null, string searchTerm = null, bool isAllowed = true)
+        public ProductServiceQueryModel All(
+            string name = null,
+            string searchTerm = null,
+            ProductSorting sorting = ProductSorting.DateCreated,
+            int currentPage = 1,
+            int productsPerPage = int.MaxValue,
+            bool isAllowed = true)
         {
             var productsQuery = this.data.Products
                 .Where(p => !isAllowed || p.IsAllowed);
@@ -36,13 +43,23 @@
                     .Where(p => p.Name.ToLower().Contains(searchTerm.Trim().ToLower()));
             }
 
+            productsQuery = sorting switch
+            {
+                ProductSorting.DateCreated or _ => productsQuery.OrderByDescending(c => c.Id)
+            };
+
             var totalProducts = productsQuery.Count();
 
-            var products = GetProducts(productsQuery);
+            var products = GetProducts(productsQuery)
+                .Skip((currentPage - 1) * productsPerPage)
+                .Take(productsPerPage);
+            ;
 
             return new ProductServiceQueryModel
             {
                 TotalProducts = totalProducts,
+                CurrentPage = currentPage,
+                ProductsPerPage = productsPerPage,
                 Products = products,
             };
         }

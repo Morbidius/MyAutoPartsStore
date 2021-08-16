@@ -1,6 +1,7 @@
 ﻿namespace MyAutoPartsStore.Services.ProductServices
 {
     using System.Collections.Generic;
+    using MyAutoPartsStore.Models;
     using MyAutoPartsStore.Models.BaseModels;
     using MyAutoPartsStore.Models.ServiceModels.Products;
 
@@ -9,6 +10,9 @@
         ProductServiceQueryModel All(
             string name = null,
             string searchTerm = null,
+            ProductSorting sorting = ProductSorting.DateCreated,
+            int currentPage = 1,
+            int productsPerPage = int.MaxValue,
             bool isAllowed = true);
 
         int Create(
