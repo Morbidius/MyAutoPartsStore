@@ -7,12 +7,9 @@
 
     public interface IProductService
     {
-        ProductServiceQueryModel All(
-            string name = null,
+        IEnumerable<ProductServiceModel> All(
             string searchTerm = null,
             ProductSorting sorting = ProductSorting.DateCreated,
-            int currentPage = 1,
-            int productsPerPage = int.MaxValue,
             bool isAllowed = true);
 
         int Create(
@@ -53,5 +50,8 @@
         int GetAprovedProductsCount();
 
         void Approve(int id);
+        int AllCounts(
+            string searchTerm = null,
+            bool isAllowed = true);
     }
 }

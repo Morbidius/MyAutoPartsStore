@@ -10,6 +10,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\MyAutoPartsStore.Data\MyAutoPartsStore.Data.csproj" />
+    <ProjectReference Include="..\MyAutoPartsStore.Globals\MyAutoPartsStore.Globals.csproj" />
     <ProjectReference Include="..\MyAutoPartsStore.Models\MyAutoPartsStore.Models.csproj" />
   </ItemGroup>
 

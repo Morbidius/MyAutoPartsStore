@@ -21,21 +21,13 @@
             this.mapper = mapper;
         }
 
-        public ProductServiceQueryModel All(
-            string name = null,
+        public IEnumerable<ProductServiceModel> All(
             string searchTerm = null,
             ProductSorting sorting = ProductSorting.DateCreated,
-            int currentPage = 1,
-            int productsPerPage = int.MaxValue,
             bool isAllowed = true)
         {
             var productsQuery = this.data.Products
                 .Where(p => !isAllowed || p.IsAllowed);
-
-            if (!string.IsNullOrWhiteSpace(name))
-            {
-                productsQuery = productsQuery.Where(p => p.Name == name);
-            }
 
             if (!string.IsNullOrWhiteSpace(searchTerm))
             {
@@ -48,20 +40,9 @@
                 ProductSorting.DateCreated or _ => productsQuery.OrderByDescending(c => c.Id)
             };
 
-            var totalProducts = productsQuery.Count();
+            var products = GetProducts(productsQuery);
 
-            var products = GetProducts(productsQuery)
-                .Skip((currentPage - 1) * productsPerPage)
-                .Take(productsPerPage);
-            ;
-
-            return new ProductServiceQueryModel
-            {
-                TotalProducts = totalProducts,
-                CurrentPage = currentPage,
-                ProductsPerPage = productsPerPage,
-                Products = products,
-            };
+            return products;
         }
 
         public int Create(
@@ -181,6 +162,24 @@
             product.IsAllowed = !product.IsAllowed;
 
             this.data.SaveChanges();
+        }
+
+        public int AllCounts(
+            string searchTerm = null,
+            bool isAllowed = true)
+        {
+            var productsQuery = this.data.Products
+                .Where(p => !isAllowed || p.IsAllowed);
+
+            if (!string.IsNullOrWhiteSpace(searchTerm))
+            {
+                productsQuery = productsQuery
+                    .Where(p => p.Name.ToLower().Contains(searchTerm.Trim().ToLower()));
+            }
+
+            var products = GetProducts(productsQuery);
+
+            return products.Count();
         }
     }
 }

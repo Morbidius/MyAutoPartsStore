@@ -1,8 +1,11 @@
 ﻿namespace MyAutoPartsWebStore.Web.Areas.Admin.Controllers
 {
     using Microsoft.AspNetCore.Mvc;
+    using System;
+    using MyAutoPartsStore.Models.BaseModels;
     using MyAutoPartsStore.Models.ViewModels.Products;
     using MyAutoPartsStore.Services.ProductServices;
+    using MyAutoPartsWebStore.Globals.Extensions;
 
     public class ProductsController : AdminController
     {
@@ -13,21 +16,21 @@
             this.products = products;
         }
 
-        public IActionResult AllProducts([FromQuery] AllProductsQueryModel query)
+        public IActionResult AllProducts(AllProductsQueryModel viewmodel, int page = 1, int quantity = 20)
         {
-            var queryResult = this.products.All(
-                query.Name,
-                query.SearchTerm,
-                query.Sorting,
-                query.CurrentPage,
-                AllProductsQueryModel.ProductsPerPage);
+            var productsCount = products.AllCounts(viewmodel.SearchTerm);
 
-            var products = this.products.All(isAllowed: false).Products;
+            var maxPage = (int)Math.Ceiling(productsCount / (quantity * 1.0));
 
-            query.TotalProducts = queryResult.TotalProducts;
-            query.Products = queryResult.Products;
+            if (page <= 0 || page > maxPage) page = 1;
 
-            return View(products);
+            viewmodel.Products = products.All();
+
+            viewmodel.Products = viewmodel.Products.Paging(page, quantity);
+
+            viewmodel = SetPages(viewmodel, page, maxPage);
+
+            return View(viewmodel);
         }
 
         public IActionResult Approve(int id)
@@ -35,6 +38,17 @@
             this.products.Approve(id);
 
             return RedirectToAction(nameof(AllProducts));
+        }
+
+        private T SetPages<T>(T viewModel, int page, int maxPages)
+            where T : IPagingModel
+        {
+            viewModel.CurrentPage = page;
+            viewModel.NextPage = page >= maxPages ? null : page + 1;
+            viewModel.PreviousPage = page <= 1 ? null : page - 1;
+            viewModel.MaxPages = maxPages;
+
+            return viewModel;
         }
     }
 }

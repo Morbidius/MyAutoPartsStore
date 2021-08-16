@@ -23,10 +23,7 @@
   <ItemGroup>
     <ProjectReference Include="..\MyAutoPartsStore.Application\MyAutoPartsStore.Services.csproj" />
     <ProjectReference Include="..\MyAutoPartsStore.Data\MyAutoPartsStore.Data.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Areas\Admin\Models\" />
+    <ProjectReference Include="..\MyAutoPartsStore.Globals\MyAutoPartsStore.Globals.csproj" />
   </ItemGroup>
 
 </Project>
