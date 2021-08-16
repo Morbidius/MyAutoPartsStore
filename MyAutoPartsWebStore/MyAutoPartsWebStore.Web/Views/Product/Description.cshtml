@@ -32,12 +32,12 @@
 
 				@if ((!userIsDealer && !User.IsAdmin()) || !productIsDealers)
 				{
-					<button type="submit" class="buy-btn btn-danger">Buy</button>
+					<button type="submit" class="buy-btn btn-danger">Add to Cart</button>
 				}
 			}
 			else
 			{
-				<a class="buy-btn btn-danger" asp-area="Identity" asp-page="/Account/Login">Buy</a>
+				<a class="buy-btn btn-danger" asp-area="Identity" asp-page="/Account/Login">Add to Cart</a>
 			}
 		</div>
 	</div>

@@ -10,7 +10,9 @@ namespace MyAutoPartsWebStore.Web
     using Microsoft.Extensions.Hosting;
     using MyAutoPartsStore.Data;
     using MyAutoPartsStore.Data.Models;
+    using MyAutoPartsStore.Services.CategoryServices;
     using MyAutoPartsStore.Services.DealersServices;
+    using MyAutoPartsStore.Services.OrderServices;
     using MyAutoPartsStore.Services.ProductServices;
     using MyAutoPartsWebStore.Web.Infrastructure.Extentions;
 
@@ -55,6 +57,8 @@ namespace MyAutoPartsWebStore.Web
 
             services.AddTransient<IDealerService, DealerService>();
             services.AddTransient<IProductService, ProductService>();
+            services.AddTransient<ICategoryService, CategoryService>();
+            services.AddTransient<IOrderService, OrderService>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
