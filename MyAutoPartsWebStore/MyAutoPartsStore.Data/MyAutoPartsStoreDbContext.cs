@@ -49,6 +49,9 @@
             builder.Entity<OrderProducts>()
                 .HasKey(x => new { x.ProductId, x.OrderId });
 
+            builder.Entity<ShoppingCart>()
+                .HasKey(x => new { x.ProductId, x.UserId });
+
             base.OnModelCreating(builder);
         }
     }

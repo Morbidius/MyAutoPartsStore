@@ -1,7 +1,7 @@
 ﻿namespace MyAutoPartsWebStore.Web.Areas.Admin.Controllers
 {
-    using Microsoft.AspNetCore.Mvc;
     using System;
+    using Microsoft.AspNetCore.Mvc;
     using MyAutoPartsStore.Models.BaseModels;
     using MyAutoPartsStore.Models.ViewModels.Products;
     using MyAutoPartsStore.Services.ProductServices;

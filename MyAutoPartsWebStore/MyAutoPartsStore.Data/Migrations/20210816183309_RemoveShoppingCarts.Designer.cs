@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MyAutoPartsStore.Data;
 
 namespace MyAutoPartsStore.Data.Migrations
 {
     [DbContext(typeof(MyAutoPartsStoreDbContext))]
-    partial class MyAutoPartsStoreDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210816183309_RemoveShoppingCarts")]
+    partial class RemoveShoppingCarts
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -303,24 +305,6 @@ namespace MyAutoPartsStore.Data.Migrations
                     b.ToTable("Products");
                 });
 
-            modelBuilder.Entity("MyAutoPartsStore.Data.Models.ShoppingCart", b =>
-                {
-                    b.Property<int>("ProductId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<int>("Quantity")
-                        .HasColumnType("int");
-
-                    b.HasKey("ProductId", "UserId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("ShoppingCarts");
-                });
-
             modelBuilder.Entity("MyAutoPartsStore.Data.Models.User", b =>
                 {
                     b.Property<string>("Id")
@@ -495,25 +479,6 @@ namespace MyAutoPartsStore.Data.Migrations
                     b.Navigation("Category");
 
                     b.Navigation("Dealer");
-                });
-
-            modelBuilder.Entity("MyAutoPartsStore.Data.Models.ShoppingCart", b =>
-                {
-                    b.HasOne("MyAutoPartsStore.Data.Models.Product", "Product")
-                        .WithMany()
-                        .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("MyAutoPartsStore.Data.Models.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Product");
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("MyAutoPartsStore.Data.Models.Category", b =>

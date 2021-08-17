@@ -412,6 +412,12 @@ footer-logo {
 	margin-right: 3px;
 }
 
+.product-count {
+	color: white;
+	padding: 3px;
+	font-weight: bold;
+}
+
 .pages .page-number a {
 	display: block;
 	color: black;

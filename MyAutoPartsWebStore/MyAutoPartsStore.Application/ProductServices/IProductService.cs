@@ -50,6 +50,7 @@
         int GetAprovedProductsCount();
 
         void Approve(int id);
+
         int AllCounts(
             string searchTerm = null,
             bool isAllowed = true);

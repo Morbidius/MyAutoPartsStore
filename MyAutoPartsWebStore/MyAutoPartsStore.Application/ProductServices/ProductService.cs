@@ -2,13 +2,13 @@
 {
     using AutoMapper;
     using AutoMapper.QueryableExtensions;
+    using System.Collections.Generic;
+    using System.Linq;
     using MyAutoPartsStore.Data;
     using MyAutoPartsStore.Data.Models;
     using MyAutoPartsStore.Models;
     using MyAutoPartsStore.Models.BaseModels;
     using MyAutoPartsStore.Models.ServiceModels.Products;
-    using System.Collections.Generic;
-    using System.Linq;
 
     public class ProductService : IProductService
     {

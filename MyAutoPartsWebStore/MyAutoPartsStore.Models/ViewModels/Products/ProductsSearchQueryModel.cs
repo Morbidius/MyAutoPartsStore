@@ -6,6 +6,8 @@
 
     public class ProductsSearchQueryModel
     {
+        public int Id { get; set; }
+
         [Required]
         [Display(Name = "Search word")]
         [StringLength(50, ErrorMessage = "{0} should be between {2} and {1} symbols long", MinimumLength = 1)]

@@ -1,4 +1,4 @@
-﻿@using MyAutoPartsStore.Models.ServiceModels.Products 
+﻿@using MyAutoPartsStore.Models.ServiceModels.Products
 
 @model IList<ProductServiceModel>
 
@@ -26,7 +26,7 @@
 
 							@if (!userIsDealer && !User.IsAdmin())
 							{
-								<button type="submit" class="buy-btn btn-danger">Buy</button>
+								<button type="submit" data-key="@product.Id" class="buy-btn btn-danger">Add to Cart</button>
 							}
 
 							@if (User.IsAdmin())
@@ -38,7 +38,7 @@
 						else
 						{
 							<a asp-controller="Product" asp-action="Description" asp-route-id="@product.Id" class="details-btn btn-primary">Details</a>
-							<a class="buy-btn btn-danger" asp-area="Identity" asp-page="/Account/Login">Buy</a>
+							<a class="buy-btn btn-danger" asp-area="Identity" asp-page="/Account/Login">Add to Cart</a>
 						}
 					</div>
 				</div>

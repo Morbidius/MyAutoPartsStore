@@ -28,3 +28,30 @@ $(document).ready(function () {
 	}, 5000);
 
 });
+
+
+document.querySelectorAll('.buy-btn.btn-danger').forEach(btn => {
+	btn.addEventListener('click', e => {
+		e.preventDefault();
+		let productId = Number(e.currentTarget.getAttribute('data-key'));
+		$.ajax({
+			type: "POST",
+			url: 'Order/AddToCart',
+			data: {
+				productId
+			},
+			contentType: 'application/x-www-form-urlencoded',
+			success: function (result) {
+				if (result.error == false) {
+					document.getElementById('product-count').innerText = result.productCount;
+				} else if (result.error == true) {
+					console.log(result);
+				}
+			},
+			error: function (err) {
+				console.log(err.status);
+			}
+		});
+	})
+})
+
