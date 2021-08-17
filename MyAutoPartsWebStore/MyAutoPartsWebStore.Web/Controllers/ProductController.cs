@@ -34,7 +34,7 @@
         {
             if (!this.dealers.IsDealer(this.User.GetId()))
             {
-                return RedirectToAction(nameof(DealerController.BecomeDealer), "Dealer");
+                return RedirectToAction(nameof(DealerController.BecomeDealer), typeof(DealerController).GetControllerName());
             }
 
             return View(new ProductFormModel()
@@ -53,7 +53,7 @@
 
             if (!this.dealers.IsDealer(userId))
             {
-                return RedirectToAction(nameof(DealerController.BecomeDealer), "Dealer");
+                return RedirectToAction(nameof(DealerController.BecomeDealer), typeof(DealerController).GetControllerName());
             }
 
             if (!this.category.CategoryЕxists(product.CategoryId))
@@ -80,7 +80,7 @@
 
             TempData[GlobalMessageKey] = "Product added successfully and is awaiting admin approval.";
 
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction(nameof(HomeController.Index), typeof(HomeController).GetControllerName());
         }
 
         public IActionResult Delete(int? id = null)
@@ -118,13 +118,13 @@
 
             if (!this.dealers.IsDealer(userId))
             {
-                return RedirectToAction("Index", "Home");
+                return RedirectToAction(nameof(HomeController.Index), typeof(HomeController).GetControllerName());
             }
             else
             {
                 TempData[GlobalMessageKey] = "Product deleted successfully.";
 
-                return RedirectToAction("MyProducts", "Product");
+                return RedirectToAction(nameof(ProductController.MyProducts));
             }
         }
 
@@ -146,7 +146,7 @@
 
             if (!this.dealers.IsDealer(userId) && !User.IsAdmin())
             {
-                return RedirectToAction(nameof(DealerController.BecomeDealer), "Dealer");
+                return RedirectToAction(nameof(DealerController.BecomeDealer), typeof(DealerController).GetControllerName());
             }
 
             var product = this.products.Details(id);
@@ -172,7 +172,7 @@
 
             if (!this.dealers.IsDealer(userId) && !User.IsAdmin())
             {
-                return RedirectToAction(nameof(DealerController.BecomeDealer), "Dealer");
+                return RedirectToAction(nameof(DealerController.BecomeDealer), typeof(DealerController).GetControllerName());
             }
 
             if (!this.category.CategoryЕxists(product.CategoryId))
@@ -206,12 +206,12 @@
             {
                 TempData[GlobalMessageKey] = "Product edited successfully.";
 
-                return RedirectToAction("Index", "Home");
+                return RedirectToAction(nameof(HomeController.Index), typeof(HomeController).GetControllerName());
             }
 
             TempData[GlobalMessageKey] = "Product edited successfully.";
 
-            return RedirectToAction("MyProducts");
+            return RedirectToAction(nameof(ProductController.MyProducts));
         }
 
         [Authorize]

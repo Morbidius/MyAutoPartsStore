@@ -28,6 +28,10 @@
 
         public string Note { get; set; }
 
+        public int Quantity { get; set; }
+
+        public string ProductName { get; set; }
+
         public DateTime OrderedOn { get; set; } = DateTime.UtcNow;
 
         public bool IsCompleted { get; set; }

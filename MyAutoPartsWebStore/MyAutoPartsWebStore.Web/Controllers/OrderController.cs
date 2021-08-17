@@ -1,14 +1,10 @@
 ﻿namespace MyAutoPartsWebStore.Web.Controllers
 {
-    using AutoMapper;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
-    using MyAutoPartsStore.Data.Models;
     using MyAutoPartsStore.Models.ServiceModels.Orders;
-    using MyAutoPartsStore.Services.CategoryServices;
     using MyAutoPartsStore.Services.DealersServices;
     using MyAutoPartsStore.Services.OrderServices;
-    using MyAutoPartsStore.Services.ProductServices;
     using MyAutoPartsStore.Services.UserService;
     using MyAutoPartsWebStore.Web.Infrastructure.Extentions;
     using System.Threading.Tasks;
@@ -18,16 +14,14 @@
     public class OrderController : Controller
     {
         private readonly IOrderService orders;
-        private readonly IDealerService dealers;
-        private readonly IMapper mapper;
         private readonly IUserService userService;
+        private readonly IDealerService dealers;
 
-        public OrderController(IOrderService orders, IDealerService dealers, IMapper mapper, IUserService userService)
+        public OrderController(IOrderService orders, IUserService userService, IDealerService dealers)
         {
             this.orders = orders;
-            this.dealers = dealers;
-            this.mapper = mapper;
             this.userService = userService;
+            this.dealers = dealers;
         }
 
         [Authorize]
@@ -50,7 +44,10 @@
 
             var isAdded = orders.AddProductToUserCart(userId, productId);
 
-            if (!isAdded) return Json(new { error = true, productCount = 0 });
+            if (!isAdded)
+            {
+                return Json(new { error = true, productCount = 0 });
+            }
 
             var productCount = orders.GetUserShoppingCartProductsCount(userId);
 
@@ -89,7 +86,7 @@
 
             TempData[GlobalMessageKey] = "Purchase Successfull!";
 
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction(nameof(HomeController.Index), typeof(HomeController).GetControllerName());
         }
 
         [IgnoreAntiforgeryToken]
@@ -101,6 +98,17 @@
             var isSaved = orders.SaveCart(userId, productId, productQuantity);
 
             return Json(new { error = !isSaved });
+        }
+
+        public IActionResult DealerOrders()
+        {
+            var userId = User.GetId();
+
+            var dealerId = this.dealers.GetDealerById(userId);
+
+            var viewModel = orders.GetOrderedItemsFromDealer(dealerId);
+
+            return View(viewModel);
         }
     }
 }

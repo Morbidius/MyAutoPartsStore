@@ -146,7 +146,15 @@
             {
                 data.ShoppingCarts.Remove(product);
             }
-                await data.SaveChangesAsync();
+            await data.SaveChangesAsync();
         }
+
+        public IEnumerable<DealerOrderFormServiceModel> GetOrderedItemsFromDealer(int userId)
+            => data.OrderProducts
+                .Include(x => x.Product)
+                .Include(x => x.Order)
+                .Where(x => x.Product.DealerId == userId && !x.Order.IsCompleted)
+                .OrderBy(x => x.Order.OrderedOn)
+                .ProjectTo<DealerOrderFormServiceModel>(mapper.ConfigurationProvider);
     }
 }

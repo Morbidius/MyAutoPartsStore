@@ -24,6 +24,9 @@
         bool SaveCart(string userId, int productId, int productQuantity);
 
         decimal GetFinalPrice(string userId);
+
         Task CreateOrder(DealerOrderFormServiceModel order, string userId);
+
+        IEnumerable<DealerOrderFormServiceModel> GetOrderedItemsFromDealer(int userId);
     }
 }

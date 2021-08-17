@@ -20,7 +20,5 @@
             this.CreateMap<Product, ProductServiceModel>()
                 .ForMember(p => p.Category, cfg => cfg.MapFrom(p => p.Category.Name));
         }
-
-        //context.Products.Include(x => x.Category).Where(x => x.Id == givenidhere)
     }
 }

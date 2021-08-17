@@ -25,7 +25,7 @@
 
             if (this.dealer.IsDealer(userId))
             {
-                return RedirectToAction("MyProducts");
+                return RedirectToAction(nameof(ProductController.MyProducts));
             }
 
             if (!ModelState.IsValid)
@@ -39,7 +39,7 @@
                 newDealer.PhoneNumber,
                 userId);
 
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction(nameof(HomeController.Index), typeof(HomeController).GetControllerName());
         }
     }
 }

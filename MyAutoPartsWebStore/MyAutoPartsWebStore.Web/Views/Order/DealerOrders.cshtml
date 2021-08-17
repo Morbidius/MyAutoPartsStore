@@ -1,0 +1,25 @@
+﻿@using MyAutoPartsStore.Models.ServiceModels.Orders
+
+@{
+	ViewBag.Title = "New Orders";
+}
+
+@model IEnumerable<DealerOrderFormServiceModel>
+
+<div class="card text-center">
+	<div class="card-header">
+		Pending Order
+	</div>
+	@foreach (var order in Model)
+	{
+		<div class="card-body">
+			<h1>@order.ProductName</h1>
+			<h5 class="card-title">@order.BuyerPhone</h5>
+			<p class="card-text">@order.Quantity</p>
+			<a href="#" class="btn btn-primary">Order Details</a>
+		</div>
+		<div class="card-footer text-muted">
+			@order.OrderedOn.ToLocalTime()
+		</div>
+	}
+</div>

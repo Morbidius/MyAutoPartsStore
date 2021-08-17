@@ -9,6 +9,7 @@
         public OrderProfile()
         {
             this.CreateMap<ShoppingCart, ShoppingCartServiceModel>();
+            this.CreateMap<OrderProducts, DealerOrderFormServiceModel>();
         }
     }
 }

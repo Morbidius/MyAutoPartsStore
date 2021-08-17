@@ -77,7 +77,8 @@
 	<script type="module">
 		const price = document.getElementById('total-price');
 		const checkOutBtn = document.getElementById('check-out');
-		// Real time calculation
+
+		// Real time total price calculation
 		function calculatePrice() {
 			let newPrice = 0;
 
@@ -91,6 +92,7 @@
 			price.innerText = `${newPrice.toFixed(2)} leva`;
 		}
 
+		// Tracks the quantity and increments it so that the states get saved on checkout.
 		function saveQuantity() {
 			const quantityInputs = document.querySelectorAll('input[data-key].quantity-input');
 			let counter = 0;
