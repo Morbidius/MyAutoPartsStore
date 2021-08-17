@@ -1,4 +1,7 @@
 ﻿@using MyAutoPartsStore.Models.ServiceModels.Orders
+@using MyAutoPartsStore.Services.OrderServices
+
+@inject IOrderService Orders
 
 @model IEnumerable<ShoppingCartServiceModel>
 
@@ -39,7 +42,7 @@
 													</div>
 													<div class="col-md-4">
 														<label for="quantity">Quantity:</label>
-														<input data-price="@Math.Round(product.ProductPrice, 2)" type="number" min="1" value="1" class="form-control quantity-input">
+														<input data-price="@Math.Round(product.ProductPrice, 2)" data-key="@product.ProductId" type="number" min="1" value="@product.Quantity" class="form-control quantity-input">
 													</div>
 													<div class="col-md-3 price">
 														<span>@Math.Round(product.ProductPrice, 2) leva</span>
@@ -56,8 +59,8 @@
 					<div class="col-md-12 col-lg-4">
 						<div class="summary">
 							<h3>Summary</h3>
-							<div class="summary-item"><span class="text">Total</span><span id="total-price" class="price" style="font-weight:bold">@Math.Round(Model.Sum(x => x.ProductPrice), 2) leva</span></div>
-							<button type="submit" class="btn btn-primary btn-lg btn-block" asp-controller="Order" asp-action="Checkout">Checkout</button>
+							<div class="summary-item"><span class="text">Total</span><span id="total-price" class="price" style="font-weight:bold">@Math.Round(Orders.GetFinalPrice(User.GetId()), 2) leva</span></div>
+							<button type="submit" class="btn btn-primary btn-lg btn-block" id="check-out" data-redirect-url="Order/Checkout">Checkout</button>
 						</div>
 					</div>
 				</div>
@@ -71,21 +74,56 @@
 </section>
 
 @section Scripts{
-	<script>
+	<script type="module">
 		const price = document.getElementById('total-price');
-
+		const checkOutBtn = document.getElementById('check-out');
 		// Real time calculation
 		function calculatePrice() {
 			let newPrice = 0;
 
-			document.querySelectorAll('.quantity-input').forEach(qicalc => {
-				let productPrice = Number(qicalc.getAttribute('data-price'));
-				let quantity = Number(qicalc.value);
+			document.querySelectorAll('.quantity-input').forEach(qi => {
+				let productPrice = Number(qi.getAttribute('data-price'));
+				let quantity = Number(qi.value);
 
 				newPrice += productPrice * quantity;
 			})
 
 			price.innerText = `${newPrice.toFixed(2)} leva`;
+		}
+
+		function saveQuantity() {
+			const quantityInputs = document.querySelectorAll('input[data-key].quantity-input');
+			let counter = 0;
+
+			quantityInputs.forEach(i => {
+				const productQuantity = Number(i.value);
+				const productId = Number(i.getAttribute('data-key'));
+
+				const requestUrl = `${window.location.origin}/Order/SaveCart`;
+
+				$.ajax({
+					type: "POST",
+					url: requestUrl,
+					data: {
+						productId,
+						productQuantity
+					},
+					contentType: 'application/x-www-form-urlencoded',
+					success: function (result) {
+						if (result.error == false) {
+							if (++counter >= quantityInputs.length) {
+								const pathToRedirect = checkOutBtn.getAttribute('data-redirect-url');
+								window.location.href = `${window.location.origin}/${pathToRedirect}`;
+							}
+						} else if (result.error == true) {
+							console.log(result);
+						}
+					},
+					error: function (err) {
+						console.log(err.status);
+					}
+				});
+			})
 		}
 
 		document.querySelectorAll('.quantity-input').forEach(qi => {
@@ -125,5 +163,9 @@
 				});
 			})
 		});
+
+		checkOutBtn.addEventListener('click', () => {
+			saveQuantity();
+		})
 	</script>
 }

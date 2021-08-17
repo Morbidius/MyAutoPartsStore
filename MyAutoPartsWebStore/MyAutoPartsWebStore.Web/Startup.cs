@@ -54,11 +54,6 @@ namespace MyAutoPartsWebStore.Web
             {
                 options.Filters.Add<AutoValidateAntiforgeryTokenAttribute>();
             });
-
-            services.AddTransient<IDealerService, DealerService>();
-            services.AddTransient<IProductService, ProductService>();
-            services.AddTransient<ICategoryService, CategoryService>();
-            services.AddTransient<IOrderService, OrderService>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

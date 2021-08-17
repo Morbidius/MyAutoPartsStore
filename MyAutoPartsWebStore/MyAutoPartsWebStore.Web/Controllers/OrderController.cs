@@ -3,31 +3,31 @@
     using AutoMapper;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
+    using MyAutoPartsStore.Data.Models;
     using MyAutoPartsStore.Models.ServiceModels.Orders;
     using MyAutoPartsStore.Services.CategoryServices;
     using MyAutoPartsStore.Services.DealersServices;
     using MyAutoPartsStore.Services.OrderServices;
     using MyAutoPartsStore.Services.ProductServices;
+    using MyAutoPartsStore.Services.UserService;
     using MyAutoPartsWebStore.Web.Infrastructure.Extentions;
-
+    using System.Threading.Tasks;
     using static WebConstants;
 
     [Authorize]
     public class OrderController : Controller
     {
-        private readonly IProductService products;
-        private readonly ICategoryService category;
         private readonly IOrderService orders;
         private readonly IDealerService dealers;
         private readonly IMapper mapper;
+        private readonly IUserService userService;
 
-        public OrderController(IProductService products, ICategoryService category, IOrderService orders, IDealerService dealers, IMapper mapper)
+        public OrderController(IOrderService orders, IDealerService dealers, IMapper mapper, IUserService userService)
         {
-            this.products = products;
-            this.category = category;
             this.orders = orders;
             this.dealers = dealers;
             this.mapper = mapper;
+            this.userService = userService;
         }
 
         [Authorize]
@@ -65,29 +65,42 @@
 
             var isDeleted = this.orders.RemoveFromCart(productId, userId);
 
-            return Json(new { error = !isDeleted , productCount = orders.GetUserShoppingCartProductsCount(userId) });
+            return Json(new { error = !isDeleted, productCount = orders.GetUserShoppingCartProductsCount(userId) });
         }
 
-        [IgnoreAntiforgeryToken]
-        [HttpPost]
-        public IActionResult Checkout(DealerOrderFormServiceModel order)
+        public IActionResult Checkout()
         {
-            var dealerId = this.dealers.GetDealerById(this.User.GetId());
+            var userId = User.GetId();
 
-            var userId = this.User.GetId();
+            var orderModel = new DealerOrderFormServiceModel
+            {
+                Email = userService.GetUserEmailById(userId)
+            };
 
-            //this.orders.CheckoutFormToDealer(
-            //    order.BuyerEmail,
-            //    order.BuyerAddress,
-            //    order.BuyerPhone,
-            //    order.Note,
-            //    order.UserId,
-            //    order.OrderedOn,
-            //    dealerId);
+            return View(orderModel);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Checkout(DealerOrderFormServiceModel order)
+        {
+            var userId = User.GetId();
+            
+            await orders.CreateOrder(order, userId);
 
             TempData[GlobalMessageKey] = "Purchase Successfull!";
 
             return RedirectToAction("Index", "Home");
+        }
+
+        [IgnoreAntiforgeryToken]
+        [HttpPost]
+        public IActionResult SaveCart(int productId, int productQuantity)
+        {
+            var userId = this.User.GetId();
+
+            var isSaved = orders.SaveCart(userId, productId, productQuantity);
+
+            return Json(new { error = !isSaved });
         }
     }
 }

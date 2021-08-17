@@ -17,7 +17,9 @@
 
         public string Note { get; set; }
 
-        public DateTime OrderedOn { get; set; }
+        public DateTime OrderedOn { get; set; } = DateTime.UtcNow;
+
+        public bool IsCompleted { get; set; } = false;
 
         public IEnumerable<OrderProducts> Products { get; init; } = new List<OrderProducts>();
     }

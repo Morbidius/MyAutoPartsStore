@@ -8,6 +8,7 @@
     using MyAutoPartsStore.Services.DealersServices;
     using MyAutoPartsStore.Services.OrderServices;
     using MyAutoPartsStore.Services.ProductServices;
+    using MyAutoPartsStore.Services.UserService;
 
     public static class ServiceBuilderExtentions
     {
@@ -33,6 +34,7 @@
             services.AddTransient<ICategoryService, CategoryService>();
             services.AddTransient<IDealerService, DealerService>();
             services.AddTransient<IOrderService, OrderService>();
+            services.AddTransient<IUserService, UserService>();
         }
     }
 }

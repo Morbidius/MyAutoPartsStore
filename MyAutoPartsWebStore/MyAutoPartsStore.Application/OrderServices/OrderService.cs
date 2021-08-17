@@ -9,6 +9,7 @@
     using MyAutoPartsStore.Models.ServiceModels.Orders;
     using Microsoft.EntityFrameworkCore;
     using System;
+    using System.Threading.Tasks;
 
     public class OrderService : IOrderService
     {
@@ -41,7 +42,7 @@
             return true;
         }
 
-        public bool RemoveFromCart(int? productId,string userId)
+        public bool RemoveFromCart(int? productId, string userId)
         {
             var product = this.data.ShoppingCarts.FirstOrDefault(x => x.UserId == userId && x.ProductId == productId);
 
@@ -82,5 +83,70 @@
 
         public int GetUserShoppingCartProductsCount(string userId)
             => data.ShoppingCarts.Count(x => x.UserId == userId);
+
+        public bool SaveCart(string userId, int productId, int productQuantity)
+        {
+            var userProduct = data.ShoppingCarts.FirstOrDefault(x => x.UserId == userId && x.ProductId == productId);
+
+            if (userProduct == null)
+            {
+                return false;
+            }
+
+            userProduct.Quantity = productQuantity;
+
+            data.SaveChanges();
+
+            return true;
+        }
+
+        public decimal GetFinalPrice(string userId)
+            => data.ShoppingCarts
+            .Where(x => x.UserId == userId)
+            .Include(x => x.Product)
+            .Sum(x => x.Product.Price * x.Quantity);
+
+        public async Task CreateOrder(DealerOrderFormServiceModel order, string userId)
+        {
+            var userShoppingCart = GetCart(userId);
+
+            var newlyOrder = new Order()
+            {
+                UserId = userId,
+                BuyerPhone = order.BuyerPhone,
+                BuyerAddress = order.BuyerAddress,
+                Note = order.Note
+            };
+
+            data.Orders.Add(newlyOrder);
+
+            await data.SaveChangesAsync();
+
+            foreach (var product in userShoppingCart)
+            {
+                var newlyProduct = new OrderProducts()
+                {
+                    OrderId = newlyOrder.Id,
+                    ProductId = product.ProductId,
+                    Quantity = product.Quantity
+                };
+
+                data.OrderProducts.Add(newlyProduct);
+            }
+            await data.SaveChangesAsync();
+
+            await DeleteUserCart(userId);
+        }
+
+        private async Task DeleteUserCart(string userId)
+        {
+            var shoppingCart = data.ShoppingCarts.Where(x => x.UserId == userId).ToList();
+
+            foreach (var product in shoppingCart)
+            {
+                data.ShoppingCarts.Remove(product);
+            }
+                await data.SaveChangesAsync();
+        }
     }
 }

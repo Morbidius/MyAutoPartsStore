@@ -1,6 +1,7 @@
 ﻿namespace MyAutoPartsStore.Services.OrderServices
 {
     using System.Collections.Generic;
+    using System.Threading.Tasks;
     using MyAutoPartsStore.Models.ServiceModels.Orders;
 
     public interface IOrderService
@@ -19,5 +20,10 @@
         IEnumerable<ShoppingCartServiceModel> GetCart(string userId);
 
         int GetUserShoppingCartProductsCount(string userId);
+
+        bool SaveCart(string userId, int productId, int productQuantity);
+
+        decimal GetFinalPrice(string userId);
+        Task CreateOrder(DealerOrderFormServiceModel order, string userId);
     }
 }
