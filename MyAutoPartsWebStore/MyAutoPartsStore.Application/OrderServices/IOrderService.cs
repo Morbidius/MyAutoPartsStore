@@ -5,9 +5,18 @@
 
     public interface IOrderService
     {
-        IEnumerable<ShoppingCartServiceModel> getCart(int? productId);
-
         bool AddProductToUserCart(string userId, int? productId);
+
+        bool RemoveFromCart(int? productId, string userId);
+
+        int CheckoutFormToDealer(
+            string email,
+            string phoneNumber,
+            string address,
+            string Note,
+            string userId);
+
+        IEnumerable<ShoppingCartServiceModel> GetCart(string userId);
 
         int GetUserShoppingCartProductsCount(string userId);
     }

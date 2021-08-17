@@ -2,22 +2,22 @@
 {
     public class ShoppingCartServiceModel
     {
-        public int Id { get; init; }
+        public int ProductId { get; init; }
 
-        public string Name { get; set; }
+        public string ProductName { get; set; }
 
-        public decimal Price { get; init; }
+        public decimal ProductPrice { get; init; }
 
-        public string SizeCapacity { get; init; }
+        public string ProductSizeCapacity { get; init; }
 
-        public float Weight { get; init; }
+        public float ProductWeight { get; init; }
 
-        public string ImageUrl { get; init; }
+        public string ProductImageUrl { get; init; }
 
         public int Quantity { get; set; }
 
-        public int DealerId { get; init; }
+        public int ProductDealerId { get; init; }
 
-        public string DealerName { get; init; }
+        public string ProductDealerName { get; init; }
     }
 }

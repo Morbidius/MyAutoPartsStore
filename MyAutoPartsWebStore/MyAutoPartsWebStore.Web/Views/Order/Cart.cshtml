@@ -1,88 +1,129 @@
 ﻿@using MyAutoPartsStore.Models.ServiceModels.Orders
 
-@model ICollection<ShoppingCartServiceModel>
+@model IEnumerable<ShoppingCartServiceModel>
 
 @{
 	ViewBag.Title = "Shopping Cart";
 }
-
-<html>
-<head>
-	<title>@ViewBag.Title</title>
-	<meta charset="utf-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
-	<link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
-	<link rel="stylesheet" href="assets/css/style.css">
-</head>
-<body>
-	<main class="page">
-		<section class="shopping-cart">
-			@if (Model.Any())
-			{
-				<div class="container">
-					<div class="block-heading">
-						<h2>Your Shopping Cart</h2>
-						<p>Thank for shopping with us!</p>
-					</div>
-					<div class="content">
-						<div class="row">
-							<div class="col-md-12 col-lg-8">
-								<div class="items">
-									@foreach (var product in Model)
-									{
-										<div class="product">
-											<div class="row">
-												<div class="col-md-3">
-													<img class="img-fluid mx-auto d-block image" src=@product.ImageUrl>
-												</div>
-												<div class="col-md-8">
-													<div class="info">
-														<div class="row">
-															<div class="col-md-5 product-name">
-																<div class="product-name">
-																	<a href="#">Lorem Ipsum dolor</a>
-																	<div class="product-info">
-																		<div>Size And Capacity <span class="value">@product.SizeCapacity</span></div>
-																		<div>Weight <span class="value">@product.Weight kg (@Math.Round(product.Weight * 2.20462, 2) lbs)</span></div>
-																		<div>Dealer Name <span class="value">@product.DealerName</span></div>
-																	</div>
-																</div>
-															</div>
-															<div class="col-md-4 quantity">
-																<label for="quantity">Quantity:</label>
-																<input id="quantity" type="number" value="1" class="form-control quantity-input">
-															</div>
-															<div class="col-md-3 price">
-																<span>@Math.Round(product.Price, 2) leva</span>
+<section class="shopping-cart">
+	@if (Model.Any())
+	{
+		<div class="container">
+			<div class="block-heading">
+				<h2>Your @ViewBag.Title</h2>
+				<p>Thank you for shopping with us!</p>
+			</div>
+			<div class="content">
+				<div class="row">
+					<div class="col-md-12 col-lg-8">
+						<div class="items">
+							@foreach (var product in Model)
+							{
+								<div class="product">
+									<div class="row">
+										<div class="col-md-3">
+											<img class="img-fluid mx-auto d-block image" src=@product.ProductImageUrl>
+										</div>
+										<div class="col-md-8">
+											<div class="info">
+												<div class="row">
+													<div class="col-md-5 product-name">
+														<div class="product-name">
+															<a asp-controller="Product" asp-action="Description" asp-route-id="@product.ProductId">@product.ProductName</a>
+															<div class="product-info">
+																<div>Size And Capacity <span class="value">@product.ProductSizeCapacity</span></div>
+																<div>Weight <span class="value">@product.ProductWeight kg (@Math.Round(product.ProductWeight * 2.20462, 2) lbs)</span></div>
+																<div>Dealer Name <span class="value">@product.ProductDealerName</span></div>
 															</div>
 														</div>
+													</div>
+													<div class="col-md-4">
+														<label for="quantity">Quantity:</label>
+														<input data-price="@Math.Round(product.ProductPrice, 2)" type="number" min="1" value="1" class="form-control quantity-input">
+													</div>
+													<div class="col-md-3 price">
+														<span>@Math.Round(product.ProductPrice, 2) leva</span>
 													</div>
 												</div>
 											</div>
 										</div>
-									}
+									</div>
+									<button type="submit" class="btn btn-primary remove-from-cart" data-key="@product.ProductId">Remove</button>
 								</div>
-							</div>
-							<div class="col-md-12 col-lg-4">
-								<div class="summary">
-									<h3>Summary</h3>
-									<div class="summary-item"><span class="text">Total</span><span class="price">1 * 1</span></div>
-									<button type="button" class="btn btn-primary btn-lg btn-block">Checkout</button>
-								</div>
-							</div>
+							}
+						</div>
+					</div>
+					<div class="col-md-12 col-lg-4">
+						<div class="summary">
+							<h3>Summary</h3>
+							<div class="summary-item"><span class="text">Total</span><span id="total-price" class="price" style="font-weight:bold">@Math.Round(Model.Sum(x => x.ProductPrice), 2) leva</span></div>
+							<button type="submit" class="btn btn-primary btn-lg btn-block" asp-controller="Order" asp-action="Checkout">Checkout</button>
 						</div>
 					</div>
 				</div>
-			}
-			else
-			{
-				<h2 style="text-align:center">Your shopping cart is empty. :(</h2>
-			}
-		</section>
-	</main>
+			</div>
+		</div>
+	}
+	else
+	{
+		<h2 style="text-align:center">Your shopping cart is empty. :(</h2>
+	}
+</section>
 
-	<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
-	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
-</body>
-</html>
+@section Scripts{
+	<script>
+		const price = document.getElementById('total-price');
+
+		// Real time calculation
+		function calculatePrice() {
+			let newPrice = 0;
+
+			document.querySelectorAll('.quantity-input').forEach(qicalc => {
+				let productPrice = Number(qicalc.getAttribute('data-price'));
+				let quantity = Number(qicalc.value);
+
+				newPrice += productPrice * quantity;
+			})
+
+			price.innerText = `${newPrice.toFixed(2)} leva`;
+		}
+
+		document.querySelectorAll('.quantity-input').forEach(qi => {
+			qi.addEventListener('change', () => {
+				calculatePrice();
+			})
+		})
+
+		// Remove from cart
+		document.querySelectorAll('.remove-from-cart').forEach(btn => {
+			btn.addEventListener('click', e => {
+				e.preventDefault();
+
+				const productId = Number(e.currentTarget.getAttribute('data-key'));
+
+				const requestUrl = `${window.location.origin}/Order/DeleteFromCart`;
+
+				$.ajax({
+					type: "POST",
+					url: requestUrl,
+					data: {
+						productId
+					},
+					contentType: 'application/x-www-form-urlencoded',
+					success: function (result) {
+						if (result.error == false) {
+							document.querySelector(`button[data-key="${productId}"].remove-from-cart`).parentNode.remove();
+							calculatePrice();
+							document.getElementById('product-count').innerText = result.productCount;
+						} else if (result.error == true) {
+							console.log(result);
+						}
+					},
+					error: function (err) {
+						console.log(err.status);
+					}
+				});
+			})
+		});
+	</script>
+}

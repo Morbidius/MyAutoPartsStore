@@ -34,9 +34,12 @@ document.querySelectorAll('.buy-btn.btn-danger').forEach(btn => {
 	btn.addEventListener('click', e => {
 		e.preventDefault();
 		let productId = Number(e.currentTarget.getAttribute('data-key'));
+
+		const requestUrl = `${window.location.origin}/Order/AddToCart`;
+
 		$.ajax({
 			type: "POST",
-			url: 'Order/AddToCart',
+			url: requestUrl,
 			data: {
 				productId
 			},
