@@ -1,4 +1,6 @@
-Autoparts Web Shop
+# InterCars
+
+![image](https://user-images.githubusercontent.com/34027947/129862406-d78a4dbb-2817-4b21-a11f-90752406e678.jpg)
 
 Web application for hosting dealers and users who can buy and sell items and an administrator who can track/edit/delete every item on the platform.
 
