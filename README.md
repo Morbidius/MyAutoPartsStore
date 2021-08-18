@@ -18,7 +18,7 @@ This project is made with ASP.NET Core 5. Parts of the design is taken from the 
 
 ## Permissions:
 Permission | Guest | Logged User | Dealer | Admin
--- | ---- | ---- | --- | ---
+-- | --- | --- | --- | ---
 Index page | ✅ | ✅ | ✅ | ✅
 View Product Details | ✅ | ✅ | ✅ | ✅
 Admin Dashboard | ❌| ❌ | ❌ | ✅
@@ -47,8 +47,19 @@ This is the Intex page of the application, here the user can do various things l
 In this page, the dealer tracks his products, edits them and deletes if needed.
 ![image](https://user-images.githubusercontent.com/34027947/129605154-710fc085-a052-4512-ab7e-05a1763cc2b5.png)
 
+Here, the dealer tracks each order that is linked to his items.
+![image](https://user-images.githubusercontent.com/34027947/129956754-a51ed460-8ec8-4afe-b24f-aaa12585a75c.png)
+
+And here, the dealer can see the details of each order that is linked to his items.
+![image](https://user-images.githubusercontent.com/34027947/129956886-8bfbd4ab-687f-4446-a1f7-5bfc6ca1985d.png)
+
 **Admin Panel**
 
 In this page, the admin tracks all of the products from all the dealers on the website, approves or dissaproves them depending on the content of the product and the accuracy of it and can also edit or delete if needed.
 ![image](https://user-images.githubusercontent.com/34027947/129605035-08173a8b-2f22-4e18-bf40-44682aca9ca6.png)
 
+
+**Shopping Cart**
+In this page, the user can see their items in the cart and change the quantity or remove an item altogether.
+The price gets calculated dynamically according to the items quantities.
+![image](https://user-images.githubusercontent.com/34027947/129956377-609dedab-b1d5-41e7-a51e-1482a2af2d86.png)
