@@ -1,6 +1,6 @@
 ﻿@using MyAutoPartsStore.Models.ServiceModels.Products
 
-@model IEnumerable<ProductServiceModel>
+@model IList<ProductServiceModel>
 
 @inject IDealerService Dealers
 
@@ -38,7 +38,7 @@
 						else
 						{
 							<a asp-controller="Product" asp-action="Description" asp-route-id="@product.Id" class="details-btn btn-primary">Details</a>
-							<a class="unregistered-btn btn-danger" asp-area="Identity" asp-page="/Account/Login">Buy</a>
+							<a class="buy-btn btn-danger" asp-area="Identity" asp-page="/Account/Login">Add to Cart</a>
 						}
 					</div>
 				</div>
