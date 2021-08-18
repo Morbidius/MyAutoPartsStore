@@ -17,7 +17,7 @@ This project is made with ASP.NET Core 5. Parts of the design is taken from the 
 - Moq
 
 ## Permissions:
-Permission | Guest | Logged User | Dealer | Admin
+Permission | Guest | User | Dealer | Admin
 -- | --- | --- | --- | ---
 Index page | ✅ | ✅ | ✅ | ✅
 View Product Details | ✅ | ✅ | ✅ | ✅
