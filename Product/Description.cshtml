@@ -1,0 +1,45 @@
+﻿@using MyAutoPartsStore.Models.ServiceModels.Products
+
+@model ProductServiceDetailsModel
+
+@inject IDealerService Dealers
+@inject IProductService Products
+
+@{
+	ViewBag.Title = "Details";
+}
+
+<div class="description-pane" style="place-content: center">
+	<div class="card">
+		<img class="product-img" src="@Model.ImageUrl">
+		<div class="card-body">
+			<h5 class="card-description-title mb-4">Description</h5>
+			<p class="card-text">@Model.Description</p>
+		</div>
+		<ul class="list-group list-group-flush">
+			<li class="list-group-item text-center" style="font-size: x-large">@Model.Name</li>
+			<li class="list-group-item text-center" style="font-size: x-large">Price - @Math.Round(@Model.Price, 2) leva</li>
+			<li class="list-group-item text-center" style="font-size: x-large">Size and Capacity - @Model.SizeCapacity</li>
+			<li class="list-group-item text-center" style="font-size: x-large">Weight - @Model.Weight  kg (@Math.Round(@Model.Weight * 2.20462, 2)) lbs</li>
+		</ul>
+		<div class="card-body" style="place-content:center">
+			@if (User.Identity.IsAuthenticated)
+			{
+				var userId = User.GetId();
+				var productId = Model.Id;
+				var dealerId = Model.DealerId;
+				var userIsDealer = Dealers.IsDealer(userId);
+				var productIsDealers = Products.isByDealer(productId, dealerId);
+
+				@if ((!userIsDealer && !User.IsAdmin()) || !productIsDealers)
+				{
+					<button type="submit" data-key="@Model.Id" class="buy-btn btn-danger">Add to Cart</button>
+				}
+			}
+			else
+			{
+				<a class="unregistered-btn btn-danger" asp-area="Identity" asp-page="/Account/Login">Buy</a>
+			}
+		</div>
+	</div>
+</div>

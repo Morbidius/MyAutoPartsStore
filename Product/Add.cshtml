@@ -1,0 +1,14 @@
+﻿@using MyAutoPartsWebStore.Web.Models.Products
+
+@model ProductFormModel
+
+@{
+	ViewBag.Title = "Add Product";
+	ViewBag.Add = true;
+}
+
+<partial name="_ProductFormPartial" model="@Model" />
+
+@section Scripts {
+	<partial name="_ValidationScriptsPartial" />
+}

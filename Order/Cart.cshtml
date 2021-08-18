@@ -1,0 +1,173 @@
+﻿@using MyAutoPartsStore.Models.ServiceModels.Orders
+@using MyAutoPartsStore.Services.OrderServices
+
+@inject IOrderService Orders
+
+@model IEnumerable<ShoppingCartServiceModel>
+
+@{
+	ViewBag.Title = "Shopping Cart";
+}
+<section class="shopping-cart">
+	@if (Model.Any())
+	{
+		<div class="container">
+			<div class="block-heading">
+				<h2>Your @ViewBag.Title</h2>
+				<p>Thank you for shopping with us!</p>
+			</div>
+			<div class="content">
+				<div class="row">
+					<div class="col-md-12 col-lg-8">
+						<div class="items">
+							@foreach (var product in Model)
+							{
+								<div class="product">
+									<div class="row">
+										<div class="col-md-3">
+											<img class="img-fluid mx-auto d-block image" src=@product.ProductImageUrl>
+										</div>
+										<div class="col-md-8">
+											<div class="info">
+												<div class="row">
+													<div class="col-md-5 product-name">
+														<div class="product-name">
+															<a asp-controller="Product" asp-action="Description" asp-route-id="@product.ProductId">@product.ProductName</a>
+															<div class="product-info">
+																<div>Size And Capacity <span class="value">@product.ProductSizeCapacity</span></div>
+																<div>Weight <span class="value">@product.ProductWeight kg (@Math.Round(product.ProductWeight * 2.20462, 2) lbs)</span></div>
+																<div>Dealer Name <span class="value">@product.ProductDealerName</span></div>
+															</div>
+														</div>
+													</div>
+													<div class="col-md-4">
+														<label for="quantity">Quantity:</label>
+														<input data-price="@Math.Round(product.ProductPrice, 2)" data-key="@product.ProductId" type="number" min="1" value="@product.Quantity" class="form-control quantity-input">
+													</div>
+													<div class="col-md-3 price">
+														<span>@Math.Round(product.ProductPrice, 2) leva</span>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+									<button type="submit" class="btn btn-primary remove-from-cart" data-key="@product.ProductId">Remove</button>
+								</div>
+							}
+						</div>
+					</div>
+					<div class="col-md-12 col-lg-4">
+						<div class="summary">
+							<h3>Summary</h3>
+							<div class="summary-item"><span class="text">Total</span><span id="total-price" class="price" style="font-weight:bold">@Math.Round(Orders.GetFinalPrice(User.GetId()), 2) leva</span></div>
+							<button type="submit" class="btn btn-primary btn-lg btn-block" id="check-out" data-redirect-url="Order/Checkout">Checkout</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	}
+	else
+	{
+		<h2 style="text-align:center">Your shopping cart is empty. :(</h2>
+	}
+</section>
+
+@section Scripts{
+	<script type="module">
+		const price = document.getElementById('total-price');
+		const checkOutBtn = document.getElementById('check-out');
+
+		// Real time total price calculation
+		function calculatePrice() {
+			let newPrice = 0;
+
+			document.querySelectorAll('.quantity-input').forEach(qi => {
+				let productPrice = Number(qi.getAttribute('data-price'));
+				let quantity = Number(qi.value);
+
+				newPrice += productPrice * quantity;
+			})
+
+			price.innerText = `${newPrice.toFixed(2)} leva`;
+		}
+
+		// Tracks the quantity and increments it correctly so that the states get saved on checkout.
+		function saveQuantity() {
+			const quantityInputs = document.querySelectorAll('input[data-key].quantity-input');
+			let counter = 0;
+
+			quantityInputs.forEach(i => {
+				const productQuantity = Number(i.value);
+				const productId = Number(i.getAttribute('data-key'));
+
+				const requestUrl = `${window.location.origin}/Order/SaveCart`;
+
+				$.ajax({
+					type: "POST",
+					url: requestUrl,
+					data: {
+						productId,
+						productQuantity
+					},
+					contentType: 'application/x-www-form-urlencoded',
+					success: function (result) {
+						if (result.error == false) {
+							if (++counter >= quantityInputs.length) {
+								const pathToRedirect = checkOutBtn.getAttribute('data-redirect-url');
+								window.location.href = `${window.location.origin}/${pathToRedirect}`;
+							}
+						} else if (result.error == true) {
+							console.log(result);
+						}
+					},
+					error: function (err) {
+						console.log(err.status);
+					}
+				});
+			})
+		}
+
+		document.querySelectorAll('.quantity-input').forEach(qi => {
+			qi.addEventListener('change', () => {
+				calculatePrice();
+			})
+		})
+
+		// Remove from cart
+		document.querySelectorAll('.remove-from-cart').forEach(btn => {
+			btn.addEventListener('click', e => {
+				e.preventDefault();
+
+				const productId = Number(e.currentTarget.getAttribute('data-key'));
+
+				const requestUrl = `${window.location.origin}/Order/DeleteFromCart`;
+
+				$.ajax({
+					type: "POST",
+					url: requestUrl,
+					data: {
+						productId
+					},
+					contentType: 'application/x-www-form-urlencoded',
+					success: function (result) {
+						if (result.error == false) {
+							document.querySelector(`button[data-key="${productId}"].remove-from-cart`).parentNode.remove();
+							calculatePrice();
+							document.getElementById('product-count').innerText = result.productCount;
+						} else if (result.error == true) {
+							console.log(result);
+						}
+					},
+					error: function (err) {
+						console.log(err.status);
+					}
+				});
+			})
+		});
+
+		checkOutBtn.addEventListener('click', () => {
+			saveQuantity();
+		})
+	</script>
+}

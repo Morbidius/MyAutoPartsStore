@@ -1,0 +1,48 @@
+﻿@using MyAutoPartsStore.Models.ServiceModels.Products
+
+@model IEnumerable<ProductServiceModel>
+
+@inject IDealerService Dealers
+
+<div class="row" style="margin-top: 3em">
+	@foreach (var product in Model)
+	{
+		<div class="col-lg-3">
+			<div class="card mb-3">
+				<img class="product-img text-center" text-center" src="@product.ImageUrl" alt="@product.Name - @product.Price @product.Weight">
+				<div class="card-body">
+					<h5 class="card-title text-center">@product.Name</h5>
+					<h5 class="card-title text-center">Price - @Math.Round(product.Price, 2) leva</h5>
+					<h5 class="card-title text-center">Size and Capacity - @product.SizeCapacity</h5>
+					<h5 class="card-title text-center">Weight - @product.Weight kg (@Math.Round(product.Weight * 2.20462, 2) lbs)</h5>
+					<div class="card-body" style="place-content:center">
+
+						@if (User.Identity.IsAuthenticated)
+						{
+							var userId = User.GetId();
+							var userIsDealer = Dealers.IsDealer(userId);
+
+							<a asp-controller="Product" asp-action="Description" asp-route-id="@product.Id" class="details-btn btn-primary">Details</a>
+
+							@if (!userIsDealer && !User.IsAdmin())
+							{
+								<button type="submit" data-key="@product.Id" class="buy-btn btn-danger">Add to Cart</button>
+							}
+
+							@if (User.IsAdmin())
+							{
+								<a asp-controller="Product" asp-action="Edit" asp-route-id="@product.Id" class="btn alert-dark m-1">Edit</a>
+								<a asp-controller="Product" asp-action="Delete" asp-route-id="@product.Id" class="btn btn-danger m-1">Delete</a>
+							}
+						}
+						else
+						{
+							<a asp-controller="Product" asp-action="Description" asp-route-id="@product.Id" class="details-btn btn-primary">Details</a>
+							<a class="unregistered-btn btn-danger" asp-area="Identity" asp-page="/Account/Login">Buy</a>
+						}
+					</div>
+				</div>
+			</div>
+		</div>
+	}
+</div>
