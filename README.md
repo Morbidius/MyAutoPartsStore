@@ -4,7 +4,7 @@
 
 Web application for hosting dealers and users who can buy and sell items and an administrator who can track/edit/delete every item on the platform.
 
-This project is made with ASP.NET Core 5. Parts of the design is taken from the catalog part of[InterCars](https://bg.intercars.eu/) for educational purposes!
+This project is made with ASP.NET Core 5. Parts of the design is taken from the catalog part of [InterCars](https://bg.intercars.eu/) for educational purposes!
 
 ## 🛠 Built with:
 
