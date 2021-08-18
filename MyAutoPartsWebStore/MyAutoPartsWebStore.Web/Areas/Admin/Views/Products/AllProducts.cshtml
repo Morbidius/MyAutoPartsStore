@@ -1,0 +1,65 @@
+﻿@using MyAutoPartsStore.Models.ViewModels.Products
+
+@model AllProductsQueryModel
+
+<h1 style="text-align:center">All products</h1>
+
+<table class="table table-striped">
+	<thead class="thead-dark">
+		<tr>
+			<th scope="col">Id</th>
+			<th scope="col">Name</th>
+			<th scope="col">Price</th>
+			<th scope="col">SizeCapacity</th>
+			<th scope="col">Weight</th>
+			<th scope="col">Aproved</th>
+			<th scope="col"></th>
+		</tr>
+	</thead>
+	<tbody>
+		@foreach (var product in Model.Products)
+		{
+			<tr>
+				<td scope="col">@product.Id</td>
+				<td scope="col">@product.Name</td>
+				<td scope="col">@Math.Round(product.Price, 2) leva</td>
+				<td scope="col">@product.SizeCapacity</td>
+				<td scope="col">@product.Weight kg (@Math.Round(product.Weight * 2.20462, 2) lbs)</td>
+				<td scope="col">@(product.IsAllowed ? "Yes" : "No")</td>
+				<td scope="col">
+					<a asp-area="" asp-controller="Product" asp-action="Delete" asp-route-id="@product.Id" class="btn btn-danger float-right ml-3">Delete</a>
+					<a asp-area="" asp-controller="Product" asp-action="Edit" asp-route-id="@product.Id" class="btn btn-warning float-right ml-3">Edit</a>
+					<a asp-area="Admin" asp-controller="Products" asp-action="Approve" asp-route-id="@product.Id" class="btn btn-info float-right ml-3">@(product.IsAllowed ? "Disapprove" : "Approve")</a>
+					<a asp-area="" asp-controller="Product" asp-action="Description" asp-route-id="@product.Id" asp-route-information="@product.Description" class="btn btn-primary float-right ml-3">Details</a>
+				</td>
+			</tr>
+		}
+	</tbody>
+</table>
+
+<div class="pages flex">
+	@if (Model.PreviousPage != null)
+	{
+		<div class="page-number">
+			<a asp-controller="Products" asp-action="AllProducts" asp-route-page="@Model.PreviousPage">
+				Previous Page
+			</a>
+		</div>
+	}
+	@for (int i = 1; i <= Model.MaxPages; i++)
+	{
+		<div class="page-number">
+			<a asp-controller="Products" asp-action="AllProducts" asp-route-page="@i">
+				@i
+			</a>
+		</div>
+	}
+	@if (Model.NextPage != null)
+	{
+		<div class="page-number">
+			<a asp-controller="Products" asp-action="AllProducts" asp-route-page="@Model.NextPage">
+				Next Page
+			</a>
+		</div>
+	}
+</div>

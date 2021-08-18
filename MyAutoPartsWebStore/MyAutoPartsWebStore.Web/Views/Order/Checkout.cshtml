@@ -1,0 +1,27 @@
+﻿@using MyAutoPartsStore.Models.ServiceModels.Orders
+
+@{
+	ViewBag.Title = "Checkout";
+}
+
+@model DealerOrderFormServiceModel
+
+<form method="post">
+	<div class="form-group">
+		<label asp-for="Email"></label>
+		<input asp-for="Email" autocomplete="off" class="form-control" placeholder="Enter email">
+	</div>
+	<div class="form-group">
+		<label asp-for="BuyerPhone"></label>
+		<input class="form-control" asp-for="BuyerPhone" placeholder="Phone">
+	</div>
+	<div class="form-group">
+		<label asp-for="BuyerAddress"></label>
+		<input class="form-control" asp-for="BuyerAddress" placeholder="Address">
+	</div>
+	<div class="form-group">
+		<label asp-for="Note"></label>
+		<textarea class="form-control" asp-for="Note" rows="5"></textarea>
+	</div>
+	<button type="submit" class="btn btn-primary">Place Order</button>
+</form>
