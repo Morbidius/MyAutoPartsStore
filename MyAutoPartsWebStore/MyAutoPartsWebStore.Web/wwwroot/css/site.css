@@ -227,11 +227,11 @@ footer-logo {
 	box-shadow: 0 5px 15px rgba(0,0,0,0.20);
 }
 
-	.details-btn span {
-		text-decoration: underline;
-		position: relative;
-		z-index: 1;
-	}
+.details-btn span {
+	text-decoration: underline;
+	position: relative;
+	z-index: 1;
+}
 
 .description-pane.container {
 	text-align: center;
@@ -324,12 +324,12 @@ footer-logo {
 	text-align: center;
 }
 
-	.shopping-cart .block-heading p {
-		text-align: center;
-		max-width: 420px;
-		margin: auto;
-		opacity: 0.7;
-	}
+.shopping-cart .block-heading p {
+	text-align: center;
+	max-width: 420px;
+	margin: auto;
+	opacity: 0.7;
+}
 
 .shopping-cart .dark .block-heading p {
 	opacity: 0.8;

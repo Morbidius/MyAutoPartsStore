@@ -16,8 +16,6 @@
 
         public int Quantity { get; set; }
 
-        public int ProductDealerId { get; init; }
-
         public string ProductDealerName { get; init; }
     }
 }

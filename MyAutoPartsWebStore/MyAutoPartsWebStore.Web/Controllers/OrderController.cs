@@ -3,7 +3,6 @@
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
     using MyAutoPartsStore.Models.ServiceModels.Orders;
-    using MyAutoPartsStore.Models.ServiceModels.Products;
     using MyAutoPartsStore.Services.DealersServices;
     using MyAutoPartsStore.Services.OrderServices;
     using MyAutoPartsStore.Services.UserService;
@@ -30,7 +29,7 @@
         [Authorize]
         public IActionResult Cart()
         {
-            var userId = User.GetId();
+            var userId = this.User.GetId();
 
             var cart = this.orders.GetCart(userId);
 
@@ -43,16 +42,16 @@
         {
             if (productId == null || productId <= 0) return BadRequest();
 
-            var userId = User.GetId();
+            var userId = this.User.GetId();
 
-            var isAdded = orders.AddProductToUserCart(userId, productId);
+            var isAdded = this.orders.AddProductToUserCart(userId, productId);
 
             if (!isAdded)
             {
                 return Json(new { error = true, productCount = 0 });
             }
 
-            var productCount = orders.GetUserShoppingCartProductsCount(userId);
+            var productCount = this.orders.GetUserShoppingCartProductsCount(userId);
 
             return Json(new { error = false, productCount });
         }
@@ -61,7 +60,7 @@
         [HttpPost]
         public IActionResult DeleteFromCart(int? productId = null)
         {
-            var userId = User.GetId();
+            var userId = this.User.GetId();
 
             var isDeleted = this.orders.RemoveFromCart(productId, userId);
 
@@ -70,11 +69,11 @@
 
         public IActionResult Checkout()
         {
-            var userId = User.GetId();
+            var userId = this.User.GetId();
 
             var orderModel = new DealerOrderFormServiceModel
             {
-                Email = userService.GetUserEmailById(userId)
+                Email = this.userService.GetUserEmailById(userId)
             };
 
             return View(orderModel);
@@ -83,9 +82,9 @@
         [HttpPost]
         public async Task<IActionResult> Checkout(DealerOrderFormServiceModel order)
         {
-            var userId = User.GetId();
-            
-            await orders.CreateOrder(order, userId);
+            var userId = this.User.GetId();
+
+            await this.orders.CreateOrder(order, userId);
 
             TempData[GlobalMessageKey] = "Purchase Successfull!";
 
@@ -98,18 +97,18 @@
         {
             var userId = this.User.GetId();
 
-            var isSaved = orders.SaveCart(userId, productId, productQuantity);
+            var isSaved = this.orders.SaveCart(userId, productId, productQuantity);
 
             return Json(new { error = !isSaved });
         }
 
         public IActionResult DealerOrders()
         {
-            var userId = User.GetId();
+            var userId = this.User.GetId();
 
             var dealerId = this.dealers.GetDealerById(userId);
 
-            var viewModel = orders
+            var viewModel = this.orders
                 .GetOrderedItemsFromDealer<BasicOrderInformation>(dealerId)
                 .Distinct()
                 .ToList();
@@ -119,15 +118,15 @@
 
         public IActionResult OrderDetails(int orderId)
         {
-            var userId = User.GetId();
+            var userId = this.User.GetId();
 
             var dealerId = this.dealers.GetDealerById(userId);
 
-            //check if the user have permission to this order
+            if (dealerId <= 0) return BadRequest();
 
-            var viewModel = orders.GetOrderDetails(orderId);
+            var viewModel = this.orders.GetOrderDetails(orderId);
 
-            var products = orders.GetOrderProducts(orderId);
+            var products = this.orders.GetOrderProducts(orderId);
 
             viewModel.Products = products;
 

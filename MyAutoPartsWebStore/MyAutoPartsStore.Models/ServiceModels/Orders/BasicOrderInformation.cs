@@ -10,6 +10,7 @@
 
         public DateTime OrderOrderedOn { get; set; }
 
+        // Override to split the orders for each user
         public override bool Equals(object obj)
         {
             var item = obj as BasicOrderInformation;

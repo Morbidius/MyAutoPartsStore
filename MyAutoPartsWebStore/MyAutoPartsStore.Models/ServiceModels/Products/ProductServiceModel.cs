@@ -19,8 +19,6 @@
 
         public string ImageUrl { get; init; }
 
-        public int DealerId { get; init; }
-
         public bool IsAllowed { get; init; }
     }
 }

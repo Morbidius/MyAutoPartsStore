@@ -20,10 +20,6 @@
 
         public int DealerId { get; init; }
 
-        public bool IsAllowed { get; init; }
-
-        public string DealerName { get; init; }
-
         public string DealerUserId { get; init; }
     }
 }

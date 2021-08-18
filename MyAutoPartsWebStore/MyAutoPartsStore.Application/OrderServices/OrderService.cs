@@ -37,8 +37,8 @@
                 Quantity = 1
             };
 
-            data.ShoppingCarts.Add(shoppingCart);
-            data.SaveChanges();
+            this.data.ShoppingCarts.Add(shoppingCart);
+            this.data.SaveChanges();
 
             return true;
         }
@@ -83,7 +83,7 @@
                    .ProjectTo<ShoppingCartServiceModel>(mapper.ConfigurationProvider);
 
         public int GetUserShoppingCartProductsCount(string userId)
-            => data.ShoppingCarts.Count(x => x.UserId == userId);
+            => this.data.ShoppingCarts.Count(x => x.UserId == userId);
 
         public bool SaveCart(string userId, int productId, int productQuantity)
         {
@@ -96,13 +96,13 @@
 
             userProduct.Quantity = productQuantity;
 
-            data.SaveChanges();
+            this.data.SaveChanges();
 
             return true;
         }
 
         public decimal GetFinalPrice(string userId)
-            => data.ShoppingCarts
+            => this.data.ShoppingCarts
                    .Where(x => x.UserId == userId)
                    .Include(x => x.Product)
                    .Sum(x => x.Product.Price * x.Quantity);
@@ -119,9 +119,9 @@
                 Note = order.Note
             };
 
-            data.Orders.Add(newlyOrder);
+            this.data.Orders.Add(newlyOrder);
 
-            await data.SaveChangesAsync();
+            await this.data.SaveChangesAsync();
 
             foreach (var product in userShoppingCart)
             {
@@ -132,27 +132,27 @@
                     Quantity = product.Quantity
                 };
 
-                data.OrderProducts.Add(newlyProduct);
+                this.data.OrderProducts.Add(newlyProduct);
             }
 
-            await data.SaveChangesAsync();
+            await this.data.SaveChangesAsync();
 
             await DeleteUserCart(userId);
         }
 
         public DealerOrderFormServiceModel GetOrderDetails()
-            => data.Orders
+            => this.data.Orders
                    .Include(x => x.Products)
                    .ProjectTo<DealerOrderFormServiceModel>(this.mapper.ConfigurationProvider)
                    .FirstOrDefault();
 
         private async Task DeleteUserCart(string userId)
         {
-            var shoppingCart = data.ShoppingCarts.Where(x => x.UserId == userId).ToList();
+            var shoppingCart = this.data.ShoppingCarts.Where(x => x.UserId == userId).ToList();
 
             foreach (var product in shoppingCart)
             {
-                data.ShoppingCarts.Remove(product);
+                this.data.ShoppingCarts.Remove(product);
             }
 
             await data.SaveChangesAsync();
@@ -169,9 +169,9 @@
 
         public IEnumerable<OrderProductsServiceModel> GetOrderProducts(int orderId)
             => this.data.OrderProducts
-                .Where(x => x.OrderId == orderId)
-                .Include(x => x.Product)
-                .ProjectTo<OrderProductsServiceModel>(mapper.ConfigurationProvider);
+                   .Where(x => x.OrderId == orderId)
+                   .Include(x => x.Product)
+                   .ProjectTo<OrderProductsServiceModel>(mapper.ConfigurationProvider);
 
         public OrderServiceInformation GetOrderDetails(int orderId)
         {
@@ -179,7 +179,7 @@
                 .Include(x => x.User)
                 .FirstOrDefault(x => x.Id == orderId);
 
-            return mapper.Map<OrderServiceInformation>(order);
+            return this.mapper.Map<OrderServiceInformation>(order);
         }
     }
 }

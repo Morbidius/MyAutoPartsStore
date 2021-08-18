@@ -6,10 +6,6 @@
 
     public class OrderServiceInformation
     {
-        public int Id { get; set; }
-
-        public string UserId { get; set; }
-       
         public string BuyerPhone { get; set; }
 
         public string UserEmail { get; set; }
@@ -21,8 +17,6 @@
         public string Note { get; set; }
 
         public DateTime OrderedOn { get; set; }
-
-        public bool? IsCompleted { get; set; }
 
         public IEnumerable<OrderProductsServiceModel> Products { get; set; }
     }
