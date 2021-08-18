@@ -155,7 +155,7 @@
                 this.data.ShoppingCarts.Remove(product);
             }
 
-            await data.SaveChangesAsync();
+            await this.data.SaveChangesAsync();
         }
 
         public IEnumerable<T> GetOrderedItemsFromDealer<T>(int userId)
@@ -180,6 +180,22 @@
                 .FirstOrDefault(x => x.Id == orderId);
 
             return this.mapper.Map<OrderServiceInformation>(order);
+        }
+
+        public bool DeleteDealerOrder(int? orderId)
+        {
+            var orderTodelete = this.data.Orders
+                .FirstOrDefault(x => x.Id == orderId);
+
+            if (orderTodelete == null)
+            {
+                return false;
+            }
+
+            this.data.Orders.Remove(orderTodelete);
+            this.data.SaveChanges();
+
+            return true;
         }
     }
 }

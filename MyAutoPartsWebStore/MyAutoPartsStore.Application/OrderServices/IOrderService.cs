@@ -35,5 +35,7 @@
         public IEnumerable<OrderProductsServiceModel> GetOrderProducts(int orderId);
 
         public OrderServiceInformation GetOrderDetails(int orderId);
+
+        public bool DeleteDealerOrder(int? orderId);
     }
 }

@@ -31,5 +31,5 @@
 		<p class="card-text" style="font-size:medium;"><b>Client Email: </b><b style="color:crimson">@Model.UserEmail</b></p>
 		<p class="card-text" style="font-size:medium;"><b>Client Delivery Adress: </b><b style="color:crimson">@Model.BuyerAddress</b></p>
 		<p class="list-group-item card-text font-weight-bolder" style="font-size:large; color:crimson">Total Price: @Math.Round(Model.Products.Sum(x => x.Quantity * x.ProductPrice), 2) leva</p>
-		<a href="#" class="btn btn-primary">Confirm</a>
+		<a class="btn btn-primary" asp-controller="Order" asp-action="ConfirmOrder" asp-route-orderId="@Model.Id">Confirm</a>
 	</div>

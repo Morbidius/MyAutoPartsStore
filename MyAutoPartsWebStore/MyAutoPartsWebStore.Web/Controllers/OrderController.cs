@@ -132,5 +132,14 @@
 
             return View(viewModel);
         }
+
+        public IActionResult ConfirmOrder(int? orderId = null)
+        {
+            if (orderId == null || orderId <= 0) return BadRequest();
+
+            var productToDel = this.orders.DeleteDealerOrder(orderId);
+            
+            return View(nameof(OrderController.DealerOrders), typeof(OrderController).GetControllerName());
+        }
     }
 }

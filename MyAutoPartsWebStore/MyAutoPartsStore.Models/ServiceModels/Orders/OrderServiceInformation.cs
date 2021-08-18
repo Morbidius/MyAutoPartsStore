@@ -6,6 +6,8 @@
 
     public class OrderServiceInformation
     {
+        public int Id { get; set; }
+
         public string BuyerPhone { get; set; }
 
         public string UserEmail { get; set; }

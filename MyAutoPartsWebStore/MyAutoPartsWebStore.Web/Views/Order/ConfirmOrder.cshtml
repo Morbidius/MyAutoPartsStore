@@ -2,9 +2,7 @@
 
 @inject IDealerService Dealers
 
-@{
-	ViewBag.Title = "Delete";
-}
+@{ ViewBag.Title = "Delete"; }
 
 <h1 class="text-center">Delete Confirmation</h1>
 <div class="description-pane">
@@ -24,17 +22,17 @@
 				{
 					<a class="btn btn-primary" asp-controller="Product" asp-action="MyProducts">No</a>
 				}
-			}
-			else
-			{
-				<a class="btn btn-primary" asp-area="" asp-controller="Home" asp-action="Index">No</a>
-			}
+				else
+				{
+					<a class="btn btn-primary" asp-area="" asp-controller="Home" asp-action="Index">No</a>
+				}
 
-			@if (User.IsAdmin())
-			{
-				<a class="btn btn-primary" asp-area="Admin" asp-controller="Products" asp-action="AllProducts">No</a>
-			}
+				@if (User.IsAdmin())
+				{
+					<a class="btn btn-primary" asp-area="Admin" asp-controller="Products" asp-action="AllProducts">No</a>
+				}
 
+			}
 		</form>
 	</div>
 </div>
