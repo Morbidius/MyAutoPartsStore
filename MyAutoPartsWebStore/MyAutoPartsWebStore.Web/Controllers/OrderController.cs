@@ -3,6 +3,7 @@
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
     using MyAutoPartsStore.Models.ServiceModels.Orders;
+    using MyAutoPartsStore.Models.ServiceModels.Products;
     using MyAutoPartsStore.Services.DealersServices;
     using MyAutoPartsStore.Services.OrderServices;
     using MyAutoPartsStore.Services.UserService;
@@ -116,13 +117,19 @@
             return View(viewModel);
         }
 
-        public IActionResult OrderDetails()
+        public IActionResult OrderDetails(int orderId)
         {
             var userId = User.GetId();
 
             var dealerId = this.dealers.GetDealerById(userId);
 
-            var viewModel = orders.GetOrderedItemsFromDealer<DealerOrderFormServiceModel>(dealerId);
+            //check if the user have permission to this order
+
+            var viewModel = orders.GetOrderDetails(orderId);
+
+            var products = orders.GetOrderProducts(orderId);
+
+            viewModel.Products = products;
 
             return View(viewModel);
         }

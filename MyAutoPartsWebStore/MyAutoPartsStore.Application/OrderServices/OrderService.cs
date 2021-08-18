@@ -10,6 +10,7 @@
     using Microsoft.EntityFrameworkCore;
     using System;
     using System.Threading.Tasks;
+    using MyAutoPartsStore.Models.ServiceModels.Products;
 
     public class OrderService : IOrderService
     {
@@ -139,7 +140,6 @@
             await DeleteUserCart(userId);
         }
 
-
         public DealerOrderFormServiceModel GetOrderDetails()
             => data.Orders
                    .Include(x => x.Products)
@@ -166,5 +166,20 @@
                         .Where(x => x.Product.DealerId == userId && !x.Order.IsCompleted)
                         .OrderBy(x => x.Order.OrderedOn)
                         .ProjectTo<T>(mapper.ConfigurationProvider);
+
+        public IEnumerable<OrderProductsServiceModel> GetOrderProducts(int orderId)
+            => this.data.OrderProducts
+                .Where(x => x.OrderId == orderId)
+                .Include(x => x.Product)
+                .ProjectTo<OrderProductsServiceModel>(mapper.ConfigurationProvider);
+
+        public OrderServiceInformation GetOrderDetails(int orderId)
+        {
+            var order = this.data.Orders
+                .Include(x => x.User)
+                .FirstOrDefault(x => x.Id == orderId);
+
+            return mapper.Map<OrderServiceInformation>(order);
+        }
     }
 }

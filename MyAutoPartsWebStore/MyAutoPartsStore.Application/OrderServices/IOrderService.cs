@@ -3,6 +3,7 @@
     using System.Collections.Generic;
     using System.Threading.Tasks;
     using MyAutoPartsStore.Models.ServiceModels.Orders;
+    using MyAutoPartsStore.Models.ServiceModels.Products;
 
     public interface IOrderService
     {
@@ -30,5 +31,9 @@
         Task CreateOrder(DealerOrderFormServiceModel order, string userId);
 
         IEnumerable<T> GetOrderedItemsFromDealer<T>(int userId);
+
+        public IEnumerable<OrderProductsServiceModel> GetOrderProducts(int orderId);
+
+        public OrderServiceInformation GetOrderDetails(int orderId);
     }
 }

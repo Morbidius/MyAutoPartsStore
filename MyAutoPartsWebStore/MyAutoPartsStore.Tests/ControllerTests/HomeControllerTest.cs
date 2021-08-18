@@ -1,26 +1,32 @@
 namespace MyAutoPartsStore.Tests
 {
-    using AutoMapper;
     using Microsoft.AspNetCore.Mvc;
     using Moq;
     using MyAutoPartsStore.Services.ProductServices;
     using MyAutoPartsWebStore.Web.Controllers;
     using Xunit;
 
+    using static Data.Products;
+
     public class HomeControllerTest
     {
         [Fact]
-        public void ErrorShouldReturnView()
-        {
-            //Arrange
-            var homeController = new HomeController(Mock.Of<IProductService>(), null);
+        //public void adsads()
+        //    => MyMvc.
 
-            //Act
-            var result = homeController.Error();
+        //[Fact]
 
-            //Assert
-            Assert.NotNull(result);
-            Assert.IsType<ViewResult>(result);
-        }
+        //public void ErrorShouldReturnView()
+        //{
+        //    //Arrange
+        //    var homeController = new HomeController(Mock.Of<IProductService>(), null);
+
+        //    //Act
+        //    var result = homeController.Error();
+
+        //    //Assert
+        //    Assert.NotNull(result);
+        //    Assert.IsType<ViewResult>(result);
+        //}
     }
 }

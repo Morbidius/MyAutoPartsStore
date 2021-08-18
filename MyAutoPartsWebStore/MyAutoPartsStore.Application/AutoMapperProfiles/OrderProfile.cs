@@ -12,6 +12,7 @@
             this.CreateMap<OrderProducts, DealerOrderFormServiceModel>();
             this.CreateMap<OrderProducts, BasicOrderInformation>();
             this.CreateMap<Order, DealerOrderFormServiceModel>();
+            this.CreateMap<Order, OrderServiceInformation>();
         }
     }
 }

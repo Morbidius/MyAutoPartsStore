@@ -19,6 +19,8 @@
 
             this.CreateMap<Product, ProductServiceModel>()
                 .ForMember(p => p.Category, cfg => cfg.MapFrom(p => p.Category.Name));
+
+            this.CreateMap<OrderProducts, OrderProductsServiceModel>();
         }
     }
 }

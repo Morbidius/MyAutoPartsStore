@@ -13,7 +13,7 @@
 	@foreach (var order in Model)
 	{
 	<div class="list-group-item">
-		<a class="text-center" style="font-size: x-large" asp-controller="Order" asp-action="OrderDetails" asp-route-id="@order.OrderId">Details</a>
+		<a class="text-center" style="font-size: x-large" asp-controller="Order" asp-action="OrderDetails" asp-route-orderId="@order.OrderId">Details</a>
 		<p class="text-center" style="font-size: medium"><b>Ordered from - </b><b style="color:crimson">@order.OrderUserEmail</b></p>
 		<p class="text-center" style="font-size: medium"><b>Ordered on - </b><b style="color:crimson">@order.OrderOrderedOn</b></p>
 	</div>

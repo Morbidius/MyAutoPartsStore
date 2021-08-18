@@ -3,7 +3,7 @@
 
 @inject IOrderService Orders
 
-@model IEnumerable<DealerOrderFormServiceModel>
+@model OrderServiceInformation
 
 @{
 	ViewBag.Title = "Order Details";
@@ -11,25 +11,25 @@
 
 <div class="card text-center">
 		<div class="card-header" style="color:crimson">
-			<b>Pending Order from: (@Orders.GetOrderDetails().OrderedOn)</b>
+			<b>Pending Order from: (@Model.OrderedOn)</b>
 		</div>
-		@foreach (var order in Model)
+		@foreach (var order in Model.Products)
 		{
 			<div class="list-group-item">
-				<a class="text-center" style="font-size: x-large" asp-controller="Product" asp-action="Description" asp-route-id="@order.Product.Id">@order.ProductName</a>
-				<p class="text-center" style="font-size: medium"><b>Price - </b><b style="color:crimson">@Math.Round(order.Product.Price, 2) leva</b></p>
-				<p class="text-center" style="font-size: medium"><b>Size and Capacity - </b><b style="color:crimson">@order.Product.SizeCapacity</b></p>
+				<a class="text-center" style="font-size: x-large" asp-controller="Product" asp-action="Description" asp-route-id="@order.ProductId">@order.ProductName</a>
+				<p class="text-center" style="font-size: medium"><b>Price - </b><b style="color:crimson">@Math.Round(order.ProductPrice, 2) leva</b></p>
+				<p class="text-center" style="font-size: medium"><b>Size and Capacity - </b><b style="color:crimson">@order.ProductSizeCapacity</b></p>
 				<p class="text-center" style="font-size: medium"><b>Order Quantity - </b><b style="color:crimson">@order.Quantity</b></p>
 			</div>
 		}
 		<div class="list-group-item">
 			<p class="text-center" style="color:crimson; font-size:larger">NOTE</p>
-			<p class="text-center">@Orders.GetOrderDetails().Note</p>
+			<p class="text-center">@Model.Note</p>
 		</div>
-		<p class="card-text" style="font-size:medium;"><b>Client Full Name: </b><b style="color:crimson">@Orders.GetOrderDetails().User.FullName</b></p>
-		<p class="card-text" style="font-size:medium;"><b>Client Phone Number: </b><b style="color:crimson">@Orders.GetOrderDetails().BuyerPhone</b></p>
-		<p class="card-text" style="font-size:medium;"><b>Client Email: </b><b style="color:crimson">@Orders.GetOrderDetails().User.Email</b></p>
-		<p class="card-text" style="font-size:medium;"><b>Client Delivery Adress: </b><b style="color:crimson">@Orders.GetOrderDetails().BuyerAddress</b></p>
-		<p class="list-group-item card-text font-weight-bolder" style="font-size:large; color:crimson">Total Price: @Math.Round(Model.Sum(x => x.Quantity * x.Product.Price), 2) leva</p>
+		<p class="card-text" style="font-size:medium;"><b>Client Full Name: </b><b style="color:crimson">@Model.UserFullName</b></p>
+		<p class="card-text" style="font-size:medium;"><b>Client Phone Number: </b><b style="color:crimson">@Model.BuyerPhone</b></p>
+		<p class="card-text" style="font-size:medium;"><b>Client Email: </b><b style="color:crimson">@Model.UserEmail</b></p>
+		<p class="card-text" style="font-size:medium;"><b>Client Delivery Adress: </b><b style="color:crimson">@Model.BuyerAddress</b></p>
+		<p class="list-group-item card-text font-weight-bolder" style="font-size:large; color:crimson">Total Price: @Math.Round(Model.Products.Sum(x => x.Quantity * x.ProductPrice), 2) leva</p>
 		<a href="#" class="btn btn-primary">Confirm</a>
 	</div>

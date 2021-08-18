@@ -1,5 +1,6 @@
 ﻿namespace MyAutoPartsStore.Data.Models
 {
+    using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
 
@@ -36,5 +37,7 @@
         public int DealerId { get; set; }
 
         public Dealer Dealer { get; init; }
+
+        public ICollection<OrderProducts> Orders { get; set; } = new HashSet<OrderProducts>();
     }
 }
