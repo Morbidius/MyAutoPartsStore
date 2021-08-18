@@ -24,7 +24,7 @@
 
             if (page <= 0 || page > maxPage) page = 1;
 
-            viewmodel.Products = products.All();
+            viewmodel.Products = products.All(isAllowed : false);
 
             viewmodel.Products = viewmodel.Products.Paging(page, quantity);
 

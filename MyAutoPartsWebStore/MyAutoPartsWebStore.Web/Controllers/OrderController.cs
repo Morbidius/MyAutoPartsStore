@@ -7,7 +7,9 @@
     using MyAutoPartsStore.Services.OrderServices;
     using MyAutoPartsStore.Services.UserService;
     using MyAutoPartsWebStore.Web.Infrastructure.Extentions;
+    using System.Linq;
     using System.Threading.Tasks;
+
     using static WebConstants;
 
     [Authorize]
@@ -106,7 +108,21 @@
 
             var dealerId = this.dealers.GetDealerById(userId);
 
-            var viewModel = orders.GetOrderedItemsFromDealer(dealerId);
+            var viewModel = orders
+                .GetOrderedItemsFromDealer<BasicOrderInformation>(dealerId)
+                .Distinct()
+                .ToList();
+
+            return View(viewModel);
+        }
+
+        public IActionResult OrderDetails()
+        {
+            var userId = User.GetId();
+
+            var dealerId = this.dealers.GetDealerById(userId);
+
+            var viewModel = orders.GetOrderedItemsFromDealer<DealerOrderFormServiceModel>(dealerId);
 
             return View(viewModel);
         }

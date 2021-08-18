@@ -76,10 +76,10 @@
 
         public IEnumerable<ShoppingCartServiceModel> GetCart(string userId)
             => this.data
-                .ShoppingCarts
-                .Where(x => x.UserId == userId)
-                .Include(x => x.Product)
-                .ProjectTo<ShoppingCartServiceModel>(mapper.ConfigurationProvider);
+                   .ShoppingCarts
+                   .Where(x => x.UserId == userId)
+                   .Include(x => x.Product)
+                   .ProjectTo<ShoppingCartServiceModel>(mapper.ConfigurationProvider);
 
         public int GetUserShoppingCartProductsCount(string userId)
             => data.ShoppingCarts.Count(x => x.UserId == userId);
@@ -102,9 +102,9 @@
 
         public decimal GetFinalPrice(string userId)
             => data.ShoppingCarts
-            .Where(x => x.UserId == userId)
-            .Include(x => x.Product)
-            .Sum(x => x.Product.Price * x.Quantity);
+                   .Where(x => x.UserId == userId)
+                   .Include(x => x.Product)
+                   .Sum(x => x.Product.Price * x.Quantity);
 
         public async Task CreateOrder(DealerOrderFormServiceModel order, string userId)
         {
@@ -133,10 +133,18 @@
 
                 data.OrderProducts.Add(newlyProduct);
             }
+
             await data.SaveChangesAsync();
 
             await DeleteUserCart(userId);
         }
+
+
+        public DealerOrderFormServiceModel GetOrderDetails()
+            => data.Orders
+                   .Include(x => x.Products)
+                   .ProjectTo<DealerOrderFormServiceModel>(this.mapper.ConfigurationProvider)
+                   .FirstOrDefault();
 
         private async Task DeleteUserCart(string userId)
         {
@@ -146,15 +154,17 @@
             {
                 data.ShoppingCarts.Remove(product);
             }
+
             await data.SaveChangesAsync();
         }
 
-        public IEnumerable<DealerOrderFormServiceModel> GetOrderedItemsFromDealer(int userId)
-            => data.OrderProducts
-                .Include(x => x.Product)
-                .Include(x => x.Order)
-                .Where(x => x.Product.DealerId == userId && !x.Order.IsCompleted)
-                .OrderBy(x => x.Order.OrderedOn)
-                .ProjectTo<DealerOrderFormServiceModel>(mapper.ConfigurationProvider);
+        public IEnumerable<T> GetOrderedItemsFromDealer<T>(int userId)
+            => this.data.OrderProducts
+                        .Include(x => x.Product)
+                        .Include(x => x.Order)
+                        .ThenInclude(x => x.User)
+                        .Where(x => x.Product.DealerId == userId && !x.Order.IsCompleted)
+                        .OrderBy(x => x.Order.OrderedOn)
+                        .ProjectTo<T>(mapper.ConfigurationProvider);
     }
 }

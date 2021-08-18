@@ -25,8 +25,10 @@
 
         decimal GetFinalPrice(string userId);
 
+        DealerOrderFormServiceModel GetOrderDetails();
+
         Task CreateOrder(DealerOrderFormServiceModel order, string userId);
 
-        IEnumerable<DealerOrderFormServiceModel> GetOrderedItemsFromDealer(int userId);
+        IEnumerable<T> GetOrderedItemsFromDealer<T>(int userId);
     }
 }

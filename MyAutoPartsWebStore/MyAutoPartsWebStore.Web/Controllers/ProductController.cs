@@ -8,6 +8,7 @@
     using MyAutoPartsStore.Services.CategoryServices;
     using MyAutoPartsStore.Services.DealersServices;
     using MyAutoPartsStore.Services.ProductServices;
+    using MyAutoPartsWebStore.Web.Areas.Admin.Controllers;
     using MyAutoPartsWebStore.Web.Infrastructure.Extentions;
     using MyAutoPartsWebStore.Web.Models.Products;
 
@@ -116,9 +117,11 @@
 
             var userId = this.User.GetId();
 
-            if (!this.dealers.IsDealer(userId))
+            if (User.IsAdmin())
             {
-                return RedirectToAction(nameof(HomeController.Index), typeof(HomeController).GetControllerName());
+                TempData[GlobalMessageKey] = "Product deleted successfully.";
+
+                return RedirectToAction(nameof(ProductsController.AllProducts), typeof(ProductsController).GetControllerName(), new { area = AdminAreaName });
             }
             else
             {
@@ -204,9 +207,11 @@
 
             if (User.IsAdmin())
             {
+                this.products.Approve(id);
+
                 TempData[GlobalMessageKey] = "Product edited successfully.";
 
-                return RedirectToAction(nameof(HomeController.Index), typeof(HomeController).GetControllerName());
+                return RedirectToAction(nameof(ProductsController.AllProducts), typeof(ProductsController).GetControllerName(), new { area = AdminAreaName });
             }
 
             TempData[GlobalMessageKey] = "Product edited successfully.";

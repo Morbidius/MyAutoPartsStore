@@ -12,6 +12,10 @@
 
         public User User { get; set; }
 
+        public string ProductId { get; set; }
+
+        public Product Product { get; set; }
+
         [Required]
         [Phone]
         [Display (Name = "Phone number")]

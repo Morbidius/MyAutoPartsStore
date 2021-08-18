@@ -10,6 +10,8 @@
         {
             this.CreateMap<ShoppingCart, ShoppingCartServiceModel>();
             this.CreateMap<OrderProducts, DealerOrderFormServiceModel>();
+            this.CreateMap<OrderProducts, BasicOrderInformation>();
+            this.CreateMap<Order, DealerOrderFormServiceModel>();
         }
     }
 }
